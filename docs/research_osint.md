@@ -1,37 +1,37 @@
 # research_osint
 
-[handbook](../README.md) · prev: [local_models](local_models.md) · next: [digests](digests.md)
+[handbook](../readme.md) · prev: [cpp_playbook](cpp_playbook.md) · next: [digests](digests.md)
 
-Research is a verification discipline, not a search skill. The model finds
-candidates; you promote them to facts.
+**In one sentence:** research is a verification discipline — the model finds
+candidates, you promote them to facts.
 
 ## source tiers
 
-| tier | examples | treatment |
+| tier | examples | how to treat it |
 | --- | --- | --- |
-| primary | filings, court records, standards documents, source code, datasheets, launch manifests, official statistics | quote and link |
-| institutional | regulators, central banks, statistical offices, space agencies | reliable, note methodology |
-| secondary | trade press, specialist analysts | use to find primaries |
+| primary | filings, court records, standards, source code, datasheets, launch manifests, official statistics | quote it and link it |
+| institutional | regulators, central banks, statistics offices, space agencies | reliable, note the methodology |
+| trade press | specialist outlets and analysts | use it to find the primary source |
 | aggregated | wikis, summaries, AI answers | navigation only, never a citation |
-| social | forums, chats, video | leads only, always mark unverified |
+| social | forums, chats, video | leads only, always marked unverified |
 
-Rule: if a claim cannot be traced to tier 1 or 2, it ships with `[unverified]`.
+If a claim cannot be traced to the first two tiers, it ships with `[unverified]`.
 
-## deep research prompt
+## deep research
 
 ```
 Question: {{question}}
-Date: {{date}}. Scope: {{geography_and_timeframe}}.
+Date: {{date}}. Scope: {{place_and_period}}.
 
 Method:
-1. List what would have to be true for the answer to be yes, and for no.
-2. Search for primary sources for each. Prefer documents over articles.
-3. Build an evidence table: claim | source | date | tier | confidence.
-4. State the answer with a confidence level.
-5. List what would change your mind and where that evidence would live.
+1. State what would have to be true for the answer to be yes, and for no.
+2. Look for primary sources for each. Prefer documents over articles.
+3. Build a table: claim | source | date | tier | confidence.
+4. Give the answer with a confidence level.
+5. Say what would change your mind, and where that evidence would be found.
 
-Rules: no unsourced numbers; contradictions get shown, not resolved silently;
-mark inference as inference. If the honest answer is "unknown", say unknown.
+No unsourced numbers. Show contradictions instead of resolving them silently.
+Label inference as inference. If the honest answer is unknown, say unknown.
 ```
 
 ## triangulation
@@ -39,70 +39,67 @@ mark inference as inference. If the honest answer is "unknown", say unknown.
 ```
 Claim: {{claim}}
 Find three independent sources. Independent means different owners, not three
-outlets reprinting one wire story — check for a common origin and say so.
+outlets reprinting one agency story — check for a common origin and say so.
 Output: source | date | what it actually says (quote) | how it differs.
-Then: does the claim survive? What is the strongest counter-evidence?
+Then: does the claim survive, and what is the strongest evidence against it?
 ```
 
-## entity and structure research
-
-For companies, org charts, ownership, and supply relations:
+## entities and ownership
 
 ```
 Entity: {{name}} ({{jurisdiction}}).
 Assemble from public records only:
-- legal name, registration id, incorporation date
-- ownership chain as far as records go, with the register that shows each link
-- directors and officers with dates
+- legal name, registration number, date of incorporation
+- ownership chain as far as records go, naming the register for each link
+- directors and officers, with dates
 - subsidiaries and affiliates
-- known sanctions or export-control status, with the listing document
+- sanctions or export-control status, with the listing document
 - public contracts or tenders
-Output as a table with a source link per row. Gaps stay empty; do not infer.
+A table with a source link per row. Leave gaps empty; do not infer.
 ```
 
-## timeline reconstruction
+## timelines
 
 ```
 Subject: {{subject}}. Window: {{start}} to {{end}}.
-Build a timeline: date | event | source | tier.
-Rules: one row per verifiable event; no narrative glue; conflicting dates get
-both rows and a note. End with the three largest gaps in the record.
+Build a table: date | event | source | tier.
+One row per verifiable event, no narrative glue. Conflicting dates get both rows
+and a note. End with the three largest gaps in the record.
 ```
 
-## geospatial and imagery
+## imagery and location
 
-- Verify location claims against terrain, shadows, signage, and known imagery
-  rather than captions.
-- Check publication date against capture date; they differ more often than not.
-- Satellite and launch tracking is public: mission pages, orbital element sets,
-  and agency press kits are tier 1.
+- Verify a location against terrain, structures, shadows, and signage — not
+  against the caption.
+- Check the publication date against the capture date; they differ more often
+  than not.
+- Launch and satellite information is public: mission pages, orbital data, and
+  agency press kits are primary sources.
 
 ```
-Image/claim: {{description}} at {{alleged_location}}, {{alleged_date}}.
+Claim: {{description}} at {{alleged_location}}, {{alleged_date}}.
 List the verifiable features (terrain, structures, vegetation, shadows, text).
 For each: does it support or contradict the claim, and against what reference?
 Verdict: consistent, inconsistent, or insufficient. Never guess a coordinate.
 ```
 
-## reverse engineering — legal and methodical
+## reverse engineering, methodically
 
-Interoperability and security research follow the same evidence discipline.
+Same evidence discipline; keep it to systems you are entitled to analyse and to
+interoperability, security, or preservation purposes.
 
 ```
-Target: {{binary_or_format}}. Goal: {{interop_goal}}.
+Target: {{binary_or_format}}. Goal: {{interoperability_goal}}.
 Plan:
-1. Static structure: sections, imports, strings, obvious formats.
-2. Hypotheses about the format/protocol, ranked.
-3. The cheapest experiment to test the top hypothesis.
-4. What a correct parser must reject, not just accept.
-Output a spec skeleton with confidence per field. Cite offsets for every claim.
-Do not fabricate field meanings; mark unknown bytes as unknown.
+1. Static structure: sections, imports, strings, recognizable formats.
+2. Hypotheses about the format or protocol, ranked.
+3. The cheapest experiment that tests the top hypothesis.
+4. What a correct parser must reject, not only what it must accept.
+Output a specification skeleton with a confidence level per field. Cite offsets
+for every claim. Mark unknown bytes as unknown; do not invent field meanings.
 ```
 
-Keep it to formats and systems you are entitled to analyse, and to
-interoperability, security, and preservation purposes.
-
-## paper reading
+## reading a paper
 
 ```
 Paper: {{title_or_link}}.
@@ -110,14 +107,15 @@ Output:
 - claim: what is actually new, one sentence
 - method: how they got it, and the one assumption everything rests on
 - evidence quality: dataset, baselines, ablations, what is missing
-- reproducibility: code, data, compute needed
-- does it change what I should do? yes/no, one line why
-Skip the related-work section. Do not summarize the abstract back to me.
+- reproducibility: code, data, compute required
+- does it change what I should do? yes or no, one line why
+Skip related work. Do not restate the abstract.
 ```
 
 ## hygiene
 
 - Save the link and the date at the moment you read it. Pages change.
 - Store quotes, not paraphrases, for anything load-bearing.
-- Separate observation from inference in your own notes, permanently.
-- Two tools minimum for anything that matters — see [tool_stack](tool_stack.md).
+- Keep observation and inference separate in your notes, permanently.
+- Two independent tools minimum for anything that matters —
+  [tool_stack](tool_stack.md).
