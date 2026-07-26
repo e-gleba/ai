@@ -2,8 +2,8 @@
 
 [handbook](../readme.md) · prev: [code_review](code_review.md) · next: [context_engineering](context_engineering.md)
 
-**In one sentence:** several agents raise throughput only up to the limit of what
-you can review today.
+**In one sentence:** several agents raise throughput only up to the limit of what you
+can review today.
 
 ## the hard rules
 
@@ -22,8 +22,9 @@ git worktree list
 git worktree remove ../wt_feature_a
 ```
 
-Each worktree gets its own build directory, so agents never fight over build
-artifacts — [cpp_playbook](cpp_playbook.md).
+Reference: [git worktree](https://git-scm.com/docs/git-worktree). Each worktree gets
+its own build directory, so agents never fight over build artifacts —
+[cpp_playbook](cpp_playbook.md).
 
 ## shapes that work
 
@@ -34,7 +35,7 @@ artifacts — [cpp_playbook](cpp_playbook.md).
 | pipeline by role | one plans, one implements, one reviews | each stage has a narrow contract |
 | scout and builder | one reads and writes findings to a file, another implements | reading is cheap, writing is expensive |
 
-Role-splitting in more detail: [chinese_practice](chinese_practice.md).
+Role-splitting in more detail: [best_practice](best_practice.md).
 
 ## shapes that fail
 
@@ -83,8 +84,8 @@ Never stitch two agent diffs together. Pick one.
 smallest and lowest-risk first -> rebase the rest -> re-run the check per branch
 ```
 
-Rebase rather than chaining merge commits. Each rebase re-runs verification; a
-branch that cannot survive a rebase was never independent.
+Rebase rather than chaining merge commits. Each rebase re-runs verification; a branch
+that cannot survive a rebase was never independent.
 
 ## the ceiling
 
