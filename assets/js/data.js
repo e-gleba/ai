@@ -3,7 +3,7 @@ window.ai_data = {
   meta: {
     brand: "e-gleba",
     title: "AI Operating System",
-    tagline: "Personal playbook — agents, skills, MCP, prompts, C++ workflows, decision trees.",
+    tagline: "Personal AI guidebook — recipes, tools, prompts, music, business, BY law. Reopen daily.",
     person: "Evgeniy Gleba",
     role: "C++ Systems Engineer · Game Engine R&D",
     where: "Lesta Games · Minsk",
@@ -13,14 +13,45 @@ window.ai_data = {
 
   identity: {
     blurb:
-      "Engineer who treats AI as a force multiplier for systems work — game engines, reverse engineering, OSINT, space, and regional tech context. This page is the living OS: tools with real specs, decision trees for complex choices, pipelines that ship, and prompts you can copy.",
+      "C++ systems / game-engine engineer in Minsk. AI as leverage — engines, RE, chips, space, BY/RU business & law. Soundtrack: Orchestra · Twin Atlantic · Halo. Career math inspired by Осознанная Меркантильность: clear value, clear ask, copy only what ships.",
     pillars: [
       { t: "Spec first", d: "Write the contract before the chat. Ambiguity is the tax." },
       { t: "Layer context", d: "AGENTS.md + rules + skills + MCP — each layer has one job." },
       { t: "Verify always", d: "AI drafts. I own correctness, UB, perf, and security." },
-      { t: "Capture & reuse", d: "Prompts and SOPs become repo assets — not one-offs." },
+      { t: "Clear ask", d: "Conscious mercantile — value, ask, next step. No cope." },
     ],
   },
+
+  personality: {
+    blurb: "Minsk · engines · RE · chips · space · clear asks. Soundtrack optional but recommended.",
+    traits: [
+      { t: "Systems taste", d: "C++ / engines / RE — correctness before cleverness." },
+      { t: "Conscious mercantile", d: "Clear value, clear ask — Осознанная Меркантильность energy." },
+      { t: "Builder curiosity", d: "Chips, satellites, OSINT, BY/RU business reality." },
+      { t: "Soundtrack", d: "Orchestra · Twin Atlantic · Halo — focus fuel." },
+    ],
+  },
+
+  music: [
+    { name: "Orchestra", note: "Favorite — atmospheric loops for deep work.", url: "https://open.spotify.com/search/Orchestra", tags: ["focus", "fav"] },
+    { name: "Twin Atlantic", note: "Favorite — energy for shipping nights.", url: "https://open.spotify.com/search/Twin%20Atlantic", tags: ["energy", "fav"] },
+    { name: "Halo (OST / vibe)", note: "Favorite — epic calm for long R&D.", url: "https://open.spotify.com/search/Halo%20soundtrack", tags: ["epic", "fav"] },
+    { name: "Find more like these", note: "Ask any AI for similar artists + focus playlists.", url: "https://open.spotify.com/", tags: ["search"] },
+  ],
+
+  signals: [
+    { name: "Осознанная Меркантильность", url: "https://t.me/m0rtymerr_channel", note: "Anton Nazarov — IT career, comp, clear asks." },
+    { name: "OM on YouTube", url: "https://www.youtube.com/@om_nazarov", note: "Hiring, salary growth, professional leverage." },
+    { name: "OM on Boosty", url: "https://boosty.to/m0rtymerr", note: "Community / deeper materials." },
+    { name: "LM Arena", url: "https://lmarena.ai", note: "Calibrate models, not vibes." },
+    { name: "Artificial Analysis", url: "https://artificialanalysis.ai", note: "Speed / quality / price dashboards." },
+  ],
+
+  business: [
+    { title: "Company ask / mailing", plain: "Email that gets a yes", prompt_id: "business_ask", note: "Intros, data, partnerships — clear next step." },
+    { title: "BY / regional law research", plain: "Orientation for counsel", prompt_id: "by_law", note: "Not legal advice — prepare questions for a licensed expert." },
+    { title: "Career / comp framing", plain: "OM-style leverage memo", prompt_id: "om_career", note: "Before a review, offer, or hard conversation." },
+  ],
 
   /* —— tools with full specs —— */
   daily_drivers: [
@@ -444,6 +475,82 @@ window.ai_data = {
       body: `你是「资深{{role}}」。严格按 SOP 执行，不要跳步。\n\n【角色】专业、直接、先结论后证据。\n【目标】{{goal}}\n【输入】{{input}}\n【流程】\n1. 澄清（最多 5 个问题；若信息足够则跳过）\n2. 拆解任务为可执行子任务\n3. 并行思路：哪些可同时做\n4. 产出物按格式交付\n5. 自检清单（正确性 / 遗漏 / 风险）\n\n【输出格式】\n- 结论\n- 步骤\n- 交付物\n- 风险与验证\n\n日期：{{date}}。用中文或英文（跟我输入语言）。`,
     },
     {
+      id: "chips_digest",
+      title: "Microchips daily digest",
+      cat: "digest",
+      tags: ["chips", "electronics", "digest"],
+      body: `Microchips / silicon digest — {{date}}.
+
+Cover (laconic bullets):
+- Foundry & packaging news
+- GPU / NPU / edge silicon
+- Export controls & supply shocks relevant to BY/RU/CEE
+- One open tool / paper worth opening
+- One implication for game-engine or embedded work
+
+Style: engineer notes. Skip hype.`,
+    },
+    {
+      id: "business_ask",
+      title: "Company ask / mailing",
+      cat: "business",
+      tags: ["business", "mailing"],
+      body: `Write a clear, polite, high-agency email in {{lang|English}}.
+
+From: Evgeniy Gleba — C++ systems / game engine R&D (Minsk)
+To: {{company}}
+Goal: {{goal}}
+Tone: professional, concise, no fluff — clear ask, clear value (осознанная меркантильность).
+
+Include:
+- 2-line context who I am
+- Exact ask
+- Why it is easy for them to say yes
+- Concrete next step + timing
+- Soft close
+
+Date: {{date}}`,
+    },
+    {
+      id: "by_law",
+      title: "Belarus / regional law research",
+      cat: "business",
+      tags: ["law", "belarus", "research"],
+      body: `You are assisting with legal *research orientation* (not legal advice).
+
+Jurisdiction focus: Belarus (+ comparative RU/EE if useful)
+Question: {{goal}}
+Known facts: {{known}}
+
+Deliver:
+1. Issue map (what branches of law)
+2. Primary sources to check (codes, decrees, registries)
+3. Practical questions for a licensed BY counsel
+4. Red flags / common pitfalls for tech builders
+5. What an engineer should *not* DIY
+
+Separate: fact vs interpretation. Date: {{date}}.`,
+    },
+    {
+      id: "om_career",
+      title: "Career / comp framing (OM-style)",
+      cat: "business",
+      tags: ["career", "business"],
+      body: `Help me think with осознанная меркантильность — clear value, clear ask, no cope.
+
+Context: C++ systems / game-engine R&D eng in Minsk.
+Situation: {{goal}}
+
+Return:
+- What leverage I actually have
+- What to ask for (comp / scope / title / remote) with ranges as hypotheses
+- Script for the conversation
+- What evidence to collect this week
+- Kill criteria if the deal is bad
+
+Date: {{date}}. Direct tone.`,
+    },
+    {
       id: "fillers",
       title: "Context fillers (drop into any chat)",
       cat: "filler",
@@ -732,6 +839,7 @@ window.ai_data = {
     { id: "opensource", title: "Open source", icon: "⎇", topics: ["Contribution etiquette", "License fitness", "Maintainer lens", "Release engineering", "Community signals"], prompt_id: "spec_first" },
     { id: "space", title: "Space & satellites", icon: "✦", topics: ["Orbits & constellations", "EO / SAR literacy", "Open ground software", "Radio & tracking", "Mission notes"], prompt_id: "space_digest" },
     { id: "astro", title: "Astronomy", icon: "☽", topics: ["Observation planning", "Data archives", "Astro software", "Citizen science", "Weekly sky hooks"], prompt_id: "space_digest" },
+    { id: "chips", title: "Microchips", icon: "▣", topics: ["Foundry news", "GPU / NPU silicon", "Export controls", "Supply & packaging", "Open tooling"], prompt_id: "chips_digest" },
   ],
 
   bookmarks: [
@@ -779,6 +887,15 @@ window.ai_data = {
       { n: "Liveuamap", u: "https://liveuamap.com" },
       { n: "OCCRP", u: "https://www.occrp.org" },
     ]},
+    { group: "Soundtrack", links: [
+      { n: "Orchestra", u: "https://open.spotify.com/search/Orchestra" },
+      { n: "Twin Atlantic", u: "https://open.spotify.com/search/Twin%20Atlantic" },
+      { n: "Halo OST", u: "https://open.spotify.com/search/Halo%20soundtrack" },
+    ]},
+    { group: "Career signal", links: [
+      { n: "OM Telegram", u: "https://t.me/m0rtymerr_channel" },
+      { n: "OM YouTube", u: "https://www.youtube.com/@om_nazarov" },
+    ]},
     { group: "Me", links: [
       { n: "Portfolio", u: "https://e-gleba.github.io" },
       { n: "GitHub", u: "https://github.com/e-gleba" },
@@ -790,9 +907,9 @@ window.ai_data = {
     { day: 0, focus: "Systems & engines", hint: "Profiling, memory, rendering spikes", prompt_id: "engine_digest" },
     { day: 1, focus: "Reverse & security", hint: "One binary habit or paper", prompt_id: "re_brief" },
     { day: 2, focus: "Research fan-out", hint: "4-track synthesis memo", prompt_id: "multithread" },
-    { day: 3, focus: "C++ agent tooling", hint: "compdb, clangd, skills", prompt_id: "cpp_compdb" },
+    { day: 3, focus: "Chips & silicon", hint: "Foundry, GPU/NPU, export controls", prompt_id: "chips_digest" },
     { day: 4, focus: "OSINT / politeconomy", hint: "BY·RU · sanctions · industry", prompt_id: "osint_digest" },
     { day: 5, focus: "Space & astronomy", hint: "Orbits, EO, open tools", prompt_id: "space_digest" },
-    { day: 6, focus: "Meta / agents", hint: "AGENTS.md, skills, MCP, CI", prompt_id: "cursor_kickoff" },
+    { day: 6, focus: "Career & clear asks", hint: "OM-style leverage + mailings", prompt_id: "om_career" },
   ],
 };

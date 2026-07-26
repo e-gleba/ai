@@ -3,158 +3,263 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Interactive AI cheatsheet — tools, prompts, pipelines, decision trees, and context-window math. Built like Raycast with liquid glass.">
+  <meta name="description" content="Evgeniy Gleba — personal AI guidebook. Prompts, tools, pipelines, digests, business & soundtrack.">
   <meta name="author" content="Evgeniy Gleba">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#0b0b0f" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme: light)">
-  <meta property="og:title" content="AI OS — Universal AI Cheatsheet">
-  <meta property="og:description" content="Raycast-style AI map with liquid glass, decision trees, and full tool specs.">
+  <meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f0f1f5" media="(prefers-color-scheme: light)">
+  <meta property="og:title" content="e-gleba / ai — Personal AI OS">
+  <meta property="og:description" content="Daily prompts, tool limits, pipelines, digests, BY law & career asks — reopen every day.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://e-gleba.github.io/ai/">
-  <title>AI OS — Universal AI Cheatsheet</title>
+  <title>e-gleba / ai — Personal AI OS</title>
   <link rel="canonical" href="https://e-gleba.github.io/ai/">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff5f6d'/%3E%3Cstop offset='100%25' style='stop-color:%23ffc371'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%230b0b0f'/%3E%3Ccircle cx='32' cy='32' r='11' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6a3d'/%3E%3Cstop offset='100%25' style='stop-color:%23ffb347'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%230e0e10'/%3E%3Ccircle cx='32' cy='32' r='11' fill='url(%23g)'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+  <script defer src="assets/js/data.js"></script>
+  <script defer src="assets/js/main.js"></script>
 </head>
-<body x-data="app()" x-cloak @keydown.escape.window="palette_open ? close_palette() : (drawer_open ? close_drawer() : (tree_open ? close_tree() : null))">
+<body
+  x-data="app()"
+  x-cloak
+  @ai-open-palette.window="open_palette()"
+  @keydown.escape.window="palette_open ? close_palette() : (drawer_open && close_drawer())"
+>
+  <div class="ambient" aria-hidden="true"></div>
 
-  <!-- ambient mesh -->
-  <div class="ambient" aria-hidden="true">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="noise"></div>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" :href="meta.portfolio" title="Portfolio">
+        <span class="a" x-text="meta.brand"></span><span class="dim">/</span>ai
+        <span class="tag">OS</span>
+      </a>
+
+      <button type="button" class="spotlight glass" @click="open_palette()" aria-label="Open spotlight">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span class="ph">Search tools, prompts, digests, music…</span>
+        <kbd class="kbd" x-text="mod_key">⌘K</kbd>
+      </button>
+
+      <div class="top_actions">
+        <div class="icon_group glass" role="group" aria-label="Theme">
+          <button type="button" class="icon_btn" :class="{active: theme_mode==='dark'}" @click="apply_theme('dark')" title="Dark" aria-label="Dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3a7 7 0 0 0 11.5 11.5z"/></svg>
+          </button>
+          <button type="button" class="icon_btn" :class="{active: theme_mode==='light'}" @click="apply_theme('light')" title="Light" aria-label="Light">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </button>
+          <button type="button" class="icon_btn" :class="{active: theme_mode==='system'}" @click="apply_theme('system')" title="System" aria-label="System">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+          </button>
+        </div>
+        <a class="icon_btn glass" :href="meta.github + '/ai'" target="_blank" rel="noopener" title="Source" aria-label="Source on GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 7.5c.85 0 1.7.12 2.5.34 1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.48A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-kicker">
+        <span class="dot" aria-hidden="true"></span>
+        <span x-text="meta.role"></span>
+        <span>·</span>
+        <span x-text="meta.where"></span>
+      </div>
+      <h1>
+        <span x-text="meta.person"></span>
+        <span class="grad"> / ai</span>
+      </h1>
+      <p class="hero-sub" x-text="meta.tagline"></p>
+      <p class="hero-sub" style="margin-top:-8px;font-size:0.95rem" x-text="identity.blurb"></p>
+      <div class="hero-meta">
+        <a :href="meta.portfolio" target="_blank" rel="noopener">Portfolio</a>
+        <a :href="meta.github" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://t.me/m0rtymerr_channel" target="_blank" rel="noopener">Осознанная меркантильность</a>
+        <span x-text="today_label()"></span>
+      </div>
+
+      <article class="daily glass" x-show="daily">
+        <div class="daily-top">
+          <span class="daily-date">Daily prompt · <span x-text="daily?.focus"></span></span>
+          <button type="button" class="btn tiny" @click="copy_daily()">Copy</button>
+        </div>
+        <h2 x-text="daily?.title"></h2>
+        <p class="hint" x-text="daily?.hint"></p>
+        <pre class="prompt_box" x-text="daily?.body"></pre>
+        <div class="actions">
+          <button type="button" class="btn primary" @click="copy_daily()">Copy for today</button>
+          <button type="button" class="btn" @click="set_filter('prompts')">Browse prompts</button>
+          <button type="button" class="btn" @click="open_palette()">Spotlight <span class="kbd" style="margin-left:6px" x-text="mod_key"></span></button>
+        </div>
+      </article>
+    </section>
+
+    <div class="shell">
+      <nav class="nav_row" aria-label="Filters">
+        <template x-for="f in filters" :key="f.id">
+          <button
+            type="button"
+            class="chip"
+            :class="{active: active_filter === f.id}"
+            @click="set_filter(f.id)"
+            x-text="f.label"
+          ></button>
+        </template>
+      </nav>
+
+      <template x-if="active_filter === 'today'">
+        <div>
+          <p class="section_label">How I work</p>
+          <div class="pillars">
+            <template x-for="p in identity.pillars" :key="p.t">
+              <div class="pillar">
+                <strong x-text="p.t"></strong>
+                <span x-text="p.d"></span>
+              </div>
+            </template>
+          </div>
+
+          <p class="section_label">Personality</p>
+          <div class="pillars">
+            <template x-for="t in personality.traits" :key="t.t">
+              <div class="pillar">
+                <strong x-text="t.t"></strong>
+                <span x-text="t.d"></span>
+              </div>
+            </template>
+          </div>
+
+          <p class="section_label">Jump in</p>
+          <div class="grid">
+            <template x-for="item in items.filter(i => ['tool_0','tool_2','pipeline_ship_feature','biz_0','music_0','digest_chips'].includes(i.id) || i.kind === 'prompt').slice(0, 8)" :key="item.id">
+              <article class="card glass" @click="open_item(item.id)">
+                <button type="button" class="copy_mini" @click.stop="copy_text(item.copy)">Copy</button>
+                <span class="tag" x-text="kind_label(item.kind)"></span>
+                <h3 x-text="item.title"></h3>
+                <p x-text="item.plain"></p>
+              </article>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="active_filter !== 'today'">
+        <div>
+          <p class="section_label">
+            <span x-text="filters.find(f => f.id === active_filter)?.label || 'Results'"></span>
+            · <span x-text="visible_items.length"></span>
+          </p>
+          <div class="grid">
+            <template x-for="item in visible_items" :key="item.id">
+              <article class="card glass" @click="open_item(item.id)">
+                <button type="button" class="copy_mini" @click.stop="copy_text(item.copy)">Copy</button>
+                <span class="tag" x-text="kind_label(item.kind)"></span>
+                <h3 x-text="item.title"></h3>
+                <p x-text="item.plain"></p>
+                <template x-if="item.tags?.length">
+                  <div>
+                    <template x-for="tag in item.tags.slice(0, 3)" :key="tag">
+                      <span class="tag" x-text="tag"></span>
+                    </template>
+                  </div>
+                </template>
+              </article>
+            </template>
+          </div>
+          <div class="empty" :class="{show: !visible_items.length}">Nothing in this lane yet.</div>
+        </div>
+      </template>
+    </div>
+
+    <footer class="site_foot">
+        <span>e-gleba / ai · recipe book · reopen daily</span>
+      <span>
+        <a :href="meta.portfolio" target="_blank" rel="noopener">portfolio</a>
+        ·
+        <a href="https://lmarena.ai" target="_blank" rel="noopener">lm arena</a>
+        ·
+        <a href="https://t.me/m0rtymerr_channel" target="_blank" rel="noopener">om channel</a>
+      </span>
+    </footer>
   </div>
 
-  <!-- top bar -->
-  <header class="topbar">
-    <a class="brand" href="https://e-gleba.github.io" title="Portfolio">
-      <span class="mark">◉</span>
-      <span class="brand-text"><b>e-gleba</b><span class="slash">/</span><span class="accent">ai</span></span>
-    </a>
-
-    <button type="button" class="spotlight glass" @click="open_palette()" aria-label="Open spotlight">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <span class="spotlight-placeholder">Search tools, prompts, pipelines, specs…</span>
-      <kbd class="kbd" x-text="mod_key">⌘K</kbd>
-    </button>
-
-    <div class="top-actions">
-      <div class="segment glass" role="group" aria-label="Theme">
-        <button type="button" class="segment-btn" :class="{active: theme_mode==='dark'}" @click="set_theme('dark')" title="Dark" aria-label="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3a7 7 0 0 0 11.5 11.5z"/></svg></button>
-        <button type="button" class="segment-btn" :class="{active: theme_mode==='light'}" @click="set_theme('light')" title="Light" aria-label="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-        <button type="button" class="segment-btn" :class="{active: theme_mode==='system'}" @click="set_theme('system')" title="System" aria-label="System"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></button>
-      </div>
-      <a class="icon-btn glass" href="https://github.com/e-gleba/ai" target="_blank" rel="noopener" title="Source" aria-label="Source on GitHub">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 7.5c.85 0 1.7.12 2.5.34 1.9-1.32 2.74-1.05 2.74-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.48A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
-      </a>
-    </div>
-  </header>
-
-  <!-- hero -->
-  <section class="hero">
-    <div class="hero-pill glass"><span class="dot"></span>Universal AI cheatsheet</div>
-    <h1>Work with AI like a <span class="gradient-text">pro</span>, even if you’re not one.</h1>
-    <p class="hero-sub">Tools compared by context, cost & speed. Copy-ready prompts. Decision trees for complex tasks. Pipelines you can actually run.</p>
-    <div class="hero-actions">
-      <button type="button" class="btn primary glass" @click="open_palette()">Open Spotlight <span class="btn-kbd" x-text="mod_key"></span></button>
-      <button type="button" class="btn ghost" @click="focus_graph()">Explore the map</button>
-    </div>
-  </section>
-
-  <!-- main graph stage -->
-  <main class="stage" id="stage">
-    <div id="graph" role="img" aria-label="Interactive AI knowledge graph"></div>
-    <div class="stage-overlay">
-      <div class="overlay-left">
-        <div class="glass card hint" x-show="hint_visible" x-transition.opacity>
-          <div class="hint-title">👋 First time?</div>
-          <p>Drag to pan, scroll to zoom, click any node. Use <kbd>⌘K</kbd> to jump anywhere.</p>
-          <button type="button" class="hint-btn" @click="dismiss_hint">Got it</button>
-        </div>
-      </div>
-      <div class="overlay-bottom">
-        <nav class="dock glass">
-          <template x-for="f in filters" :key="f.id">
-            <button type="button" class="chip" :class="{active:active_filter===f.id}" @click="set_filter(f.id)" x-text="f.label"></button>
-          </template>
-          <span class="dock-date" x-text="today_label()"></span>
-        </nav>
-        <div class="graph-controls glass">
-          <button type="button" class="gctrl" @click="cy_fit()" title="Fit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
-          <button type="button" class="gctrl" @click="cy_zoom(1.2)" title="Zoom in"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5M11 8v6M8 11h6"/></svg></button>
-          <button type="button" class="gctrl" @click="cy_zoom(0.8)" title="Zoom out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5M8 11h6"/></svg></button>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- detail drawer -->
-  <div class="drawer-backdrop" x-show="drawer_open" x-transition.opacity @click="close_drawer()"></div>
-  <aside class="drawer" :class="{open: drawer_open}" @click.stop aria-live="polite">
+  <!-- drawer -->
+  <div class="drawer_backdrop" x-show="drawer_open" x-transition.opacity @click="close_drawer()" x-cloak></div>
+  <aside class="drawer" :class="{open: drawer_open}" @click.stop aria-live="polite" x-cloak>
     <template x-if="selected">
-      <div class="drawer-inner">
-        <div class="drawer-head">
+      <div style="display:flex;flex-direction:column;height:100%">
+        <div class="drawer_head">
           <div>
-            <span class="kind" x-text="kind_label(selected.kind)"></span>
+            <span class="kind_pill" x-text="kind_label(selected.kind)"></span>
             <h2 x-text="selected.title"></h2>
-            <p class="drawer-sub" x-text="selected.plain" x-show="selected.plain"></p>
           </div>
-          <button type="button" class="icon-btn" @click="close_drawer()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <button type="button" class="icon_btn" @click="close_drawer()" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
         </div>
 
-        <div class="drawer-body">
-          <!-- tool spec card -->
-          <template x-if="selected.kind==='tool' && selected.specs">
-            <div class="spec-grid">
-              <div class="spec-item"><span class="spec-label">Context</span><span class="spec-value" x-text="selected.specs.context"></span></div>
-              <div class="spec-item"><span class="spec-label">Speed</span><span class="spec-value" x-text="selected.specs.speed"></span></div>
-              <div class="spec-item"><span class="spec-label">Cost</span><span class="spec-value" x-text="selected.specs.cost"></span></div>
-              <div class="spec-item"><span class="spec-label">Best for</span><span class="spec-value" x-text="selected.specs.best"></span></div>
+        <div class="drawer_body">
+          <p class="plain" x-show="selected.plain" x-text="selected.plain"></p>
+          <p class="plain" x-show="selected.note && selected.note !== selected.plain" x-text="selected.note"></p>
+          <p class="plain" x-show="selected.when" x-text="selected.when"></p>
+
+          <template x-if="selected.kind === 'tool' && selected.specs">
+            <div class="spec_grid">
+              <div class="spec_item"><span class="spec_label">Context</span><span class="spec_value" x-text="selected.specs.context"></span></div>
+              <div class="spec_item"><span class="spec_label">Speed</span><span class="spec_value" x-text="selected.specs.speed"></span></div>
+              <div class="spec_item"><span class="spec_label">Cost</span><span class="spec_value" x-text="selected.specs.cost"></span></div>
+              <div class="spec_item"><span class="spec_label">Best for</span><span class="spec_value" x-text="selected.specs.best"></span></div>
             </div>
           </template>
 
-          <p class="when" x-show="selected.when" x-text="selected.when"></p>
-
-          <div class="drawer-copy" x-show="selected.body" x-html="format_body(selected.body)"></div>
-
-          <!-- limits -->
           <template x-if="selected.limits?.length">
-            <div class="limits glass">
-              <div class="limits-title">⚠️ Limitations</div>
+            <div class="limits_block">
+              <h3>Limitations</h3>
               <ul>
-                <template x-for="(lim,li) in selected.limits" :key="li"><li x-text="lim"></li></template>
+                <template x-for="(lim, li) in selected.limits" :key="li"><li x-text="lim"></li></template>
               </ul>
             </div>
           </template>
 
-          <!-- pipeline stages -->
-          <template x-if="selected.kind==='pipeline'">
-            <div class="pipeline">
-              <template x-for="(stage,si) in selected.stages" :key="si">
-                <div class="pipe-stage">
-                  <div class="pipe-rail"><span class="pipe-dot" x-text="si+1"></span><span class="pipe-line" x-show="si < selected.stages.length-1"></span></div>
-                  <div class="pipe-card glass">
+          <template x-if="selected.kind === 'pipeline'">
+            <div class="pipe_tree">
+              <template x-for="(stage, si) in selected.stages" :key="si">
+                <div class="pipe_stage">
+                  <div class="pipe_rail">
+                    <span class="pipe_dot" x-text="si + 1"></span>
+                    <span class="pipe_line" x-show="si < selected.stages.length - 1"></span>
+                  </div>
+                  <div class="pipe_card">
                     <template x-if="!stage.parallel">
                       <div>
-                        <div class="pipe-head"><strong x-text="stage.title"></strong><span class="tag" x-text="stage.tool"></span></div>
-                        <p x-text="stage.note"></p>
+                        <div class="pipe_card_head">
+                          <strong x-text="stage.title"></strong>
+                          <span class="pipe_tool" x-text="stage.tool"></span>
+                        </div>
+                        <p class="pipe_note" x-text="stage.note"></p>
                         <button type="button" class="btn tiny" @click="copy_stage(stage)" x-show="stage.prompt">Copy prompt</button>
                       </div>
                     </template>
                     <template x-if="stage.parallel">
                       <div>
-                        <div class="pipe-head"><strong x-text="stage.title"></strong><span class="tag">parallel</span></div>
-                        <p x-text="stage.note"></p>
-                        <div class="parallel">
-                          <template x-for="(branch,bi) in stage.parallel" :key="bi">
-                            <div class="branch glass">
-                              <div class="pipe-head"><strong x-text="branch.title"></strong><span class="tag" x-text="branch.tool"></span></div>
-                              <p x-text="branch.note"></p>
+                        <div class="pipe_card_head">
+                          <strong x-text="stage.title"></strong>
+                          <span class="pipe_tool">parallel</span>
+                        </div>
+                        <p class="pipe_note" x-text="stage.note"></p>
+                        <div class="pipe_parallel">
+                          <template x-for="(branch, bi) in stage.parallel" :key="bi">
+                            <div class="pipe_branch">
+                              <div class="pipe_card_head">
+                                <strong x-text="branch.title"></strong>
+                                <span class="pipe_tool" x-text="branch.tool"></span>
+                              </div>
+                              <p class="pipe_note" x-text="branch.note"></p>
                               <button type="button" class="btn tiny" @click="copy_stage(branch)" x-show="branch.prompt">Copy prompt</button>
                             </div>
                           </template>
@@ -167,104 +272,74 @@
             </div>
           </template>
 
-          <!-- decision tree -->
-          <template x-if="selected.kind==='decision'">
-            <div class="decision-preview">
-              <p class="decision-lead">This is a decision tree. Open the tree view to walk it step-by-step.</p>
-              <button type="button" class="btn primary" @click="open_tree(selected.id)">Open decision tree</button>
-            </div>
-          </template>
+          <pre class="body_pre" x-show="selected.body && selected.kind !== 'pipeline'" x-text="selected.body"></pre>
 
-          <!-- context calculator -->
-          <template x-if="selected.kind==='calc'">
-            <div class="calc glass">
-              <div class="calc-row">
-                <label>Input tokens</label>
-                <input type="range" min="0" max="2000000" step="1000" x-model.number="calc_input">
-                <span x-text="fmt_num(calc_input)"></span>
-              </div>
-              <div class="calc-row">
-                <label>Output tokens</label>
-                <input type="range" min="0" max="128000" step="500" x-model.number="calc_output">
-                <span x-text="fmt_num(calc_output)"></span>
-              </div>
-              <div class="calc-row">
-                <label>Model</label>
-                <select x-model="calc_model">
-                  <template x-for="m in calc_models" :key="m.id"><option :value="m.id" x-text="m.name"></option></template>
-                </select>
-              </div>
-              <div class="calc-result">
-                <div><span class="calc-label">Cost</span><span class="calc-big" x-text="calc_cost()"></span></div>
-                <div><span class="calc-label">Context used</span><span class="calc-big" x-text="calc_pct()"></span></div>
-              </div>
-            </div>
-          </template>
+          <div class="link_list" style="margin-top:12px" x-show="selected.url">
+            <a :href="selected.url" target="_blank" rel="noopener">
+              <strong>Open link</strong>
+              <span class="ln">↗</span>
+            </a>
+          </div>
         </div>
 
-        <div class="drawer-foot">
-          <button type="button" class="btn primary" @click="selected.kind==='pipeline'?copy_pipeline():copy_selected()" x-text="selected.kind==='pipeline'?'Copy pipeline':'Copy'"></button>
-          <button type="button" class="btn" @click="open_palette()">Search</button>
-          <a class="btn" x-show="selected.url" :href="selected.url" target="_blank" rel="noopener">Open</a>
-          <button type="button" class="btn" x-show="selected.kind==='decision'" @click="open_tree(selected.id)">Decision tree</button>
+        <div class="drawer_actions">
+          <button type="button" class="btn primary" @click="copy_selected()">Copy</button>
+          <button type="button" class="btn" @click="copy_pipeline()" x-show="selected.kind === 'pipeline'">Copy pipeline</button>
+          <a class="btn" :href="selected.url" target="_blank" rel="noopener" x-show="selected.url">Open</a>
         </div>
       </div>
     </template>
   </aside>
 
-  <!-- decision tree modal -->
-  <div class="tree-backdrop" x-show="tree_open" x-transition.opacity @click="close_tree()"></div>
-  <div class="tree-modal" :class="{open: tree_open}" @click.stop>
-    <div class="tree-head glass">
-      <div>
-        <h3 x-text="tree_title"></h3>
-        <p x-text="tree_subtitle"></p>
+  <!-- command palette -->
+  <div
+    class="palette_backdrop"
+    x-show="palette_open"
+    x-transition.opacity
+    @click.self="close_palette()"
+    x-cloak
+  >
+    <div class="palette glass" @click.stop role="dialog" aria-label="Command palette">
+      <div class="palette_input">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input
+          x-ref="palette_input"
+          type="search"
+          placeholder="Jump to tools, prompts, music, business…"
+          x-model="query"
+          @input="on_query()"
+          @keydown.arrow-down.prevent="move_result(1)"
+          @keydown.arrow-up.prevent="move_result(-1)"
+          @keydown.enter.prevent="confirm_result()"
+        >
       </div>
-      <button type="button" class="icon-btn" @click="close_tree()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    </div>
-    <div class="tree-body" id="tree-graph"></div>
-    <div class="tree-foot glass">
-      <button type="button" class="btn" @click="reset_tree()">Reset</button>
-      <span class="tree-hint">Click nodes to expand the path. Scroll to zoom.</span>
-    </div>
-  </div>
-
-  <!-- spotlight palette -->
-  <div class="palette-backdrop" x-show="palette_open" x-transition.opacity @click.self="close_palette()">
-    <div class="palette glass" @click.stop role="dialog" aria-modal="true" aria-label="Spotlight">
-      <div class="palette-input-wrap">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input x-ref="palette_input" type="search" placeholder="Try: context window, Cursor limits, ship feature, C++…" x-model="query" @input="on_query" @keydown.enter.prevent="confirm_result()" @keydown.arrow-down.prevent="move_result(1)" @keydown.arrow-up.prevent="move_result(-1)">
-        <kbd class="kbd">esc</kbd>
-      </div>
-      <div class="palette-list">
-        <template x-if="results.length===0"><div class="palette-empty">No matches — try “prompt”, “context”, “pipeline”, or a tool name.</div></template>
-        <template x-for="(item,index) in results" :key="item.id">
-          <button type="button" class="palette-item" :class="{active:index===active_result}" @click="open_item(item.id)" @mouseenter="active_result=index">
-            <span class="palette-kind" x-text="kind_label(item.kind)"></span>
-            <span class="palette-text">
-              <span class="palette-title" x-text="item.title"></span>
-              <span class="palette-plain" x-text="item.plain"></span>
+      <div class="palette_list">
+        <template x-if="!results.length">
+          <div class="palette_empty">No matches</div>
+        </template>
+        <template x-for="(item, index) in results" :key="item.id">
+          <button
+            type="button"
+            class="palette_item"
+            :class="{active: index === active_result}"
+            @mouseenter="active_result = index"
+            @click="open_item(item.id)"
+          >
+            <span class="kind" x-text="kind_label(item.kind)"></span>
+            <span>
+              <div class="title" x-text="item.title"></div>
+              <div class="plain" x-text="item.plain"></div>
             </span>
           </button>
         </template>
       </div>
-      <div class="palette-foot">
-        <span>↑↓ to navigate · ↵ to open · esc to close</span>
-        <span>Fuse.js · Cytoscape.js</span>
+      <div class="palette_foot">
+        <span>↑↓ navigate · ↵ open · esc close</span>
+        <span x-text="mod_key"></span>
       </div>
     </div>
   </div>
 
-  <!-- toast -->
-  <div class="toast" :class="{show: toast}" x-text="toast" role="status" aria-live="polite"></div>
-
-  <!-- libs -->
-  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.1/cytoscape-cola.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/main.js"></script>
+  <div class="toast" :class="{show: !!toast}" x-text="toast"></div>
 </body>
 </html>
