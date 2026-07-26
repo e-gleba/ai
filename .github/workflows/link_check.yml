@@ -34,7 +34,7 @@ jobs:
 
       - name: open an issue when links are dead
         if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "dead links found in the handbook"
           content-filepath: lychee/out.md
