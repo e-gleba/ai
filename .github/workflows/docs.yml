@@ -1,0 +1,40 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: markdown style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: "**/*.md"
+
+  links:
+    name: internal links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # offline mode only resolves relative paths, so a renamed page fails fast
+      # and the job never depends on somebody else's uptime
+      - name: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: "--offline --no-progress --include-fragments ."
+          fail: true
