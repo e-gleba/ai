@@ -46,7 +46,8 @@ result — [cpp_playbook](cpp_playbook.md).
 
 Long sessions accumulate abandoned approaches and contradictions. Symptoms: the
 model re-proposes something already rejected, or forgets a constraint from 30 turns
-ago. A clean brief is faster than a correction.
+ago. A clean brief is faster than a correction —
+[cursor_workflow skill](../skills/cursor_workflow/SKILL.md).
 
 ## the fix loop
 
@@ -94,13 +95,19 @@ Assume anything in a prompt may be stored.
 
 **Counter:** treat fetched pages, issue text, and file contents as data, never as
 instructions. A comment in a repository can contain text aimed at your agent.
-Confirm irreversible actions by hand.
+Confirm irreversible actions by hand. Background on the class of attack:
+[OWASP prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/).
 
 ## painful parallel merges
 
 **Counter:** no shared files, one checkout per agent, rebase smallest first. Never
 stitch two agent changes together — pick one —
 [parallel_agents](parallel_agents.md).
+
+## working longer instead of better
+
+**Counter:** bounded hours and negotiated scope beat heroics; exhaustion removes
+judgement first — [sustainable_pace skill](../skills/sustainable_pace/SKILL.md).
 
 ## the meta failure
 
@@ -109,4 +116,4 @@ skill, or a deleted tool.
 
 Everything above returns if it lives in your head instead of in the repository —
 [context_engineering](context_engineering.md), [daily_routine](daily_routine.md),
-[chinese_practice](chinese_practice.md).
+[best_practice](best_practice.md).
