@@ -24,8 +24,8 @@ rather than reconsider.
 
 ## abstraction nobody asked for
 
-**Counter:** put "no new abstraction for single-use code" in the project
-instructions, and reject the factories, interfaces, and options that follow.
+**Counter:** put "no new abstraction for single-use code" in the project instructions,
+and reject the factories, interfaces, and options that follow.
 
 ## silent assumption
 
@@ -44,25 +44,24 @@ result — [cpp_playbook](cpp_playbook.md).
 
 **Counter:** restart the session instead of nursing it.
 
-Long sessions accumulate abandoned approaches and contradictions. Symptoms: the
-model re-proposes something already rejected, or forgets a constraint from 30 turns
-ago. A clean brief is faster than a correction.
+Long sessions accumulate abandoned approaches and contradictions. Symptoms: the model
+re-proposes something already rejected, or forgets a constraint from 30 turns ago. A
+clean brief is faster than a correction —
+[cursor_workflow skill](../skills/cursor_workflow/SKILL.md).
 
 ## the fix loop
 
-**Counter:** a hard rule — two failed attempts at the same error means stop and
-report.
+**Counter:** a hard rule — two failed attempts at the same error means stop and report.
 
-Otherwise the model tries the same class of fix five times, each time with more
-code.
+Otherwise the model tries the same class of fix five times, each time with more code.
 
 ## tests that protect nothing
 
-**Counter:** require a test that fails before the fix and passes after, and check
-that it exercises the real path.
+**Counter:** require a test that fails before the fix and passes after, and check that
+it exercises the real path.
 
-Tests that assert the implementation, or mock the thing under test, pass the build
-and protect nothing.
+Tests that assert the implementation, or mock the thing under test, pass the build and
+protect nothing.
 
 ## review noise
 
@@ -74,8 +73,8 @@ severity ranking. "Consider extracting a helper" is not a finding —
 
 **Counter:** cap enabled servers and subscriptions; audit weekly.
 
-Every enabled tool costs context and adds confusion to the choice. Twenty tools
-makes the model worse at picking among the five good ones — [mcp](mcp.md).
+Every enabled tool costs context and adds confusion to the choice. Twenty tools makes
+the model worse at picking among the five good ones — [mcp](mcp.md).
 
 ## chasing leaderboards
 
@@ -86,27 +85,32 @@ Public scores narrow a shortlist; they do not predict behaviour on your codebase
 
 ## leaked secrets
 
-**Counter:** never paste real credentials, tokens, or customer data into a prompt;
-use placeholders and environment variables, and scope every token to the minimum.
-Assume anything in a prompt may be stored.
+**Counter:** never paste real credentials, tokens, or customer data into a prompt; use
+placeholders and environment variables, and scope every token to the minimum. Assume
+anything in a prompt may be stored.
 
 ## tool output treated as an order
 
 **Counter:** treat fetched pages, issue text, and file contents as data, never as
-instructions. A comment in a repository can contain text aimed at your agent.
-Confirm irreversible actions by hand.
+instructions. A comment in a repository can contain text aimed at your agent. Confirm
+irreversible actions by hand. Background on the class of attack:
+[OWASP prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/).
 
 ## painful parallel merges
 
 **Counter:** no shared files, one checkout per agent, rebase smallest first. Never
-stitch two agent changes together — pick one —
-[parallel_agents](parallel_agents.md).
+stitch two agent changes together — pick one — [parallel_agents](parallel_agents.md).
+
+## working longer instead of better
+
+**Counter:** bounded hours and negotiated scope beat heroics; exhaustion removes
+judgement first — [sustainable_pace skill](../skills/sustainable_pace/SKILL.md).
 
 ## the meta failure
 
-**Counter:** write the friction down daily and promote repeats into a rule, a
-skill, or a deleted tool.
+**Counter:** write the friction down daily and promote repeats into a rule, a skill, or
+a deleted tool.
 
 Everything above returns if it lives in your head instead of in the repository —
 [context_engineering](context_engineering.md), [daily_routine](daily_routine.md),
-[chinese_practice](chinese_practice.md).
+[best_practice](best_practice.md).

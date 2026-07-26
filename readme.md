@@ -3,23 +3,23 @@
 [![docs](https://github.com/e-gleba/ai/actions/workflows/docs.yml/badge.svg)](https://github.com/e-gleba/ai/actions/workflows/docs.yml)
 [![external links](https://github.com/e-gleba/ai/actions/workflows/link_check.yml/badge.svg)](https://github.com/e-gleba/ai/actions/workflows/link_check.yml)
 
-A working handbook for using AI as an engineer: which tool for which job, which
-model for which task, the prompts that get used, and the review discipline that
-keeps the output honest.
+A working handbook for using AI as an engineer: which tool for which job, which model
+for which task, the prompts that get used, and the review discipline that keeps the
+output honest.
 
-Plain markdown. No website, no build step, no dependencies. Copy a block, fill the
-`{{placeholders}}`, get on with the day.
+Plain markdown, no website, no build step. Copy a block, fill the `{{placeholders}}`,
+get on with the day.
 
-Written by a C++ game-engine R&D engineer, so the hard examples are systems code —
-but most of it is process, and process transfers.
+Written by a C++ game-engine R&D engineer, so the hard examples are systems code — but
+most of it is process, and process transfers.
 
 ## new here
 
-Start with [start_here](docs/start_here.md). It explains every term used later in
-five short definitions and assumes no background. Then read
-[failure_modes](docs/failure_modes.md), which saves more time than any prompt.
+[start_here](docs/start_here.md) explains every term used later and assumes no
+background. Then [failure_modes](docs/failure_modes.md), which saves more time than any
+prompt.
 
-## the handbook
+## handbook
 
 **foundations**
 
@@ -38,14 +38,14 @@ five short definitions and assumes no background. Then read
 | [prompt_library](docs/prompt_library.md) | the blocks: plan, implement, debug, explain, attack |
 | [code_review](docs/code_review.md) | the review pipeline, author side and reviewer side |
 | [parallel_agents](docs/parallel_agents.md) | several agents, one repository, no merge pain |
-| [context_engineering](docs/context_engineering.md) | project instructions, rules, skills, layout |
-| [chinese_practice](docs/chinese_practice.md) | design-first process habits that make teams fast |
+| [context_engineering](docs/context_engineering.md) | which config file exists, who reads it, what goes in it |
+| [best_practice](docs/best_practice.md) | design-first process habits, with sources |
 
 **hard mode**
 
 | page | what it answers |
 | --- | --- |
-| [engine_rnd](docs/engine_rnd.md) | cross-platform engine core work, and what to keep away from hosted models |
+| [engine_rnd](docs/engine_rnd.md) | engine core work, and what must never reach a hosted model |
 | [cpp_playbook](docs/cpp_playbook.md) | grounding C++: compile flags, sanitizers, machine code |
 | [local_models](docs/local_models.md) | private, offline, and high-volume cheap work |
 | [mcp](docs/mcp.md) | the common plug shape for tools, and how not to misuse it |
@@ -59,6 +59,19 @@ five short definitions and assumes no background. Then read
 | [failure_modes](docs/failure_modes.md) | how this goes wrong, counter first |
 | [glossary](docs/glossary.md) | every term, one line each |
 
+## skills
+
+Drop-in procedures an agent loads only when the task matches, in the portable
+`SKILL.md` format — index and install steps in [skills](skills/readme.md).
+
+| skill | use when |
+| --- | --- |
+| [cmake](skills/cmake/SKILL.md) | targets, presets, install, packaging, compilation database |
+| [cpp20](skills/cpp20/SKILL.md) | modern C++ design: value semantics, ranges, concepts |
+| [tb_engine](skills/tb_engine/SKILL.md) | a DAVA-derived engine fork under a `tb::` namespace |
+| [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
+| [sustainable_pace](skills/sustainable_pace/SKILL.md) | bounded hours, honest estimates, early warning signs |
+
 ## the idea in four lines
 
 ```
@@ -70,20 +83,18 @@ five short definitions and assumes no background. Then read
 
 ## conventions
 
-- File names are lowercase with underscores: `code_review.md`.
-- One topic per file; pages link to each other instead of repeating.
-- Prompts sit in fenced blocks so they copy cleanly; `{{date}}` means today in
-  ISO form, such as `2026-07-26`.
+- Lowercase file names with underscores: `code_review.md`.
+- One topic per file; pages link instead of repeating.
+- Prompts in fenced blocks; `{{date}}` means today in ISO form, e.g. `2026-07-26`.
 - Every tool claim states the limitation, not only the benefit.
-- No screenshots, no generated assets, no lockfiles.
+- Every non-obvious fact carries the link it came from.
 
 ## checks
 
-Two workflows run on GitHub Actions: markdown style plus an offline check of every
-internal link on each pull request, and a weekly audit of external links that opens
-an issue when a bookmark dies.
+Markdown style and every internal link are verified on each pull request; external
+links are audited weekly and a dead one opens an issue.
 
 ## contributing
 
-Corrections and better practices are welcome: [contributing](contributing.md),
-[code of conduct](code_of_conduct.md), [security](security.md).
+[contributing](contributing.md) · [code of conduct](code_of_conduct.md) ·
+[security](security.md)
