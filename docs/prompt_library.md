@@ -18,8 +18,7 @@ verification-> the command or check that proves it worked
 stop rules  -> when to refuse, when to ask instead of guessing
 ```
 
-A prompt with no output shape comes back as an essay. An essay is not a
-deliverable.
+A prompt with no output shape comes back as an essay. An essay is not a deliverable.
 
 ## lines that change behaviour
 
@@ -103,6 +102,8 @@ The body answers why, not what. Mention behaviour changes and risk.
 No emoji, no trailers, no marketing.
 ```
 
+Convention reference: [how to write a git commit message](https://cbea.ms/git-commit/).
+
 ## learning something quickly
 
 ```
@@ -129,10 +130,11 @@ Attack it. Assume I am wrong.
 No hedging. Rank the objections by severity.
 ```
 
-## related pages
+## related
 
 - Review prompts: [code_review](code_review.md)
-- Design-first sequence and reusable procedures: [chinese_practice](chinese_practice.md)
+- Design-first sequence and written procedures: [best_practice](best_practice.md)
 - Recurring digests: [digests](digests.md)
 - Sourcing and verification: [research_osint](research_osint.md)
-- C++ specifics: [cpp_playbook](cpp_playbook.md)
+- C++ specifics: [cpp_playbook](cpp_playbook.md) and the
+  [cpp20 skill](../skills/cpp20/SKILL.md)
