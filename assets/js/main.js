@@ -1,36 +1,34 @@
+/* UI brain — Alpine + Fuse + vis-network. Content stays in data.js. */
 (() => {
   const catalog = window.ai_data;
   if (!catalog) return;
 
-  const qs = (sel, root = document) => root.querySelector(sel);
-  const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const hub_meta = [
+    { id: "hub_core", label: "AI OS", group: "core", plain: "Your map of how to work with AI", detail: catalog.identity.blurb },
+    { id: "hub_tools", label: "Tools", group: "tools", plain: "Apps opened every day", detail: "Cursor, OpenCode, search, arenas — the daily stack." },
+    { id: "hub_prompts", label: "Prompts", group: "prompts", plain: "Ready-to-copy starters", detail: "Date-aware prompts for planning, review, research, digests." },
+    { id: "hub_skills", label: "Skills", group: "skills", plain: "Repeatable playbooks", detail: catalog.skills_guide.blurb },
+    { id: "hub_mcp", label: "MCP", group: "mcp", plain: "Live tools for agents", detail: catalog.mcp_guide.blurb },
+    { id: "hub_dirs", label: "Folders", group: "dirs", plain: "Where agents look", detail: "AGENTS.md, .cursor/, .opencode/, compile_commands.json — the standard layout." },
+    { id: "hub_cpp", label: "C++", group: "cpp", plain: "Systems engineering tips", detail: "compile_commands, godbolt proof, sanitizers, review order." },
+    { id: "hub_specs", label: "Guides", group: "specs", plain: "Official docs & specs", detail: "AGENTS.md, Cursor, OpenCode, MCP, clangd — canonical links." },
+    { id: "hub_digests", label: "Interests", group: "digests", plain: "Topics I follow", detail: "Engines, electronics, RE, OSINT, space, business." },
+    { id: "hub_watch", label: "Watch", group: "watch", plain: "Where to look next", detail: "Changelogs, arenas, talks, OSINT, space feeds." },
+    { id: "hub_org", label: "Organize", group: "org", plain: "Keep the system tidy", detail: "Thin rules, thick skills, human gates, golden tasks." },
+  ];
 
-  const toast_el = qs("#toast");
-  let toast_timer = 0;
-  const show_toast = (msg) => {
-    if (!toast_el) return;
-    toast_el.textContent = msg;
-    toast_el.classList.add("show");
-    clearTimeout(toast_timer);
-    toast_timer = setTimeout(() => toast_el.classList.remove("show"), 1800);
-  };
-
-  const copy_text = async (text, btn) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      if (btn) {
-        const prev = btn.textContent;
-        btn.classList.add("copied");
-        btn.textContent = "copied";
-        setTimeout(() => {
-          btn.classList.remove("copied");
-          btn.textContent = prev;
-        }, 1400);
-      }
-      show_toast("Copied");
-    } catch {
-      show_toast("Copy failed");
-    }
+  const colors = {
+    core: "#ff6b9d",
+    tools: "#ff8c42",
+    prompts: "#5ec8ff",
+    skills: "#3dd68c",
+    mcp: "#c792ea",
+    dirs: "#f0c674",
+    cpp: "#7aa2f7",
+    specs: "#bb9af7",
+    digests: "#e0af68",
+    watch: "#9ece6a",
+    org: "#ff9e64",
   };
 
   const fill_vars = (tpl, extra = {}) => {
@@ -41,10 +39,8 @@
       month: "long",
       day: "numeric",
     });
-    const iso = now.toISOString().slice(0, 10);
     const map = {
       date,
-      iso,
       goal: "<goal>",
       stack: "C++ / systems",
       build: "CMake + Ninja",
@@ -65,517 +61,568 @@
       slug: "my-skill",
       ...extra,
     };
-    return tpl.replace(/\{\{(\w+)(?:\|([^}]+))?\}\}/g, (_, key, fallback) =>
+    return String(tpl || "").replace(/\{\{(\w+)(?:\|([^}]+))?\}\}/g, (_, key, fallback) =>
       map[key] != null ? String(map[key]) : fallback || `{{${key}}}`
     );
   };
 
-  const find_prompt = (prompt_id) =>
-    catalog.prompts.find((p) => p.id === prompt_id) || catalog.prompts[0];
+  const build_index = () => {
+    const items = [];
+    const push = (item) => items.push(item);
 
-  /* —— theme: dark / light / system —— */
-  const root = document.documentElement;
-  const theme_storage_key = "ai_theme_mode";
-  const theme_buttons = qsa("[data-theme-mode]");
+    hub_meta.forEach((h) =>
+      push({
+        id: h.id,
+        kind: "hub",
+        title: h.label,
+        plain: h.plain,
+        body: h.detail,
+        group: h.group,
+        copy: h.detail,
+      })
+    );
 
-  const resolve_theme = (mode) => {
-    if (mode === "system") {
-      return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-    }
-    return mode === "light" ? "light" : "dark";
-  };
+    catalog.daily_drivers.forEach((t, i) =>
+      push({
+        id: `tool_${i}`,
+        kind: "tool",
+        title: t.name,
+        plain: t.note,
+        body: t.note,
+        url: t.url,
+        group: "tools",
+        tags: t.tags,
+        copy: t.url,
+        hub: "hub_tools",
+      })
+    );
 
-  const apply_theme = (mode) => {
-    const resolved = resolve_theme(mode);
-    root.setAttribute("data-theme", resolved);
-    root.setAttribute("data-theme-mode", mode);
-    localStorage.setItem(theme_storage_key, mode);
-    theme_buttons.forEach((btn) => {
-      btn.classList.toggle("active", btn.getAttribute("data-theme-mode") === mode);
-      btn.setAttribute("aria-pressed", btn.classList.contains("active") ? "true" : "false");
-    });
-  };
-
-  const saved_mode = localStorage.getItem(theme_storage_key) || "dark";
-  apply_theme(saved_mode);
-
-  theme_buttons.forEach((btn) => {
-    btn.addEventListener("click", () => apply_theme(btn.getAttribute("data-theme-mode")));
-  });
-
-  window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
-    if ((localStorage.getItem(theme_storage_key) || "dark") === "system") apply_theme("system");
-  });
-
-  /* —— mobile nav —— */
-  const sidebar = qs(".sidebar");
-  const backdrop = qs(".backdrop");
-  const open_nav = () => {
-    sidebar?.classList.add("open");
-    backdrop?.classList.add("show");
-  };
-  const close_nav = () => {
-    sidebar?.classList.remove("open");
-    backdrop?.classList.remove("show");
-  };
-  qs("#menu_toggle")?.addEventListener("click", open_nav);
-  backdrop?.addEventListener("click", close_nav);
-  qsa(".nav a").forEach((a) => a.addEventListener("click", close_nav));
-
-  /* —— daily —— */
-  const render_daily = () => {
-    const now = new Date();
-    const theme = catalog.daily_themes[now.getDay()];
-    const prompt = find_prompt(theme.prompt_id);
-    const date_str = now.toLocaleDateString("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    qs("#daily_date").textContent = date_str;
-    qs("#daily_focus").textContent = theme.focus;
-    qs("#daily_hint").textContent = theme.hint;
-    const body = fill_vars(prompt.body, { topic: theme.focus });
-    const box = qs("#daily_prompt");
-    box.textContent = body;
-    box.dataset.raw = body;
-    qs("#daily_prompt_title").textContent = prompt.title;
-  };
-  render_daily();
-
-  qs("#copy_daily")?.addEventListener("click", (e) => {
-    copy_text(qs("#daily_prompt").dataset.raw || qs("#daily_prompt").textContent, e.currentTarget);
-  });
-
-  qs("#reroll_daily")?.addEventListener("click", () => {
-    const pick = catalog.daily_themes[Math.floor(Math.random() * catalog.daily_themes.length)];
-    const prompt = find_prompt(pick.prompt_id);
-    qs("#daily_focus").textContent = `${pick.focus} (reroll)`;
-    qs("#daily_hint").textContent = pick.hint;
-    const body = fill_vars(prompt.body, { topic: pick.focus });
-    const box = qs("#daily_prompt");
-    box.textContent = body;
-    box.dataset.raw = body;
-    qs("#daily_prompt_title").textContent = prompt.title;
-    show_toast("Rerolled focus");
-  });
-
-  /* —— identity —— */
-  const pillars = qs("#pillars");
-  if (pillars) {
-    pillars.innerHTML = catalog.identity.pillars
-      .map(
-        (p) =>
-          `<div class="pillar" data-searchable="${p.t} ${p.d}"><strong>${p.t}</strong><span>${p.d}</span></div>`
-      )
-      .join("");
-  }
-  const identity_blurb = qs("#identity_blurb");
-  if (identity_blurb) identity_blurb.textContent = catalog.identity.blurb;
-
-  /* —— layers —— */
-  const layers_body = qs("#layers_body");
-  if (layers_body) {
-    layers_body.innerHTML = catalog.layers
-      .map(
-        (row) => `
-      <tr data-searchable="${row.name} ${row.job} ${row.put} ${row.example}">
-        <td><code>${row.name}</code></td>
-        <td>${row.job}</td>
-        <td>${row.load}</td>
-        <td><code>${row.put}</code></td>
-        <td>${row.example}</td>
-      </tr>`
-      )
-      .join("");
-  }
-
-  /* —— agent dirs —— */
-  const dirs_grid = qs("#dirs_grid");
-  if (dirs_grid) {
-    dirs_grid.innerHTML = catalog.agent_dirs
-      .map(
-        (d) => `
-      <article class="card" data-searchable="${d.path} ${d.tools} ${d.what} ${d.tip}">
-        <button class="copy-btn" type="button" data-copy="${d.path}">copy</button>
-        <h3><code>${d.path}</code></h3>
-        <p class="note">${d.what}</p>
-        <p class="meta-line">${d.tools}</p>
-        <p class="tip-line">${d.tip}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— skills guide —— */
-  const skills_blurb = qs("#skills_blurb");
-  if (skills_blurb) skills_blurb.textContent = catalog.skills_guide.blurb;
-
-  const skills_vs = qs("#skills_vs_body");
-  if (skills_vs) {
-    skills_vs.innerHTML = catalog.skills_guide.vs_rules
-      .map(
-        (r) => `
-      <tr data-searchable="${r.aspect} ${r.rule} ${r.skill}">
-        <td>${r.aspect}</td>
-        <td>${r.rule}</td>
-        <td>${r.skill}</td>
-      </tr>`
-      )
-      .join("");
-  }
-
-  const skills_how = qs("#skills_how");
-  if (skills_how) {
-    skills_how.innerHTML = catalog.skills_guide.how_to.map((s) => `<li data-searchable="${s}">${s}</li>`).join("");
-  }
-
-  const skills_examples = qs("#skills_examples");
-  if (skills_examples) {
-    skills_examples.innerHTML = catalog.skills_guide.examples
-      .map(
-        (s) => `
-      <article class="card" data-searchable="${s.name} ${s.desc}">
-        <button class="copy-btn" type="button" data-copy="${s.name}: ${s.desc}">copy</button>
-        <h3><code>${s.name}</code></h3>
-        <p>${s.desc}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— mcp —— */
-  const mcp_blurb = qs("#mcp_blurb");
-  if (mcp_blurb) mcp_blurb.textContent = catalog.mcp_guide.blurb;
-
-  const mcp_principles = qs("#mcp_principles");
-  if (mcp_principles) {
-    mcp_principles.innerHTML = catalog.mcp_guide.principles
-      .map((p) => `<li data-searchable="${p}">${p}</li>`)
-      .join("");
-  }
-
-  const mcp_body = qs("#mcp_body");
-  if (mcp_body) {
-    mcp_body.innerHTML = catalog.mcp_guide.catalog
-      .map(
-        (m) => `
-      <tr data-searchable="${m.name} ${m.use}">
-        <td><code>${m.name}</code></td>
-        <td>${m.use}</td>
-      </tr>`
-      )
-      .join("");
-  }
-
-  /* —— specs —— */
-  const specs_grid = qs("#specs_grid");
-  if (specs_grid) {
-    specs_grid.innerHTML = catalog.specs
-      .map(
-        (s) => `
-      <article class="card" data-searchable="${s.name} ${s.note}">
-        <button class="copy-btn" type="button" data-copy="${s.url}">copy</button>
-        <h3><a href="${s.url}" target="_blank" rel="noopener">${s.name}</a></h3>
-        <p>${s.note}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— cpp —— */
-  const cpp_grid = qs("#cpp_grid");
-  if (cpp_grid) {
-    cpp_grid.innerHTML = catalog.cpp_playbook
-      .map(
-        (p) => `
-      <article class="card" data-searchable="${p.title} ${p.body}">
-        <button class="copy-btn" type="button" data-copy-encoded="${encodeURIComponent(p.title + "\\n\\n" + p.body)}">copy</button>
-        <h3>${p.title}</h3>
-        <p>${p.body}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— organization —— */
-  const org_grid = qs("#org_grid");
-  if (org_grid) {
-    org_grid.innerHTML = catalog.organization
-      .map(
-        (p) => `
-      <article class="card" data-searchable="${p.title} ${p.body}">
-        <button class="copy-btn" type="button" data-copy-encoded="${encodeURIComponent(p.title + "\\n\\n" + p.body)}">copy</button>
-        <h3>${p.title}</h3>
-        <p>${p.body}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— drivers —— */
-  const drivers = qs("#drivers_grid");
-  if (drivers) {
-    drivers.innerHTML = catalog.daily_drivers
-      .map(
-        (t) => `
-      <article class="card" data-searchable="${t.name} ${t.note} ${t.tags.join(" ")}" data-tags="${t.tags.join(",")}">
-        <button class="copy-btn" type="button" data-copy="${t.url}">copy</button>
-        <h3><a href="${t.url}" target="_blank" rel="noopener">${t.name}</a></h3>
-        <p>${t.note}</p>
-        ${t.tags.map((x) => `<span class="tag">${x}</span>`).join("")}
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— models —— */
-  const models_body = qs("#models_body");
-  if (models_body) {
-    models_body.innerHTML = catalog.models
-      .map(
-        (m) => `
-      <tr data-searchable="${m.name} ${m.use} ${m.when}">
-        <td><code>${m.name}</code></td>
-        <td>${m.use}</td>
-        <td>${m.when}</td>
-      </tr>`
-      )
-      .join("");
-  }
-
-  /* —— arenas —— */
-  const arenas = qs("#arenas_grid");
-  if (arenas) {
-    arenas.innerHTML = catalog.arenas
-      .map(
-        (a) => `
-      <article class="card" data-searchable="${a.name} ${a.note}">
-        <button class="copy-btn" type="button" data-copy="${a.url}">copy</button>
-        <h3><a href="${a.url}" target="_blank" rel="noopener">${a.name}</a></h3>
-        <p>${a.note}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— prompts —— */
-  const prompts_el = qs("#prompts_list");
-  const cats = ["all", ...new Set(catalog.prompts.map((p) => p.cat))];
-  const filters = qs("#prompt_filters");
-  if (filters) {
-    filters.innerHTML = cats
-      .map((c, i) => `<button type="button" class="chip${i === 0 ? " active" : ""}" data-filter="${c}">${c}</button>`)
-      .join("");
-  }
-
-  const bind_copy_buttons = (scope = document) => {
-    qsa(".copy-btn", scope).forEach((btn) => {
-      if (btn.dataset.bound) return;
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const target = btn.getAttribute("data-copy-target");
-        const encoded = btn.getAttribute("data-copy-encoded");
-        let text = "";
-        if (target) text = qs(`#${CSS.escape(target)}`)?.textContent || "";
-        else if (encoded != null) text = decodeURIComponent(encoded);
-        else text = btn.getAttribute("data-copy") || "";
-        if (text) copy_text(text.replace(/\\n/g, "\n"), btn);
+    catalog.prompts.forEach((p) => {
+      const body = fill_vars(p.body);
+      push({
+        id: `prompt_${p.id}`,
+        kind: "prompt",
+        title: p.title,
+        plain: `Prompt · ${p.cat}`,
+        body,
+        group: "prompts",
+        tags: p.tags,
+        copy: body,
+        hub: "hub_prompts",
       });
     });
-  };
 
-  const render_prompts = (filter = "all") => {
-    if (!prompts_el) return;
-    const list = filter === "all" ? catalog.prompts : catalog.prompts.filter((p) => p.cat === filter);
-    prompts_el.innerHTML = list
-      .map((p, idx) => {
-        const filled = fill_vars(p.body);
-        const id = `prompt_${p.id}_${idx}`;
-        return `
-        <article class="prompt-item" data-searchable="${p.title} ${p.cat} ${p.tags.join(" ")} ${p.body}" data-tags="${p.cat}">
-          <button class="copy-btn" type="button" data-copy-target="${id}">copy</button>
-          <h3>${p.title}</h3>
-          ${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}
-          <div class="prompt-box" id="${id}">${filled.replace(/</g, "&lt;")}</div>
-        </article>`;
+    catalog.skills_guide.examples.forEach((s, i) =>
+      push({
+        id: `skill_${i}`,
+        kind: "skill",
+        title: s.name,
+        plain: s.desc,
+        body: s.desc,
+        group: "skills",
+        copy: `${s.name}\n\n${s.desc}`,
+        hub: "hub_skills",
       })
-      .join("");
-    bind_copy_buttons(prompts_el);
-  };
-  render_prompts();
+    );
 
-  filters?.addEventListener("click", (e) => {
-    const chip = e.target.closest(".chip");
-    if (!chip) return;
-    qsa(".chip", filters).forEach((c) => c.classList.remove("active"));
-    chip.classList.add("active");
-    render_prompts(chip.dataset.filter);
-    apply_search(qs("#search")?.value || "");
-  });
-
-  /* —— templates —— */
-  const templates_el = qs("#templates_list");
-  if (templates_el) {
-    templates_el.innerHTML = catalog.templates
-      .map((t, idx) => {
-        const id = `template_${t.id}_${idx}`;
-        return `
-        <article class="prompt-item" data-searchable="${t.title} ${t.body}">
-          <button class="copy-btn" type="button" data-copy-target="${id}">copy</button>
-          <h3>${t.title}</h3>
-          <div class="prompt-box" id="${id}">${t.body.replace(/</g, "&lt;")}</div>
-        </article>`;
+    catalog.mcp_guide.catalog.forEach((m, i) =>
+      push({
+        id: `mcp_${i}`,
+        kind: "mcp",
+        title: m.name,
+        plain: m.use,
+        body: m.use,
+        group: "mcp",
+        copy: `${m.name}: ${m.use}`,
+        hub: "hub_mcp",
       })
-      .join("");
-  }
+    );
 
-  /* —— pipelines —— */
-  const pipes = qs("#pipelines");
-  if (pipes) {
-    pipes.innerHTML = catalog.pipelines
-      .map(
-        (p) => `
-      <article class="pipeline" data-searchable="${p.title} ${p.note} ${p.steps.join(" ")}">
-        <h3>${p.title}</h3>
-        <div class="steps">${p.steps.map((s, i) => `<span class="step"><n>${i + 1}.</n>${s}</span>`).join("")}</div>
-        <p class="note">${p.note}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— practices —— */
-  const practices = qs("#practices_grid");
-  if (practices) {
-    practices.innerHTML = catalog.practices
-      .map(
-        (p) => `
-      <article class="card" data-searchable="${p.title} ${p.body}">
-        <button class="copy-btn" type="button" data-copy-encoded="${encodeURIComponent(p.title + "\\n\\n" + p.body)}">copy</button>
-        <h3>${p.title}</h3>
-        <p>${p.body}</p>
-      </article>`
-      )
-      .join("");
-  }
-
-  /* —— digests —— */
-  const digests = qs("#digests_grid");
-  if (digests) {
-    digests.innerHTML = catalog.digests
-      .map((d) => {
-        const prompt = find_prompt(d.prompt_id);
-        const body = fill_vars(prompt.body, { topic: d.title });
-        return `
-        <article class="card digest-tile" data-searchable="${d.title} ${d.topics.join(" ")}">
-          <button class="copy-btn" type="button" data-copy-encoded="${encodeURIComponent(body)}">copy</button>
-          <h3><span class="icon">${d.icon}</span>${d.title}</h3>
-          <ul>${d.topics.map((t) => `<li>${t}</li>`).join("")}</ul>
-        </article>`;
+    catalog.agent_dirs.forEach((d, i) =>
+      push({
+        id: `dir_${i}`,
+        kind: "dir",
+        title: d.path,
+        plain: d.what,
+        body: `${d.what}\n\nUsed by: ${d.tools}\nTip: ${d.tip}`,
+        group: "dirs",
+        copy: d.path,
+        hub: "hub_dirs",
       })
-      .join("");
-  }
+    );
 
-  /* —— watch / bookmarks —— */
-  const watch_map = qs("#watch_map");
-  if (watch_map) {
-    watch_map.innerHTML = catalog.watch
-      .map(
-        (g) => `
-      <div class="map-group" data-searchable="${g.group} ${g.links.map((l) => l.n).join(" ")}">
-        <h3>${g.group}</h3>
-        ${g.links.map((l) => `<a href="${l.u}" target="_blank" rel="noopener">${l.n}</a>`).join("")}
-      </div>`
-      )
-      .join("");
-  }
+    catalog.cpp_playbook.forEach((p, i) =>
+      push({
+        id: `cpp_${i}`,
+        kind: "cpp",
+        title: p.title,
+        plain: p.body,
+        body: p.body,
+        group: "cpp",
+        copy: `${p.title}\n\n${p.body}`,
+        hub: "hub_cpp",
+      })
+    );
 
-  const bookmark_map = qs("#bookmark_map");
-  if (bookmark_map) {
-    bookmark_map.innerHTML = catalog.bookmarks
-      .map(
-        (g) => `
-      <div class="map-group" data-searchable="${g.group} ${g.links.map((l) => l.n).join(" ")}">
-        <h3>${g.group}</h3>
-        ${g.links.map((l) => `<a href="${l.u}" target="_blank" rel="noopener">${l.n}</a>`).join("")}
-      </div>`
-      )
-      .join("");
-  }
+    catalog.specs.forEach((s, i) =>
+      push({
+        id: `spec_${i}`,
+        kind: "spec",
+        title: s.name,
+        plain: s.note,
+        body: s.note,
+        url: s.url,
+        group: "specs",
+        copy: s.url,
+        hub: "hub_specs",
+      })
+    );
 
-  bind_copy_buttons();
-
-  /* —— search —— */
-  const empty = qs("#empty_state");
-  function apply_search(query) {
-    const q = query.toLowerCase().trim();
-    let visible = 0;
-    qsa("[data-searchable]").forEach((el) => {
-      const hay = (el.getAttribute("data-searchable") || "").toLowerCase();
-      const show = !q || hay.includes(q);
-      el.classList.toggle("search-hidden", !show);
-      if (show) visible++;
-    });
-    empty?.classList.toggle("show", visible === 0);
-  }
-  qs("#search")?.addEventListener("input", (e) => apply_search(e.target.value));
-
-  /* —— driver filters —— */
-  const driver_filters = qs("#driver_filters");
-  if (driver_filters) {
-    const tags = ["all", ...new Set(catalog.daily_drivers.flatMap((d) => d.tags))];
-    driver_filters.innerHTML = tags
-      .map((t, i) => `<button type="button" class="chip${i === 0 ? " active" : ""}" data-filter="${t}">${t}</button>`)
-      .join("");
-    driver_filters.addEventListener("click", (e) => {
-      const chip = e.target.closest(".chip");
-      if (!chip) return;
-      qsa(".chip", driver_filters).forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      const f = chip.dataset.filter;
-      qsa("#drivers_grid .card").forEach((card) => {
-        const tags = (card.getAttribute("data-tags") || "").split(",");
-        card.classList.toggle("search-hidden", f !== "all" && !tags.includes(f));
+    catalog.digests.forEach((d) => {
+      const prompt = catalog.prompts.find((p) => p.id === d.prompt_id);
+      const body = prompt ? fill_vars(prompt.body, { topic: d.title }) : d.topics.join(", ");
+      push({
+        id: `digest_${d.id}`,
+        kind: "digest",
+        title: d.title,
+        plain: d.topics.slice(0, 3).join(" · "),
+        body: `${d.topics.join(" · ")}\n\n${body}`,
+        group: "digests",
+        copy: body,
+        hub: "hub_digests",
       });
     });
-  }
 
-  /* —— active nav —— */
-  const sections = qsa(".section");
-  const nav_links = qsa(".nav a");
-  const on_scroll = () => {
-    let current = "";
-    sections.forEach((s) => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    catalog.organization.forEach((o, i) =>
+      push({
+        id: `org_${i}`,
+        kind: "org",
+        title: o.title,
+        plain: o.body,
+        body: o.body,
+        group: "org",
+        copy: `${o.title}\n\n${o.body}`,
+        hub: "hub_org",
+      })
+    );
+
+    catalog.templates.forEach((t) =>
+      push({
+        id: `tpl_${t.id}`,
+        kind: "template",
+        title: t.title,
+        plain: "File template — copy into a repo",
+        body: t.body,
+        group: "dirs",
+        copy: t.body,
+        hub: "hub_dirs",
+      })
+    );
+
+    catalog.watch.forEach((g, gi) =>
+      g.links.forEach((l, li) =>
+        push({
+          id: `watch_${gi}_${li}`,
+          kind: "watch",
+          title: l.n,
+          plain: g.group,
+          body: `${g.group} · ${l.n}`,
+          url: l.u,
+          group: "watch",
+          copy: l.u,
+          hub: "hub_watch",
+        })
+      )
+    );
+
+    // Daily prompt card
+    const day = catalog.daily_themes[new Date().getDay()];
+    const daily_prompt = catalog.prompts.find((p) => p.id === day.prompt_id) || catalog.prompts[0];
+    const daily_body = fill_vars(daily_prompt.body, { topic: day.focus });
+    push({
+      id: "daily",
+      kind: "daily",
+      title: `Today · ${day.focus}`,
+      plain: day.hint,
+      body: daily_body,
+      group: "core",
+      copy: daily_body,
+      hub: "hub_core",
     });
-    nav_links.forEach((link) => {
-      link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
-    });
+
+    return items;
   };
-  window.addEventListener("scroll", on_scroll, { passive: true });
-  on_scroll();
 
-  /* —— keyboard —— */
-  const search_input = qs("#search");
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "/" && document.activeElement !== search_input && document.activeElement?.tagName !== "INPUT") {
-      e.preventDefault();
-      search_input?.focus();
-    }
-    if (e.key === "Escape") {
-      if (document.activeElement === search_input) {
-        search_input.value = "";
-        apply_search("");
-        search_input.blur();
+  const build_graph = (items) => {
+    const nodes = [];
+    const edges = [];
+    const seen = new Set();
+
+    const add_node = (n) => {
+      if (seen.has(n.id)) return;
+      seen.add(n.id);
+      nodes.push(n);
+    };
+
+    hub_meta.forEach((h) => {
+      const is_core = h.id === "hub_core";
+      add_node({
+        id: h.id,
+        label: h.label,
+        title: h.plain,
+        group: h.group,
+        value: is_core ? 48 : 28,
+        font: { size: is_core ? 22 : 16, face: "Syne, Outfit, sans-serif", color: "#f4f4f8" },
+        color: {
+          background: colors[h.group],
+          border: colors[h.group],
+          highlight: { background: "#ffffff", border: colors[h.group] },
+          hover: { background: colors[h.group], border: "#ffffff" },
+        },
+        borderWidth: is_core ? 0 : 2,
+      });
+      if (!is_core) {
+        edges.push({ from: "hub_core", to: h.id, color: { color: "rgba(255,255,255,0.14)", highlight: colors[h.group] } });
       }
-      close_nav();
-    }
+    });
+
+    // Cross links for a living map feel
+    const cross = [
+      ["hub_tools", "hub_skills"],
+      ["hub_skills", "hub_mcp"],
+      ["hub_dirs", "hub_skills"],
+      ["hub_cpp", "hub_dirs"],
+      ["hub_prompts", "hub_digests"],
+      ["hub_specs", "hub_dirs"],
+      ["hub_watch", "hub_tools"],
+    ];
+    cross.forEach(([a, b]) =>
+      edges.push({ from: a, to: b, dashes: true, color: { color: "rgba(255,255,255,0.08)" }, width: 1 })
+    );
+
+    const leaves_per_hub = {
+      hub_tools: items.filter((i) => i.hub === "hub_tools").slice(0, 8),
+      hub_prompts: items.filter((i) => i.kind === "prompt").slice(0, 8),
+      hub_skills: items.filter((i) => i.kind === "skill"),
+      hub_mcp: items.filter((i) => i.kind === "mcp").slice(0, 6),
+      hub_dirs: items.filter((i) => i.kind === "dir").slice(0, 7),
+      hub_cpp: items.filter((i) => i.kind === "cpp"),
+      hub_specs: items.filter((i) => i.kind === "spec").slice(0, 6),
+      hub_digests: items.filter((i) => i.kind === "digest").slice(0, 8),
+      hub_watch: items.filter((i) => i.kind === "watch").slice(0, 8),
+      hub_org: items.filter((i) => i.kind === "org"),
+      hub_core: items.filter((i) => i.id === "daily"),
+    };
+
+    Object.entries(leaves_per_hub).forEach(([hub, leaves]) => {
+      leaves.forEach((item) => {
+        add_node({
+          id: item.id,
+          label: item.title.length > 22 ? `${item.title.slice(0, 20)}…` : item.title,
+          title: item.plain,
+          group: item.group,
+          value: 14,
+          font: { size: 12, face: "Outfit, sans-serif", color: "#d8d8e0" },
+          color: {
+            background: "#1a1a24",
+            border: colors[item.group] || "#888",
+            highlight: { background: "#2a2a36", border: "#fff" },
+            hover: { background: "#222230", border: colors[item.group] || "#fff" },
+          },
+          borderWidth: 1.5,
+          shape: item.kind === "prompt" || item.kind === "template" ? "box" : "dot",
+        });
+        edges.push({
+          from: hub,
+          to: item.id,
+          color: { color: "rgba(255,255,255,0.12)" },
+          width: 1,
+        });
+      });
+    });
+
+    return { nodes, edges };
+  };
+
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("app", () => ({
+      items: [],
+      fuse: null,
+      network: null,
+      query: "",
+      results: [],
+      palette_open: false,
+      drawer_open: false,
+      selected: null,
+      active_result: 0,
+      toast: "",
+      toast_timer: 0,
+      theme_mode: localStorage.getItem("ai_theme_mode") || "dark",
+      hint_visible: !localStorage.getItem("ai_hint_seen"),
+      mod_key: /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent || "") ? "⌘K" : "Ctrl K",
+      active_filter: "all",
+      filters: [
+        { id: "all", label: "All" },
+        { id: "tools", label: "Tools" },
+        { id: "prompts", label: "Prompts" },
+        { id: "skills", label: "Skills" },
+        { id: "dirs", label: "Folders" },
+        { id: "cpp", label: "C++" },
+        { id: "digests", label: "Interests" },
+      ],
+
+      init() {
+        this.items = build_index();
+        this.fuse = new Fuse(this.items, {
+          keys: [
+            { name: "title", weight: 0.5 },
+            { name: "plain", weight: 0.3 },
+            { name: "body", weight: 0.15 },
+            { name: "tags", weight: 0.05 },
+          ],
+          threshold: 0.38,
+          ignoreLocation: true,
+        });
+        this.apply_theme(this.theme_mode);
+        this.$nextTick(() => this.mount_graph());
+        window
+          .matchMedia("(prefers-color-scheme: light)")
+          .addEventListener("change", () => {
+            if (this.theme_mode === "system") this.apply_theme("system");
+          });
+      },
+
+      resolve_theme(mode) {
+        if (mode === "system") {
+          return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        return mode === "light" ? "light" : "dark";
+      },
+
+      apply_theme(mode) {
+        this.theme_mode = mode;
+        const resolved = this.resolve_theme(mode);
+        document.documentElement.setAttribute("data-theme", resolved);
+        document.documentElement.setAttribute("data-theme-mode", mode);
+        localStorage.setItem("ai_theme_mode", mode);
+        if (this.network) this.mount_graph(true);
+      },
+
+      mount_graph(remount = false) {
+        const el = document.getElementById("graph");
+        if (!el || typeof vis === "undefined") return;
+        if (this.network && remount) {
+          this.network.destroy();
+          this.network = null;
+        }
+        const { nodes, edges } = build_graph(this.items);
+        const is_light = document.documentElement.getAttribute("data-theme") === "light";
+        const nodes_ds = new vis.DataSet(
+          nodes.map((n) => {
+            if (n.group !== "core" && n.value >= 28) return n;
+            if (n.value >= 28) return n;
+            return {
+              ...n,
+              font: { ...n.font, color: is_light ? "#22222a" : "#d8d8e0" },
+              color: {
+                ...n.color,
+                background: is_light ? "#ffffff" : "#1a1a24",
+              },
+            };
+          })
+        );
+        const edges_ds = new vis.DataSet(edges);
+        this.network = new vis.Network(
+          el,
+          { nodes: nodes_ds, edges: edges_ds },
+          {
+            autoResize: true,
+            interaction: {
+              hover: true,
+              tooltipDelay: 120,
+              navigationButtons: false,
+              keyboard: false,
+              zoomView: true,
+              dragView: true,
+            },
+            physics: {
+              enabled: true,
+              solver: "forceAtlas2Based",
+              forceAtlas2Based: {
+                gravitationalConstant: -42,
+                centralGravity: 0.012,
+                springLength: 90,
+                springConstant: 0.06,
+                damping: 0.5,
+                avoidOverlap: 0.6,
+              },
+              stabilization: { iterations: 120, fit: true },
+            },
+            nodes: {
+              shape: "dot",
+              scaling: { min: 10, max: 48 },
+              shadow: {
+                enabled: true,
+                color: "rgba(0,0,0,0.35)",
+                size: 12,
+                x: 0,
+                y: 4,
+              },
+            },
+            edges: {
+              smooth: { type: "continuous", roundness: 0.25 },
+              selectionWidth: 2,
+            },
+          }
+        );
+
+        this.network.once("stabilizationIterationsDone", () => {
+          this.network.setOptions({ physics: { enabled: false } });
+          // gentle float: re-enable soft physics later? keep static for readability
+        });
+
+        this.network.on("click", (params) => {
+          if (!params.nodes.length) return;
+          this.open_item(params.nodes[0]);
+        });
+      },
+
+      open_palette() {
+        this.palette_open = true;
+        this.query = "";
+        this.results = this.default_results();
+        this.active_result = 0;
+        this.$nextTick(() => this.$refs.palette_input?.focus());
+      },
+
+      close_palette() {
+        this.palette_open = false;
+      },
+
+      default_results() {
+        return this.items.filter((i) => ["daily", "hub_tools", "hub_prompts", "hub_skills", "hub_cpp"].includes(i.id)).concat(
+          this.items.filter((i) => i.kind === "tool").slice(0, 4)
+        );
+      },
+
+      on_query() {
+        const q = this.query.trim();
+        if (!q) {
+          this.results = this.default_results();
+        } else {
+          this.results = this.fuse.search(q).map((r) => r.item).slice(0, 12);
+        }
+        this.active_result = 0;
+      },
+
+      move_result(delta) {
+        if (!this.results.length) return;
+        this.active_result = (this.active_result + delta + this.results.length) % this.results.length;
+      },
+
+      confirm_result() {
+        const item = this.results[this.active_result] || this.results[0];
+        if (item) this.open_item(item.id);
+      },
+
+      open_item(id) {
+        const item = this.items.find((i) => i.id === id);
+        if (!item) return;
+        this.selected = item;
+        this.drawer_open = true;
+        this.palette_open = false;
+        this.dismiss_hint();
+        if (this.network) {
+          try {
+            this.network.selectNodes([id]);
+            this.network.focus(id, { scale: 1.15, animation: { duration: 450, easingFunction: "easeInOutQuad" } });
+          } catch (_) {
+            /* hub-only or filtered */
+          }
+        }
+      },
+
+      close_drawer() {
+        this.drawer_open = false;
+      },
+
+      async copy_selected() {
+        if (!this.selected?.copy) return;
+        try {
+          await navigator.clipboard.writeText(this.selected.copy);
+          this.show_toast("Copied");
+        } catch {
+          this.show_toast("Copy failed");
+        }
+      },
+
+      show_toast(msg) {
+        this.toast = msg;
+        clearTimeout(this.toast_timer);
+        this.toast_timer = setTimeout(() => (this.toast = ""), 1600);
+      },
+
+      dismiss_hint() {
+        this.hint_visible = false;
+        localStorage.setItem("ai_hint_seen", "1");
+      },
+
+      set_filter(id) {
+        this.active_filter = id;
+        if (!this.network) return;
+        const hub_id = id === "all" ? "hub_core" : `hub_${id === "dirs" ? "dirs" : id}`;
+        const target =
+          id === "all"
+            ? "hub_core"
+            : this.items.find((i) => i.id === hub_id || (i.kind === "hub" && i.group === id))?.id || "hub_core";
+        try {
+          this.network.focus(target, { scale: 1.05, animation: { duration: 500, easingFunction: "easeInOutQuad" } });
+          this.network.selectNodes([target]);
+          this.open_item(target);
+        } catch (_) {}
+      },
+
+      kind_label(kind) {
+        return (
+          {
+            hub: "Map",
+            tool: "Tool",
+            prompt: "Prompt",
+            skill: "Skill",
+            mcp: "MCP",
+            dir: "Folder",
+            cpp: "C++",
+            spec: "Guide",
+            digest: "Interest",
+            watch: "Link",
+            org: "Practice",
+            template: "Template",
+            daily: "Today",
+          }[kind] || kind
+        );
+      },
+
+      today_label() {
+        return new Date().toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+        });
+      },
+    }));
   });
 
-  const year_el = qs("#year");
-  if (year_el) year_el.textContent = String(new Date().getFullYear());
+  // Global keyboard — works even before Alpine focuses
+  document.addEventListener("keydown", (e) => {
+    const tag = document.activeElement?.tagName;
+    const typing = tag === "INPUT" || tag === "TEXTAREA";
+    if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("ai-open-palette"));
+    }
+    if (e.key === "/" && !typing && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("ai-open-palette"));
+    }
+  });
 })();

@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Evgeniy Gleba — AI operating system: AGENTS.md, skills, MCP, Cursor, OpenCode, C++ workflows, prompts, digests.">
+  <meta name="description" content="Evgeniy Gleba — interactive AI operating system. Explore tools, prompts, skills, and C++ workflows on a living map.">
   <meta name="author" content="Evgeniy Gleba">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#07070b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f2ec" media="(prefers-color-scheme: light)">
   <meta property="og:title" content="e-gleba /ai — AI Operating System">
-  <meta property="og:description" content="Agents, skills, MCP, C++ playbooks, prompts, arenas — personal AI OS.">
+  <meta property="og:description" content="A living map of how to work with AI — search, click, copy.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://e-gleba.github.io/ai/">
-  <meta name="twitter:card" content="summary">
   <title>e-gleba /ai — AI Operating System</title>
   <link rel="canonical" href="https://e-gleba.github.io/ai/">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF6B9D'/%3E%3Cstop offset='50%25' style='stop-color:%23FF8C42'/%3E%3Cstop offset='100%25' style='stop-color:%23C792EA'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230a0a0f'/%3E%3Cpath d='M44 16 C28 14 14 22 14 32 C14 42 28 50 44 48 M14 32 L38 32 M44 16 C48 17 50 20 48 22' stroke='url(%23g)' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='48' cy='22' r='2.5' fill='%23FF6B9D' opacity='.8'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF6B9D'/%3E%3Cstop offset='50%25' style='stop-color:%23FF8C42'/%3E%3Cstop offset='100%25' style='stop-color:%23C792EA'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2307070b'/%3E%3Cpath d='M44 16 C28 14 14 22 14 32 C14 42 28 50 44 48 M14 32 L38 32 M44 16 C48 17 50 20 48 22' stroke='url(%23g)' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='48' cy='22' r='2.5' fill='%23FF6B9D' opacity='.8'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -26,297 +25,164 @@
     "@type": "WebPage",
     "name": "e-gleba /ai — AI Operating System",
     "url": "https://e-gleba.github.io/ai/",
-    "isPartOf": { "@type": "WebSite", "url": "https://e-gleba.github.io", "name": "Evgeniy Gleba" },
-    "author": {
-      "@type": "Person",
-      "name": "Evgeniy Gleba",
-      "jobTitle": "C++ Systems Engineer",
-      "url": "https://e-gleba.github.io",
-      "sameAs": ["https://github.com/e-gleba"]
-    }
+    "author": { "@type": "Person", "name": "Evgeniy Gleba", "url": "https://e-gleba.github.io" }
   }
   </script>
 </head>
-<body>
-  <div class="backdrop" aria-hidden="true"></div>
+<body
+  x-data="app()"
+  x-cloak
+  @keydown.escape.window="palette_open ? close_palette() : close_drawer()"
+  @ai-open-palette.window="open_palette()"
+>
+  <div class="atmosphere" aria-hidden="true"></div>
 
-  <header class="mobile-bar">
-    <div class="brand"><span class="pink">e</span><span class="dim">-</span>gleba<span class="ai">/ai</span></div>
-    <button type="button" class="ghost-btn" id="menu_toggle" aria-label="Open menu">menu</button>
-  </header>
-
-  <aside class="sidebar" aria-label="Section navigation">
-    <div class="brand">
-      <a href="https://e-gleba.github.io" title="Portfolio">
-        <span class="pink">e</span><span class="dim">-</span>gleba
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="https://e-gleba.github.io" title="Portfolio">
+        <span class="pink">e</span><span class="dim">-</span>gleba<span class="ai">/ai</span>
       </a>
-      <span class="ai">/ai</span>
-    </div>
-    <div class="search-wrap">
-      <input id="search" type="search" placeholder="Search  /" autocomplete="off" aria-label="Search cheatsheet">
-    </div>
-    <nav>
-      <ul class="nav">
-        <li><a href="#daily" class="active"><span class="mark">◉</span>Daily</a></li>
-        <li><a href="#identity"><span class="mark">◎</span>Identity</a></li>
-        <li><a href="#layers"><span class="mark">≡</span>Layers</a></li>
-        <li><a href="#dirs"><span class="mark">/</span>Dirs</a></li>
-        <li><a href="#skills"><span class="mark">*</span>Skills</a></li>
-        <li><a href="#mcp"><span class="mark">⬡</span>MCP</a></li>
-        <li><a href="#specs"><span class="mark">§</span>Specs</a></li>
-        <li><a href="#cpp"><span class="mark">++</span>C++</a></li>
-        <li><a href="#org"><span class="mark">▣</span>Organize</a></li>
-        <li><a href="#drivers"><span class="mark">⚡</span>Drivers</a></li>
-        <li><a href="#models"><span class="mark">▣</span>Models</a></li>
-        <li><a href="#prompts"><span class="mark">⌘</span>Prompts</a></li>
-        <li><a href="#templates"><span class="mark">▤</span>Templates</a></li>
-        <li><a href="#pipelines"><span class="mark">→</span>Pipelines</a></li>
-        <li><a href="#arenas"><span class="mark">⚔</span>Arenas</a></li>
-        <li><a href="#practices"><span class="mark">✧</span>Practices</a></li>
-        <li><a href="#digests"><span class="mark">✦</span>Digests</a></li>
-        <li><a href="#watch"><span class="mark">◎</span>Watch</a></li>
-        <li><a href="#map"><span class="mark">▦</span>Map</a></li>
-      </ul>
-    </nav>
-    <div class="sidebar-foot">
-      <div class="theme_switch" role="group" aria-label="Theme">
-        <button type="button" class="theme_btn active" data-theme-mode="dark" aria-pressed="true" title="Dark">dark</button>
-        <button type="button" class="theme_btn" data-theme-mode="light" aria-pressed="false" title="Light">light</button>
-        <button type="button" class="theme_btn" data-theme-mode="system" aria-pressed="false" title="System">auto</button>
-      </div>
-      <a href="https://github.com/e-gleba/ai" target="_blank" rel="noopener">source</a>
-    </div>
-  </aside>
 
-  <main class="main">
-    <header class="hero" id="top">
-      <div class="kicker"><span class="dot" aria-hidden="true"></span> Living playbook · portfolio subpage</div>
-      <h1>AI <span class="grad">Operating System</span></h1>
-      <p class="sub">How Evgeniy Gleba actually works with agents — AGENTS.md, skills, MCP, Cursor, OpenCode, C++ grounding, prompts that ship.</p>
-      <div class="hero-meta">
-        <span>C++ Systems · Game Engine R&D</span>
-        <span>Lesta Games · Minsk</span>
-        <a href="https://e-gleba.github.io">← portfolio</a>
-        <a href="https://github.com/e-gleba">github</a>
+      <button type="button" class="search_launch" @click="open_palette()" aria-label="Open search">
+        <span aria-hidden="true">⌕</span>
+        <span>Search tools, prompts, skills…</span>
+        <span class="kbd" x-text="mod_key">⌘K</span>
+      </button>
+
+      <div class="top_actions">
+        <div class="theme_switch" role="group" aria-label="Theme">
+          <button type="button" class="theme_btn" :class="{ active: theme_mode === 'dark' }" @click="apply_theme('dark')">dark</button>
+          <button type="button" class="theme_btn" :class="{ active: theme_mode === 'light' }" @click="apply_theme('light')">light</button>
+          <button type="button" class="theme_btn" :class="{ active: theme_mode === 'system' }" @click="apply_theme('system')">auto</button>
+        </div>
+        <a class="link_quiet" href="https://github.com/e-gleba/ai" target="_blank" rel="noopener">source</a>
       </div>
     </header>
 
-    <section class="section" id="daily">
-      <div class="section-head">
-        <h2>Daily prompt</h2>
-        <p>Date-aware kickoff. Copy → paste into Cursor / OpenCode / Claude / GPT.</p>
-        <span class="badge">live date</span>
-      </div>
-      <div class="daily">
-        <div class="daily-top">
-          <span class="daily-date" id="daily_date">—</span>
-          <span class="badge" id="daily_prompt_title">prompt</span>
+    <main class="stage">
+      <div id="graph" role="img" aria-label="Interactive knowledge map of the AI operating system"></div>
+
+      <div class="stage_overlay">
+        <div>
+          <div class="hero_copy">
+            <h1>AI <span class="grad">Operating System</span></h1>
+            <p>A living map — click a bubble, or hit search. Built so anyone can explore how Evgeniy works with AI.</p>
+          </div>
+
+          <div class="hint_card" x-show="hint_visible" x-transition>
+            <strong>Try this</strong>
+            <p>Drag the map. Click <em>Tools</em> or <em>Today</em>. Copy anything useful.</p>
+            <button type="button" @click="dismiss_hint()">got it</button>
+          </div>
         </div>
-        <h3 id="daily_focus">Focus</h3>
-        <p class="hint" id="daily_hint"></p>
-        <div class="prompt-box" id="daily_prompt"></div>
-        <div class="actions">
-          <button type="button" class="btn primary" id="copy_daily">copy prompt</button>
-          <button type="button" class="btn" id="reroll_daily">reroll focus</button>
+
+        <div class="chip_row">
+          <template x-for="f in filters" :key="f.id">
+            <button
+              type="button"
+              class="chip"
+              :class="{ active: active_filter === f.id }"
+              @click="set_filter(f.id)"
+              x-text="f.label"
+            ></button>
+          </template>
+          <span class="leg_note" x-text="today_label()"></span>
         </div>
       </div>
-    </section>
+    </main>
+  </div>
 
-    <section class="section" id="identity">
-      <div class="section-head">
-        <h2>Operator identity</h2>
-        <p>How I show up — and how agents should treat my context.</p>
+  <!-- Detail drawer -->
+  <div
+    class="drawer_backdrop"
+    x-show="drawer_open"
+    x-transition.opacity
+    @click="close_drawer()"
+  ></div>
+  <aside class="drawer" :class="{ open: drawer_open }" @click.stop aria-live="polite">
+    <template x-if="selected">
+      <div style="display:flex;flex-direction:column;height:100%">
+        <div class="drawer_head">
+          <div>
+            <h2 x-text="selected.title"></h2>
+            <span class="kind_pill" x-text="kind_label(selected.kind)"></span>
+          </div>
+          <button type="button" class="icon_btn" @click="close_drawer()" aria-label="Close">✕</button>
+        </div>
+        <div class="drawer_body">
+          <p class="plain" x-text="selected.plain"></p>
+          <div class="body" x-text="selected.body"></div>
+        </div>
+        <div class="drawer_actions">
+          <button type="button" class="btn primary" @click="copy_selected()">copy</button>
+          <a
+            class="btn"
+            x-show="selected.url"
+            :href="selected.url"
+            target="_blank"
+            rel="noopener"
+          >open link</a>
+          <button type="button" class="btn" @click="open_palette()">search more</button>
+        </div>
       </div>
-      <p class="lede" id="identity_blurb"></p>
-      <div class="pillars" id="pillars"></div>
-    </section>
+    </template>
+  </aside>
 
-    <section class="section" id="layers">
-      <div class="section-head">
-        <h2>Context layers</h2>
-        <p>Rules ≠ skills ≠ MCP ≠ hooks. One job each — don't mix them.</p>
+  <!-- Command palette -->
+  <div
+    class="palette_backdrop"
+    x-show="palette_open"
+    x-transition.opacity
+    @click.self="close_palette()"
+  >
+    <div class="palette" @click.stop role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="palette_input_wrap">
+        <span aria-hidden="true">⌕</span>
+        <input
+          x-ref="palette_input"
+          type="search"
+          placeholder="Type anything — Cursor, AGENTS.md, C++, OSINT…"
+          x-model="query"
+          @input="on_query()"
+          @keydown.enter.prevent="confirm_result()"
+          @keydown.arrow-down.prevent="move_result(1)"
+          @keydown.arrow-up.prevent="move_result(-1)"
+        >
+        <span class="kbd" style="font-family:var(--font-mono);font-size:11px;color:var(--fg-mute);border:1px solid var(--line);border-radius:6px;padding:3px 7px">esc</span>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Layer</th><th>Job</th><th>When</th><th>Where</th><th>Example</th></tr>
-          </thead>
-          <tbody id="layers_body"></tbody>
-        </table>
+      <div class="palette_list">
+        <template x-if="results.length === 0">
+          <div class="palette_empty">No matches — try “prompt”, “skill”, or “clangd”</div>
+        </template>
+        <template x-for="(item, index) in results" :key="item.id">
+          <button
+            type="button"
+            class="palette_item"
+            :class="{ active: index === active_result }"
+            @click="open_item(item.id)"
+            @mouseenter="active_result = index"
+          >
+            <span class="kind" x-text="kind_label(item.kind)"></span>
+            <span>
+              <div class="title" x-text="item.title"></div>
+              <div class="plain" x-text="item.plain"></div>
+            </span>
+          </button>
+        </template>
       </div>
-    </section>
+      <div class="palette_foot">
+        <span>↑↓ enter · click map bubbles</span>
+        <span>powered by Fuse.js</span>
+      </div>
+    </div>
+  </div>
 
-    <section class="section" id="dirs">
-      <div class="section-head">
-        <h2>Agent directories</h2>
-        <p>Standard paths Cursor, OpenCode, Codex, Claude & friends actually read.</p>
-        <span class="badge">layout</span>
-      </div>
-      <div class="grid" id="dirs_grid"></div>
-    </section>
+  <div class="toast" :class="{ show: toast }" x-text="toast" role="status" aria-live="polite"></div>
 
-    <section class="section" id="skills">
-      <div class="section-head">
-        <h2>Skills</h2>
-        <p>What they are, vs rules, how to author, examples worth keeping.</p>
-      </div>
-      <p class="lede" id="skills_blurb"></p>
-      <div class="table-wrap" style="margin-bottom:16px">
-        <table>
-          <thead>
-            <tr><th>Aspect</th><th>Rule</th><th>Skill</th></tr>
-          </thead>
-          <tbody id="skills_vs_body"></tbody>
-        </table>
-      </div>
-      <h3 class="subhead">How to use</h3>
-      <ol class="checklist" id="skills_how"></ol>
-      <h3 class="subhead">Example skills</h3>
-      <div class="grid" id="skills_examples"></div>
-    </section>
-
-    <section class="section" id="mcp">
-      <div class="section-head">
-        <h2>MCP</h2>
-        <p>Model Context Protocol — live tools agents can call.</p>
-      </div>
-      <p class="lede" id="mcp_blurb"></p>
-      <h3 class="subhead">Principles</h3>
-      <ul class="checklist" id="mcp_principles"></ul>
-      <div class="table-wrap" style="margin-top:16px">
-        <table>
-          <thead>
-            <tr><th>Surface</th><th>Use</th></tr>
-          </thead>
-          <tbody id="mcp_body"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section" id="specs">
-      <div class="section-head">
-        <h2>Specs & docs</h2>
-        <p>Canonical links — AGENTS.md, Cursor, OpenCode, MCP, clangd.</p>
-      </div>
-      <div class="grid" id="specs_grid"></div>
-    </section>
-
-    <section class="section" id="cpp">
-      <div class="section-head">
-        <h2>C++ agent playbook</h2>
-        <p>compile_commands, godbolt proof, sanitizers, review order.</p>
-      </div>
-      <div class="grid" id="cpp_grid"></div>
-    </section>
-
-    <section class="section" id="org">
-      <div class="section-head">
-        <h2>How to organize</h2>
-        <p>Thin ambient context. Thick skills. Human gates.</p>
-      </div>
-      <div class="grid" id="org_grid"></div>
-    </section>
-
-    <section class="section" id="drivers">
-      <div class="section-head">
-        <h2>Daily drivers</h2>
-        <p>Tools I actually open. Filter by role.</p>
-      </div>
-      <div class="filters" id="driver_filters"></div>
-      <div class="grid" id="drivers_grid"></div>
-    </section>
-
-    <section class="section" id="models">
-      <div class="section-head">
-        <h2>Models for daily use</h2>
-        <p>Pick by job — not by leaderboard screenshot.</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Model</th><th>Use</th><th>When</th></tr>
-          </thead>
-          <tbody id="models_body"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section" id="prompts">
-      <div class="section-head">
-        <h2>Prompt library</h2>
-        <p>Ready to copy. <code>{{date}}</code> filled for today.</p>
-        <span class="badge">copy-first</span>
-      </div>
-      <div class="filters" id="prompt_filters"></div>
-      <div id="prompts_list"></div>
-    </section>
-
-    <section class="section" id="templates">
-      <div class="section-head">
-        <h2>File templates</h2>
-        <p>AGENTS.md · SKILL.md · .cursor/rules — drop into a repo.</p>
-      </div>
-      <div id="templates_list"></div>
-    </section>
-
-    <section class="section" id="pipelines">
-      <div class="section-head">
-        <h2>Pipelines</h2>
-        <p>Shipping loops — idea → agent → PR → human gate.</p>
-      </div>
-      <div id="pipelines"></div>
-    </section>
-
-    <section class="section" id="arenas">
-      <div class="section-head">
-        <h2>Arenas & research</h2>
-        <p>Calibrate models. Watch trends. Don't marry a scoreboard.</p>
-      </div>
-      <div class="grid" id="arenas_grid"></div>
-    </section>
-
-    <section class="section" id="practices">
-      <div class="section-head">
-        <h2>Top-tier practices</h2>
-        <p>Chinese SOP patterns, critique loops, thin rules / thick skills.</p>
-      </div>
-      <div class="grid" id="practices_grid"></div>
-    </section>
-
-    <section class="section" id="digests">
-      <div class="section-head">
-        <h2>Interest digests</h2>
-        <p>Engines · electronics · RE · OSINT · BY/RU · space. Copy a starter prompt.</p>
-      </div>
-      <div class="grid" id="digests_grid"></div>
-    </section>
-
-    <section class="section" id="watch">
-      <div class="section-head">
-        <h2>Where to watch</h2>
-        <p>Changelogs, arenas, C++ talks, OSINT, space — signal sources.</p>
-      </div>
-      <div class="map" id="watch_map"></div>
-    </section>
-
-    <section class="section" id="map">
-      <div class="section-head">
-        <h2>Bookmark map</h2>
-        <p>Full graph of places I keep one click away.</p>
-      </div>
-      <div class="map" id="bookmark_map"></div>
-    </section>
-
-    <div class="empty" id="empty_state">No matches. Clear search or try another keyword.</div>
-
-    <footer class="site_foot">
-      <span>© <span id="year"></span> Evgeniy Gleba · <a href="https://e-gleba.github.io">e-gleba.github.io</a></span>
-      <span>static · GitHub Pages · edit <code>assets/js/data.js</code></span>
-    </footer>
-  </main>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+  <!-- Libraries: well-starred, CDN, less custom code -->
+  <script defer src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js"></script>
+  <script defer src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
