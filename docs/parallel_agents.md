@@ -22,8 +22,9 @@ git worktree list
 git worktree remove ../wt_feature_a
 ```
 
-Each worktree gets its own build directory, so agents never fight over build
-artifacts — [cpp_playbook](cpp_playbook.md).
+Reference: [git worktree](https://git-scm.com/docs/git-worktree). Each worktree gets
+its own build directory, so agents never fight over build artifacts —
+[cpp_playbook](cpp_playbook.md).
 
 ## shapes that work
 
@@ -34,7 +35,7 @@ artifacts — [cpp_playbook](cpp_playbook.md).
 | pipeline by role | one plans, one implements, one reviews | each stage has a narrow contract |
 | scout and builder | one reads and writes findings to a file, another implements | reading is cheap, writing is expensive |
 
-Role-splitting in more detail: [chinese_practice](chinese_practice.md).
+Role-splitting in more detail: [best_practice](best_practice.md).
 
 ## shapes that fail
 
