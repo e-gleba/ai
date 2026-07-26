@@ -1,6 +1,6 @@
 # e-gleba /ai
 
-Personal **AI Operating System** — interactive cheatsheet for prompts, daily drivers, models, pipelines, MCPs, arenas, and interest digests.
+Personal **AI Operating System** — interactive cheatsheet for agents, skills, MCP, prompts, C++ workflows, and interest digests.
 
 Live: [e-gleba.github.io/ai](https://e-gleba.github.io/ai/) · Portfolio: [e-gleba.github.io](https://e-gleba.github.io)
 
@@ -8,11 +8,10 @@ Live: [e-gleba.github.io/ai](https://e-gleba.github.io/ai/) · Portfolio: [e-gle
 
 - Pure static HTML / CSS / JS (no bundler, no Jekyll)
 - Deploy: official GitHub Pages Actions (`configure-pages` → `upload-pages-artifact` → `deploy-pages`)
-- Content lives in [`assets/js/data.js`](assets/js/data.js) — edit there, UI re-renders
+- Artifact dir: `site/` (no leading-underscore names)
+- Content: [`assets/js/data.js`](assets/js/data.js) — snake_case keys
 
 ## Local
-
-Open `index.html` in a browser, or:
 
 ```bash
 python3 -m http.server 8080
@@ -21,20 +20,9 @@ python3 -m http.server 8080
 
 ## Sections
 
-| Section | Purpose |
-|--------|---------|
-| Daily | Date-aware prompt kickoff + reroll |
-| Identity | Operator pillars / how agents should treat context |
-| Drivers | Cursor, OpenCode, You.com, Scira, … |
-| Models | Daily-use model matrix |
-| Prompts | Copy-ready library (`{{date}}` filled) |
-| Pipelines | Idea → agent → PR loops |
-| MCP | Agent tool surfaces |
-| Arenas | LM Arena, Artificial Analysis, … |
-| Practices | Spec-first, critique loops, Chinese SOP patterns |
-| Digests | Engines, RE, OSINT, BY/RU, space, electronics, … |
-| Map | Bookmark graph |
+Daily · Identity · Layers · Agent dirs · Skills · MCP · Specs · C++ · Organize · Drivers · Models · Prompts · Templates · Pipelines · Arenas · Practices · Digests · Watch · Map
 
 ## CI
 
-Push to `main` deploys via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). In repo **Settings → Pages**, set source to **GitHub Actions**.
+Push to `main` deploys via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).  
+**Settings → Pages → Source = GitHub Actions**.
