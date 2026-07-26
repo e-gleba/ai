@@ -359,6 +359,7 @@
       toast_timer: 0,
       theme_mode: localStorage.getItem("ai_theme_mode") || "dark",
       hint_visible: !localStorage.getItem("ai_hint_seen"),
+      mod_key: /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent || "") ? "⌘K" : "Ctrl K",
       active_filter: "all",
       filters: [
         { id: "all", label: "All" },
