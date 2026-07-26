@@ -1,9 +1,9 @@
-/* e-gleba /ai — content catalog. Snake_case keys. Edit → UI re-renders. */
+/* AI OS — content catalog. Edit here → UI updates. */
 window.ai_data = {
   meta: {
     brand: "e-gleba",
     title: "AI Operating System",
-    tagline: "Personal playbook — agents, skills, MCP, prompts, C++ workflows. Built to revise how I ship.",
+    tagline: "Personal playbook — agents, skills, MCP, prompts, C++ workflows, decision trees.",
     person: "Evgeniy Gleba",
     role: "C++ Systems Engineer · Game Engine R&D",
     where: "Lesta Games · Minsk",
@@ -13,7 +13,7 @@ window.ai_data = {
 
   identity: {
     blurb:
-      "Engineer who treats AI as a force multiplier for systems work — game engines, reverse engineering, OSINT, space, and regional tech context. This page is the living OS: dirs agents expect, skills vs rules vs MCP, prompts that ship, and where to watch the field.",
+      "Engineer who treats AI as a force multiplier for systems work — game engines, reverse engineering, OSINT, space, and regional tech context. This page is the living OS: tools with real specs, decision trees for complex choices, pipelines that ship, and prompts you can copy.",
     pillars: [
       { t: "Spec first", d: "Write the contract before the chat. Ambiguity is the tax." },
       { t: "Layer context", d: "AGENTS.md + rules + skills + MCP — each layer has one job." },
@@ -22,6 +22,7 @@ window.ai_data = {
     ],
   },
 
+  /* —— tools with full specs —— */
   daily_drivers: [
     {
       name: "Cursor",
@@ -29,6 +30,7 @@ window.ai_data = {
       tag: "ide",
       note: "Primary AI IDE. Agents, multi-file edits, cloud agents, rules/skills, PR loops.",
       tags: ["ide", "agent"],
+      specs: { context: "200k tokens (context); ~50 files practical", speed: "Fast inline; cloud agents minutes", cost: "$20/mo Pro; usage caps apply", best: "Daily coding, multi-file refactors, agent loops" },
       limits: [
         "Fastest when the repo already has AGENTS.md / rules / compile_commands.",
         "Big blind refactors still need your review for UB, ABI, and product risk.",
@@ -41,6 +43,7 @@ window.ai_data = {
       tag: "cli",
       note: "Terminal coding agent. AGENTS.md, .opencode/, MCP via opencode.json.",
       tags: ["cli", "agent"],
+      specs: { context: "Depends on model; usually 128k–200k", speed: "CLI batch speed", cost: "Free tier + paid; bring your own keys", best: "Scriptable agent loops, CI integration, terminal-first workflows" },
       limits: [
         "Great for scriptable loops; weaker as a visual multi-file IDE.",
         "Permissions matter — lock down bash/edit for review-only agents.",
@@ -53,6 +56,7 @@ window.ai_data = {
       tag: "search",
       note: "Hard research workhorse — large file drops, multi-source digests, citations.",
       tags: ["research", "search"],
+      specs: { context: "~20 MB file drops; long threads", speed: "Slower deep research mode", cost: "~$20/mo Pro; top models can hit soft caps", best: "Dense PDFs, large dumps, multi-source research" },
       limits: [
         "Can strip or sanitize pasted content / pages — re-check critical quotes against originals.",
         "Model roster updates slowly; the label you pick is not always the exact backend model.",
@@ -67,6 +71,7 @@ window.ai_data = {
       tag: "search",
       note: "Minimal AI search when I want signal over chrome.",
       tags: ["research", "search"],
+      specs: { context: "Web + short context", speed: "Very fast", cost: "Free tier available", best: "Quick orientation, fact checks, fast lookups" },
       limits: [
         "Thin UI = fewer levers; not ideal for huge file dumps.",
         "Use for quick orientation, then deepen in You.com / a strong reasoner.",
@@ -78,6 +83,7 @@ window.ai_data = {
       tag: "chat",
       note: "General reasoning, writing, light coding, voice.",
       tags: ["chat", "general"],
+      specs: { context: "128k (GPT-4o); 200k (o-series varies)", speed: "Fast for 4o; slower for o-reasoners", cost: "$20/mo Plus; higher tiers for power users", best: "General reasoning, writing, voice, quick prototypes" },
       limits: [
         "Plan / rate limits throttle peak models; queue or fall back when capped.",
         "Web browsing quality varies — cite-check anything factual.",
@@ -90,6 +96,7 @@ window.ai_data = {
       tag: "chat",
       note: "Long-context analysis, careful editing, PR/spec reviews.",
       tags: ["chat", "review"],
+      specs: { context: "200k tokens", speed: "Opus slow; Sonnet fast", cost: "Pro $20/mo; API per-token", best: "Long docs, careful review, adversarial critique" },
       limits: [
         "Usage limits hit on heavy Opus days — keep Sonnet / local for volume.",
         "Excellent critic; still invents APIs if you don't ground it in files.",
@@ -101,6 +108,7 @@ window.ai_data = {
       tag: "chat",
       note: "Multimodal + Google-grounded research.",
       tags: ["chat", "research"],
+      specs: { context: "1M+ tokens (Flash); 128k–1M depending on model", speed: "Flash is very fast", cost: "Free tier; API cheap per token", best: "Huge context, multimodal, fast first-pass scans" },
       limits: [
         "Strong on huge context / multimodal; quieter on careful systems code review.",
         "Grounded answers still need engineer verification.",
@@ -112,6 +120,7 @@ window.ai_data = {
       tag: "search",
       note: "Cited answers for news, papers, market scans.",
       tags: ["research", "search"],
+      specs: { context: "Web + uploaded files; ~5 MB", speed: "Fast", cost: "$20/mo Pro", best: "News, papers, market scans with citations" },
       limits: [
         "Citations help, but sources can be thin or mirrored.",
         "Pro model access follows subscription caps — same patience game as other $20 tiers.",
@@ -123,6 +132,7 @@ window.ai_data = {
       tag: "ide",
       note: "Inline + PR summaries inside GitHub / CLI.",
       tags: ["ide", "github"],
+      specs: { context: "Limited to current file + nearby", speed: "Very fast inline", cost: "$10/mo individual; included in Pro", best: "Autocomplete, PR summaries, CLI suggestions" },
       limits: [
         "Inline autocomplete ≠ architecture partner.",
         "PR summaries miss ABI / concurrency risk — keep a human/systems prompt.",
@@ -134,6 +144,7 @@ window.ai_data = {
       tag: "arena",
       note: "Blind model battles — calibrate taste vs hype.",
       tags: ["arena", "models"],
+      specs: { context: "Varies by model", speed: "Queue-based", cost: "Free", best: "Calibrating model preference on your own tasks" },
       limits: [
         "Leaderboards ≠ your workload. Re-test on your golden tasks.",
         "Anonymous battles hide routing / distillation surprises.",
@@ -145,6 +156,7 @@ window.ai_data = {
       tag: "cpp",
       note: "C++ language server. Agents need compile_commands.json.",
       tags: ["cpp", "ide"],
+      specs: { context: "Full TU + index", speed: "Fast after index", cost: "Free / open source", best: "C++ code intelligence, go-to-def, diagnostics" },
       limits: [
         "Without a fresh compile_commands.json it confidently lies.",
         "Cross toolchains need query-driver / correct sysroot wiring.",
@@ -156,6 +168,7 @@ window.ai_data = {
       tag: "cpp",
       note: "Verify codegen / ABI claims the model invents.",
       tags: ["cpp", "verify"],
+      specs: { context: "Single translation unit", speed: "Fast", cost: "Free; Patreon supports", best: "ASM proof, ABI checks, compiler behavior" },
       limits: [
         "Snippet tool — not your full engine build.",
         "Match flags/std to the real project or the asm story is fiction.",
@@ -163,122 +176,55 @@ window.ai_data = {
     },
   ],
 
+  /* —— model specs —— */
   models: [
-    { name: "Claude Opus / Sonnet", use: "Deep review, architecture, careful refactors, long docs", when: "High-stakes correctness" },
-    { name: "GPT-5.x / o-series", use: "Broad reasoning, tool use, product + code hybrid", when: "General daily driver" },
-    { name: "Gemini 2.x / Flash", use: "Huge context, multimodal, fast drafts", when: "Docs dumps & scans" },
-    { name: "DeepSeek / Qwen / Kimi", use: "Cost-efficient coding & CN-ecosystem know-how", when: "Volume + value" },
-    { name: "Local (Ollama / llama.cpp)", use: "Private notes, offline drafts, sensitive snippets", when: "Air-gapped or privacy" },
+    { name: "Claude Opus 4", use: "Deep review, architecture, careful refactors, long docs", context: "200k", speed: "Slow", cost: "$15 / 1M in · $75 / 1M out", best: "High-stakes correctness" },
+    { name: "Claude Sonnet 4", use: "Daily coding, balanced reasoning", context: "200k", speed: "Fast", cost: "$3 / 1M in · $15 / 1M out", best: "Daily driver" },
+    { name: "GPT-4o", use: "Broad reasoning, tool use, product + code hybrid", context: "128k", speed: "Fast", cost: "$2.50 / 1M in · $10 / 1M out", best: "General daily driver" },
+    { name: "GPT-5", use: "Latest frontier reasoning", context: "128k–256k", speed: "Medium", cost: "Tiered; check OpenAI pricing", best: "Frontier tasks" },
+    { name: "o3 / o4-mini", use: "Hard reasoning, math, coding contests", context: "200k", speed: "Slow", cost: "Higher per token", best: "Hard reasoning" },
+    { name: "Gemini 2.5 Pro", use: "Huge context reasoning, multimodal", context: "1M", speed: "Medium", cost: "Low per token", best: "Long docs & multimodal" },
+    { name: "Gemini 2.5 Flash", use: "Fast huge-context drafts", context: "1M", speed: "Very fast", cost: "Very low", best: "Volume scans" },
+    { name: "DeepSeek-V3 / R1", use: "Cost-efficient coding & CN-ecosystem know-how", context: "64k–128k", speed: "Fast", cost: "Very low", best: "Volume + value" },
+    { name: "Qwen 2.5 / 3", use: "Open multilingual coding models", context: "128k", speed: "Fast", cost: "Low", best: "Open models, local/volume" },
+    { name: "Kimi k1.5", use: "Long-context Chinese docs", context: "200k–2M", speed: "Medium", cost: "Low", best: "Long Chinese documents" },
+    { name: "Local (Ollama / llama.cpp)", use: "Private notes, offline drafts, sensitive snippets", context: "Depends on model / VRAM", speed: "Depends on hardware", cost: "Hardware only", best: "Air-gapped or privacy" },
   ],
 
-  arenas: [
-    { name: "LM Arena", url: "https://lmarena.ai", note: "Blind pairwise chat battles" },
-    { name: "Artificial Analysis", url: "https://artificialanalysis.ai", note: "Speed, quality, price dashboards" },
-    { name: "LMSYS Chatbot Arena", url: "https://chat.lmsys.org", note: "Classic arena leaderboard" },
-    { name: "Open LLM Leaderboard", url: "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard", note: "Open model benchmarks" },
-    { name: "LiveCodeBench", url: "https://livecodebench.github.io", note: "Coding contamination-aware bench" },
-    { name: "Arena-Hard", url: "https://github.com/lmarena/arena-hard-auto", note: "Hard-prompt eval kits" },
+  /* —— context calc config —— */
+  calc_models: [
+    { id: "gpt4o", name: "GPT-4o", ctx: 128000, in: 2.50, out: 10.0 },
+    { id: "claude_sonnet", name: "Claude Sonnet 4", ctx: 200000, in: 3.0, out: 15.0 },
+    { id: "claude_opus", name: "Claude Opus 4", ctx: 200000, in: 15.0, out: 75.0 },
+    { id: "gemini_flash", name: "Gemini 2.5 Flash", ctx: 1000000, in: 0.15, out: 0.60 },
+    { id: "gemini_pro", name: "Gemini 2.5 Pro", ctx: 1000000, in: 1.25, out: 10.0 },
+    { id: "deepseek", name: "DeepSeek-V3", ctx: 64000, in: 0.27, out: 1.10 },
+    { id: "local", name: "Local 7B", ctx: 32000, in: 0, out: 0 },
   ],
 
-  /* —— layers: rules vs skills vs MCP —— */
+  /* —— layers —— */
   layers: [
-    {
-      name: "AGENTS.md / rules",
-      job: "Ambient how-we-work",
-      load: "Always (or glob-matched)",
-      put: "AGENTS.md, .cursor/rules/*.mdc",
-      example: "Boost snake_case; no UB; run tests before done",
-    },
-    {
-      name: "Skills",
-      job: "Invokable multi-step SOP",
-      load: "On demand (/skill or @skill)",
-      put: ".cursor/skills/, .agents/skills/, .opencode/skills/",
-      example: "regenerate compile_commands → index → smoke test",
-    },
-    {
-      name: "MCP",
-      job: "Live tools & external data",
-      load: "After server connect",
-      put: "mcp.json / opencode.json mcp / Cursor MCP settings",
-      example: "github, fetch, browser, custom domain APIs",
-    },
-    {
-      name: "Hooks",
-      job: "Deterministic lifecycle scripts",
-      load: "On event (cannot be ignored)",
-      put: ".cursor/hooks / tool-specific hooks",
-      example: "format on edit, block commit if secrets",
-    },
+    { name: "AGENTS.md / rules", job: "Ambient how-we-work", load: "Always (or glob-matched)", put: "AGENTS.md, .cursor/rules/*.mdc", example: "Boost snake_case; no UB; run tests before done" },
+    { name: "Skills", job: "Invokable multi-step SOP", load: "On demand (/skill or @skill)", put: ".cursor/skills/, .agents/skills/, .opencode/skills/", example: "regenerate compile_commands → index → smoke test" },
+    { name: "MCP", job: "Live tools & external data", load: "After server connect", put: "mcp.json / opencode.json mcp / Cursor MCP settings", example: "github, fetch, browser, custom domain APIs" },
+    { name: "Hooks", job: "Deterministic lifecycle scripts", load: "On event (cannot be ignored)", put: ".cursor/hooks / tool-specific hooks", example: "format on edit, block commit if secrets" },
   ],
 
-  /* —— standard dirs agents understand —— */
   agent_dirs: [
-    {
-      path: "AGENTS.md",
-      tools: "Cursor, OpenCode, Codex, Copilot, Gemini CLI, Aider, …",
-      what: "Cross-tool project brain. Build/test/style/PR rules for agents.",
-      tip: "Commit it. Nest per package in monorepos. Closest file wins.",
-    },
-    {
-      path: ".cursor/rules/*.mdc",
-      tools: "Cursor",
-      what: "Scoped rules with YAML frontmatter (globs, alwaysApply, description).",
-      tip: "Split by domain. Keep each < 500 lines. Prefer over legacy .cursorrules.",
-    },
-    {
-      path: ".cursor/skills/<name>/SKILL.md",
-      tools: "Cursor (+ reads .agents/.claude/.codex skills)",
-      what: "Invokable workflows. Progressive disclosure: name/desc → full SOP.",
-      tip: "Use for deploy, compile_commands refresh, release checklists.",
-    },
-    {
-      path: ".agents/skills/",
-      tools: "Cross-tool / Cursor compatible",
-      what: "Portable skills root when you want tool-agnostic layout.",
-      tip: "Good default if team mixes Cursor + Claude Code + Codex.",
-    },
-    {
-      path: ".opencode/ + opencode.json",
-      tools: "OpenCode",
-      what: "agents/, commands/, skills/, plugins/, themes/ + MCP config.",
-      tip: "Run /init to scaffold AGENTS.md. Prefer AGENTS.md over CLAUDE.md.",
-    },
-    {
-      path: "CLAUDE.md",
-      tools: "Claude Code (fallback)",
-      what: "Claude-specific instructions if AGENTS.md missing.",
-      tip: "Symlink CLAUDE.md → AGENTS.md to avoid drift.",
-    },
-    {
-      path: ".github/workflows/",
-      tools: "All agents that ship",
-      what: "CI truth. Agents should read and keep green.",
-      tip: "Document required checks in AGENTS.md.",
-    },
-    {
-      path: "compile_commands.json",
-      tools: "clangd + any C++ agent",
-      what: "Per-file compile flags. Without it, C++ agents guess wrong.",
-      tip: "CMake: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON; symlink to repo root.",
-    },
-    {
-      path: ".mcp.json / mcp config",
-      tools: "Cursor, OpenCode, Claude, …",
-      what: "Which MCP servers, env, least-privilege tokens.",
-      tip: "Never commit secrets. Describe tools so agents can choose them.",
-    },
-    {
-      path: ".ai/ (informal)",
-      tools: "Some teams / custom",
-      what: "Ad-hoc prompts, evals, golden tasks — not a universal standard.",
-      tip: "Prefer AGENTS.md + .agents/skills for portability; use .ai for extras.",
-    },
+    { path: "AGENTS.md", tools: "Cursor, OpenCode, Codex, Copilot, Gemini CLI, Aider, …", what: "Cross-tool project brain. Build/test/style/PR rules for agents.", tip: "Commit it. Nest per package in monorepos. Closest file wins." },
+    { path: ".cursor/rules/*.mdc", tools: "Cursor", what: "Scoped rules with YAML frontmatter (globs, alwaysApply, description).", tip: "Split by domain. Keep each < 500 lines. Prefer over legacy .cursorrules." },
+    { path: ".cursor/skills/<name>/SKILL.md", tools: "Cursor (+ reads .agents/.claude/.codex skills)", what: "Invokable workflows. Progressive disclosure: name/desc → full SOP.", tip: "Use for deploy, compile_commands refresh, release checklists." },
+    { path: ".agents/skills/", tools: "Cross-tool / Cursor compatible", what: "Portable skills root when you want tool-agnostic layout.", tip: "Good default if team mixes Cursor + Claude Code + Codex." },
+    { path: ".opencode/ + opencode.json", tools: "OpenCode", what: "agents/, commands/, skills/, plugins/, themes/ + MCP config.", tip: "Run /init to scaffold AGENTS.md. Prefer AGENTS.md over CLAUDE.md." },
+    { path: "CLAUDE.md", tools: "Claude Code (fallback)", what: "Claude-specific instructions if AGENTS.md missing.", tip: "Symlink CLAUDE.md → AGENTS.md to avoid drift." },
+    { path: ".github/workflows/", tools: "All agents that ship", what: "CI truth. Agents should read and keep green.", tip: "Document required checks in AGENTS.md." },
+    { path: "compile_commands.json", tools: "clangd + any C++ agent", what: "Per-file compile flags. Without it, C++ agents guess wrong.", tip: "CMake: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON; symlink to repo root." },
+    { path: ".mcp.json / mcp config", tools: "Cursor, OpenCode, Claude, …", what: "Which MCP servers, env, least-privilege tokens.", tip: "Never commit secrets. Describe tools so agents can choose them." },
+    { path: ".ai/ (informal)", tools: "Some teams / custom", what: "Ad-hoc prompts, evals, golden tasks — not a universal standard.", tip: "Prefer AGENTS.md + .agents/skills for portability; use .ai for extras." },
   ],
 
   skills_guide: {
-    blurb:
-      "Skills are on-demand playbooks. Rules are always-on constraints. If you find yourself re-explaining a 15-step ritual every chat — that is a skill, not a rule.",
+    blurb: "Skills are on-demand playbooks. Rules are always-on constraints. If you find yourself re-explaining a 15-step ritual every chat — that is a skill, not a rule.",
     vs_rules: [
       { aspect: "Purpose", rule: "Style, bans, invariants", skill: "Multi-step procedures" },
       { aspect: "When loaded", rule: "Matching globs / always", skill: "Relevant or /name" },
@@ -302,8 +248,7 @@ window.ai_data = {
   },
 
   mcp_guide: {
-    blurb:
-      "MCP (Model Context Protocol) exposes tools to agents — filesystem, GitHub, fetch, browsers, custom APIs. Skills tell the agent how to sequence tools you already have; MCP adds new tools.",
+    blurb: "MCP (Model Context Protocol) exposes tools to agents — filesystem, GitHub, fetch, browsers, custom APIs. Skills tell the agent how to sequence tools you already have; MCP adds new tools.",
     principles: [
       "Least privilege — read-only by default; write scopes explicit",
       "Clear tool descriptions — agents choose tools by reading schemas",
@@ -335,57 +280,21 @@ window.ai_data = {
   ],
 
   cpp_playbook: [
-    {
-      title: "Ground in compile_commands.json",
-      body: "CMake: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON. Symlink/copy to repo root (or build/). Without this, agents and clangd invent flags and include paths.",
-    },
-    {
-      title: "Ask for godbolt / asm proof",
-      body: "For ABI, inlining, or 'this is free' claims — demand Compiler Explorer links or local -S output. Trust measurements over vibes.",
-    },
-    {
-      title: "Lifetime & concurrency first",
-      body: "Review order: UB → lifetime/ownership → data races → API/ABI → alloc/cache → tests. Style last.",
-    },
-    {
-      title: "Small diffs, buildable steps",
-      body: "Prefer agent PRs that compile at each step. Giant refactors hide regressions in game engines.",
-    },
-    {
-      title: "Pin toolchain in AGENTS.md",
-      body: "Document compiler, C++ standard, sanitizers, and the exact build/test commands agents must run.",
-    },
-    {
-      title: "Sanitizers as truth",
-      body: "ASan/TSan/UBSan beats a confident model. Put sanitizer recipes in a skill.",
-    },
+    { title: "Ground in compile_commands.json", body: "CMake: -DCMAKE_EXPORT_COMPILE_COMMANDS=ON. Symlink/copy to repo root (or build/). Without this, agents and clangd invent flags and include paths." },
+    { title: "Ask for godbolt / asm proof", body: "For ABI, inlining, or 'this is free' claims — demand Compiler Explorer links or local -S output. Trust measurements over vibes." },
+    { title: "Lifetime & concurrency first", body: "Review order: UB → lifetime/ownership → data races → API/ABI → alloc/cache → tests. Style last." },
+    { title: "Small diffs, buildable steps", body: "Prefer agent PRs that compile at each step. Giant refactors hide regressions in game engines." },
+    { title: "Pin toolchain in AGENTS.md", body: "Document compiler, C++ standard, sanitizers, and the exact build/test commands agents must run." },
+    { title: "Sanitizers as truth", body: "ASan/TSan/UBSan beats a confident model. Put sanitizer recipes in a skill." },
   ],
 
   organization: [
-    {
-      title: "One brain file",
-      body: "Root AGENTS.md = source of truth. Cursor-only globs go in .cursor/rules. Don't duplicate paragraphs in three places.",
-    },
-    {
-      title: "Skills for rituals",
-      body: "Anything > ~8 steps or rarely needed → skill. Keeps ambient context thin and cheap.",
-    },
-    {
-      title: "Prompt library in-repo",
-      body: "Version prompts next to work (or here in data.js for personal OS). If it worked once, templatize {{vars}}.",
-    },
-    {
-      title: "Parallel threads → one memo",
-      body: "Fan out research (N chats/tools), then synthesize once. Arenas settle model disagreements.",
-    },
-    {
-      title: "Human gates",
-      body: "AI may draft commits/PRs; you gate secrets, licenses, security, public statements, ABI breaks.",
-    },
-    {
-      title: "Golden tasks",
-      body: "Keep 5–10 eval prompts. Re-run when switching models. Update priors from LM Arena + Artificial Analysis.",
-    },
+    { title: "One brain file", body: "Root AGENTS.md = source of truth. Cursor-only globs go in .cursor/rules. Don't duplicate paragraphs in three places." },
+    { title: "Skills for rituals", body: "Anything > ~8 steps or rarely needed → skill. Keeps ambient context thin and cheap." },
+    { title: "Prompt library in-repo", body: "Version prompts next to work (or here in data.js for personal OS). If it worked once, templatize {{vars}}." },
+    { title: "Parallel threads → one memo", body: "Fan out research (N chats/tools), then synthesize once. Arenas settle model disagreements." },
+    { title: "Human gates", body: "AI may draft commits/PRs; you gate secrets, licenses, security, public statements, ABI breaks." },
+    { title: "Golden tasks", body: "Keep 5–10 eval prompts. Re-run when switching models. Update priors from LM Arena + Artificial Analysis." },
   ],
 
   watch: [
@@ -427,315 +336,119 @@ window.ai_data = {
       title: "Spec-first task brief",
       cat: "planning",
       tags: ["planning", "coding"],
-      body: `You are a senior engineer pair-programmer.
-
-GOAL:
-{{goal}}
-
-CONSTRAINTS:
-- Language/stack: {{stack}}
-- Must not: {{must_not}}
-- Performance / safety bar: {{bar}}
-
-DELIVERABLES:
-1. Clarifying questions (max 5) if anything is ambiguous
-2. Minimal design (bullets)
-3. Implementation plan (ordered steps)
-4. Then code — only after I approve the plan
-
-Today: {{date}}. Prefer correctness over cleverness.`,
+      body: `You are a senior engineer pair-programmer.\n\nGOAL:\n{{goal}}\n\nCONSTRAINTS:\n- Language/stack: {{stack}}\n- Must not: {{must_not}}\n- Performance / safety bar: {{bar}}\n\nDELIVERABLES:\n1. Clarifying questions (max 5) if anything is ambiguous\n2. Minimal design (bullets)\n3. Implementation plan (ordered steps)\n4. Then code — only after I approve the plan\n\nToday: {{date}}. Prefer correctness over cleverness.`,
     },
     {
       id: "pr_review",
       title: "PR review (systems / C++)",
       cat: "review",
       tags: ["review", "cpp", "github"],
-      body: `Review this PR as a staff C++ systems engineer.
-
-Focus order:
-1. Correctness / UB / lifetime / concurrency
-2. API & ABI impact
-3. Perf hot paths (allocations, cache, syscalls)
-4. Test gaps
-5. Style only if it hurts clarity
-
-Output format:
-- Summary (3 lines)
-- Blockers
-- Suggestions (non-blocking)
-- Test plan I should run
-- Risk score 1–5 with reason
-
-Diff / context:
-{{diff}}`,
+      body: `Review this PR as a staff C++ systems engineer.\n\nFocus order:\n1. Correctness / UB / lifetime / concurrency\n2. API & ABI impact\n3. Perf hot paths (allocations, cache, syscalls)\n4. Test gaps\n5. Style only if it hurts clarity\n\nOutput format:\n- Summary (3 lines)\n- Blockers\n- Suggestions (non-blocking)\n- Test plan I should run\n- Risk score 1–5 with reason\n\nDiff / context:\n{{diff}}`,
     },
     {
       id: "agents_md",
       title: "Draft AGENTS.md for this repo",
       cat: "agent",
       tags: ["agent", "agents_md", "org"],
-      body: `Draft a root AGENTS.md for this repository (open format: https://agents.md/).
-
-Include:
-- Project overview (1 short para)
-- Setup / toolchain (compilers, package managers)
-- Build commands
-- Test / lint / format commands
-- Code style (Boost snake_case for C++; note exceptions)
-- PR & commit expectations
-- Security / secrets rules
-- Where nested AGENTS.md live (if monorepo)
-
-Style: laconic bullets agents can execute. No marketing.
-Date: {{date}}.`,
+      body: `Draft a root AGENTS.md for this repository (open format: https://agents.md/).\n\nInclude:\n- Project overview (1 short para)\n- Setup / toolchain (compilers, package managers)\n- Build commands\n- Test / lint / format commands\n- Code style (Boost snake_case for C++; note exceptions)\n- PR & commit expectations\n- Security / secrets rules\n- Where nested AGENTS.md live (if monorepo)\n\nStyle: laconic bullets agents can execute. No marketing.\nDate: {{date}}.`,
     },
     {
       id: "skill_author",
       title: "Author a Cursor / agents skill",
       cat: "agent",
       tags: ["agent", "skills"],
-      body: `Create a SKILL.md for: {{goal}}
-
-Path suggestion: .cursor/skills/{{slug}}/SKILL.md (also fine: .agents/skills/)
-
-Requirements:
-- YAML frontmatter: name, description (trigger-rich)
-- Step-by-step SOP with exact commands
-- Failure modes & rollback
-- Done criteria checklist
-- Keep full body under ~5000 tokens; put deep refs in references/
-
-Output the full file contents ready to save.`,
+      body: `Create a SKILL.md for: {{goal}}\n\nPath suggestion: .cursor/skills/{{slug}}/SKILL.md (also fine: .agents/skills/)\n\nRequirements:\n- YAML frontmatter: name, description (trigger-rich)\n- Step-by-step SOP with exact commands\n- Failure modes & rollback\n- Done criteria checklist\n- Keep full body under ~5000 tokens; put deep refs in references/\n\nOutput the full file contents ready to save.`,
     },
     {
       id: "mcp_design",
       title: "MCP tool design brief",
       cat: "mcp",
       tags: ["mcp", "agent", "tooling"],
-      body: `Design an MCP server for: {{purpose}}.
-
-Include:
-- Tools (name, params schema, side effects)
-- Auth / egress constraints
-- Failure modes & retries
-- How an agent should sequence calls
-- Minimal golden-path example
-
-Optimize for least privilege and clear descriptions (agents read descriptions).`,
+      body: `Design an MCP server for: {{purpose}}.\n\nInclude:\n- Tools (name, params schema, side effects)\n- Auth / egress constraints\n- Failure modes & retries\n- How an agent should sequence calls\n- Minimal golden-path example\n\nOptimize for least privilege and clear descriptions (agents read descriptions).`,
     },
     {
       id: "cursor_kickoff",
       title: "Cursor / cloud agent kickoff",
       cat: "agent",
       tags: ["agent", "cursor", "coding"],
-      body: `Repo context: systems / game-engine R&D + portfolio-adjacent tools.
-
-Task: {{task}}
-Branch naming: cursor/<slug>-xxxx
-Done means:
-- [ ] Code compiles / site builds
-- [ ] CI green or explained
-- [ ] Commit + push
-- [ ] PR with concise why
-
-Prefer official GitHub Actions (actions/checkout, configure-pages, upload-pages-artifact, deploy-pages).
-Avoid leading-underscore dir names; use snake_case identifiers.
-Do not ask me to run commands you can run. Report artifacts & URLs at the end.`,
+      body: `Repo context: systems / game-engine R&D + portfolio-adjacent tools.\n\nTask: {{task}}\nBranch naming: cursor/<slug>-xxxx\nDone means:\n- [ ] Code compiles / site builds\n- [ ] CI green or explained\n- [ ] Commit + push\n- [ ] PR with concise why\n\nPrefer official GitHub Actions (actions/checkout, configure-pages, upload-pages-artifact, deploy-pages).\nAvoid leading-underscore dir names; use snake_case identifiers.\nDo not ask me to run commands you can run. Report artifacts & URLs at the end.`,
     },
     {
       id: "opencode_init",
       title: "OpenCode project init",
       cat: "agent",
       tags: ["agent", "opencode"],
-      body: `Initialize this repo for OpenCode.
-
-1. Propose AGENTS.md contents (or refine existing)
-2. Propose opencode.json: model defaults, MCP stubs, permissions
-3. Propose .opencode/agents/ for: review (read-only), implement, docs
-4. List skills worth adding under .opencode/skills/
-5. Show the exact file tree to create
-
-Do not invent secrets. Prefer AGENTS.md over CLAUDE.md.
-Date: {{date}}.`,
+      body: `Initialize this repo for OpenCode.\n\n1. Propose AGENTS.md contents (or refine existing)\n2. Propose opencode.json: model defaults, MCP stubs, permissions\n3. Propose .opencode/agents/ for: review (read-only), implement, docs\n4. List skills worth adding under .opencode/skills/\n5. Show the exact file tree to create\n\nDo not invent secrets. Prefer AGENTS.md over CLAUDE.md.\nDate: {{date}}.`,
     },
     {
       id: "cpp_compdb",
       title: "C++ compile_commands bootstrap",
       cat: "cpp",
       tags: ["cpp", "clangd", "skills"],
-      body: `Make this C++ project agent-ready for clangd.
-
-Stack hints: {{stack}}
-Build system: {{build}}
-
-Deliver:
-1. Exact commands to export compile_commands.json
-2. Where to place/symlink it for clangd discovery
-3. How to verify (open a TU, check includes resolve)
-4. A SKILL.md "cpp-compdb" to regenerate after toolchain changes
-5. Notes for cross-compilers / query-driver if needed
-
-Today: {{date}}.`,
+      body: `Make this C++ project agent-ready for clangd.\n\nStack hints: {{stack}}\nBuild system: {{build}}\n\nDeliver:\n1. Exact commands to export compile_commands.json\n2. Where to place/symlink it for clangd discovery\n3. How to verify (open a TU, check includes resolve)\n4. A SKILL.md "cpp-compdb" to regenerate after toolchain changes\n5. Notes for cross-compilers / query-driver if needed\n\nToday: {{date}}.`,
     },
     {
       id: "cpp_perf",
       title: "C++ hot-path investigation",
       cat: "cpp",
       tags: ["cpp", "perf"],
-      body: `Investigate performance for: {{goal}}
-
-Constraints: {{bar}}
-
-Plan:
-1. Hypotheses ranked by ROI
-2. Instrumentation (timers, tracy/perf, counters)
-3. Allocation / cache / branch suspects
-4. Proposed micro-benchmarks
-5. What would falsify each hypothesis
-
-No drive-by refactors. Measure before claiming wins.`,
+      body: `Investigate performance for: {{goal}}\n\nConstraints: {{bar}}\n\nPlan:\n1. Hypotheses ranked by ROI\n2. Instrumentation (timers, tracy/perf, counters)\n3. Allocation / cache / branch suspects\n4. Proposed micro-benchmarks\n5. What would falsify each hypothesis\n\nNo drive-by refactors. Measure before claiming wins.`,
     },
     {
       id: "multithread",
       title: "Multi-thread research fan-out",
       cat: "research",
       tags: ["research", "osint", "planning"],
-      body: `Topic: {{topic}}
-Date: {{date}}
-
-Spawn N parallel research tracks (N={{n|4}}). For each track return:
-- Angle name
-- Key claims (with uncertainty)
-- Best sources / queries to run next
-- What would falsify it
-
-Then synthesize:
-- Consensus
-- Contested points
-- Actionable next steps for me (engineer in Minsk, game-engine + RE context)`,
+      body: `Topic: {{topic}}\nDate: {{date}}\n\nSpawn N parallel research tracks (N={{n|4}}). For each track return:\n- Angle name\n- Key claims (with uncertainty)\n- Best sources / queries to run next\n- What would falsify it\n\nThen synthesize:\n- Consensus\n- Contested points\n- Actionable next steps for me (engineer in Minsk, game-engine + RE context)`,
     },
     {
       id: "re_brief",
       title: "Reverse engineering brief",
       cat: "reveng",
       tags: ["reveng", "cpp", "security"],
-      body: `Act as a careful reverse engineer. Legal / ethical scope only: {{scope}}.
-
-Target class: {{target}}
-Known facts: {{known}}
-
-Produce:
-1. Threat model & assumptions
-2. Artifact map (binaries, formats, protocols)
-3. Tooling plan (static → dynamic → differential)
-4. Hypotheses ranked by ROI
-5. Red lines (what not to do)
-6. Report template headings
-
-Prefer IDA/Ghidra/Binary Ninja mental models; keep steps reproducible.`,
+      body: `Act as a careful reverse engineer. Legal / ethical scope only: {{scope}}.\n\nTarget class: {{target}}\nKnown facts: {{known}}\n\nProduce:\n1. Threat model & assumptions\n2. Artifact map (binaries, formats, protocols)\n3. Tooling plan (static → dynamic → differential)\n4. Hypotheses ranked by ROI\n5. Red lines (what not to do)\n6. Report template headings\n\nPrefer IDA/Ghidra/Binary Ninja mental models; keep steps reproducible.`,
     },
     {
       id: "engine_digest",
       title: "Game engine daily digest",
       cat: "digest",
       tags: ["gamedev", "engine", "digest"],
-      body: `Daily digest for {{date}} — game engines & rendering.
-
-Scan & summarize (bullet, laconic):
-- Engine news (Unreal / Unity / custom / open)
-- Rendering & GPU (Vulkan/D3D12/Metal, mesh shaders, RT)
-- Physics / animation / tooling
-- Notable open-source commits or papers
-- One thing I should try in my R&D this week
-
-Style: engineer notes, not blog. Include links when known.`,
+      body: `Daily digest for {{date}} — game engines & rendering.\n\nScan & summarize (bullet, laconic):\n- Engine news (Unreal / Unity / custom / open)\n- Rendering & GPU (Vulkan/D3D12/Metal, mesh shaders, RT)\n- Physics / animation / tooling\n- Notable open-source commits or papers\n- One thing I should try in my R&D this week\n\nStyle: engineer notes, not blog. Include links when known.`,
     },
     {
       id: "osint_digest",
       title: "OSINT / geopolitics digest",
       cat: "digest",
       tags: ["osint", "politeconomy", "digest"],
-      body: `OSINT + political economy digest for {{date}}.
-
-Regions of interest: Belarus, Russia, broader CEE / tech sanctions landscape.
-Themes: industry, dual-use tech, infra, capital flows, open sources.
-
-Rules:
-- Separate fact / claim / rumor
-- Cite type of source (official, OSINT, media, leak)
-- Note bias & confidence
-- End with 3 implications for an engineer/builder`,
+      body: `OSINT + political economy digest for {{date}}.\n\nRegions of interest: Belarus, Russia, broader CEE / tech sanctions landscape.\nThemes: industry, dual-use tech, infra, capital flows, open sources.\n\nRules:\n- Separate fact / claim / rumor\n- Cite type of source (official, OSINT, media, leak)\n- Note bias & confidence\n- End with 3 implications for an engineer/builder`,
     },
     {
       id: "space_digest",
       title: "Space / satellites digest",
       cat: "digest",
       tags: ["space", "satellites", "digest"],
-      body: `Astronomy · satellites · space systems digest — {{date}}.
-
-Cover:
-- Launch & constellation news
-- Earth observation / SAR / SIGINT-relevant civilian tech
-- Open datasets & software (Orekit, GMAT, SatNOGS, …)
-- One learning rabbit-hole with a concrete tutorial or repo
-
-Keep it technical. Skip hype.`,
+      body: `Astronomy · satellites · space systems digest — {{date}}.\n\nCover:\n- Launch & constellation news\n- Earth observation / SAR / SIGINT-relevant civilian tech\n- Open datasets & software (Orekit, GMAT, SatNOGS, …)\n- One learning rabbit-hole with a concrete tutorial or repo\n\nKeep it technical. Skip hype.`,
     },
     {
       id: "electronics",
       title: "Electronics / embedded prompt",
       cat: "electronics",
       tags: ["electronics", "embedded"],
-      body: `Embedded / electronics assistant.
-
-Board / MCU: {{mcu}}
-Goal: {{goal}}
-Constraints: power, interfaces, toolchain = {{constraints}}
-
-Return:
-- Block diagram (ASCII)
-- Pin / bus plan
-- Firmware architecture
-- Bring-up checklist
-- Common failure modes
-- Test equipment list`,
+      body: `Embedded / electronics assistant.\n\nBoard / MCU: {{mcu}}\nGoal: {{goal}}\nConstraints: power, interfaces, toolchain = {{constraints}}\n\nReturn:\n- Block diagram (ASCII)\n- Pin / bus plan\n- Firmware architecture\n- Bring-up checklist\n- Common failure modes\n- Test equipment list`,
     },
     {
       id: "chinese_sop",
       title: "Chinese-style SOP agent (角色+流程)",
       cat: "practice",
       tags: ["practice", "agent", "planning"],
-      body: `你是「资深{{role}}」。严格按 SOP 执行，不要跳步。
-
-【角色】专业、直接、先结论后证据。
-【目标】{{goal}}
-【输入】{{input}}
-【流程】
-1. 澄清（最多 5 个问题；若信息足够则跳过）
-2. 拆解任务为可执行子任务
-3. 并行思路：哪些可同时做
-4. 产出物按格式交付
-5. 自检清单（正确性 / 遗漏 / 风险）
-
-【输出格式】
-- 结论
-- 步骤
-- 交付物
-- 风险与验证
-
-日期：{{date}}。用中文或英文（跟我输入语言）。`,
+      body: `你是「资深{{role}}」。严格按 SOP 执行，不要跳步。\n\n【角色】专业、直接、先结论后证据。\n【目标】{{goal}}\n【输入】{{input}}\n【流程】\n1. 澄清（最多 5 个问题；若信息足够则跳过）\n2. 拆解任务为可执行子任务\n3. 并行思路：哪些可同时做\n4. 产出物按格式交付\n5. 自检清单（正确性 / 遗漏 / 风险）\n\n【输出格式】\n- 结论\n- 步骤\n- 交付物\n- 风险与验证\n\n日期：{{date}}。用中文或英文（跟我输入语言）。`,
     },
     {
       id: "fillers",
       title: "Context fillers (drop into any chat)",
       cat: "filler",
       tags: ["filler", "identity"],
-      body: `About me (reuse):
-- Evgeniy Gleba — C++ systems / game engine R&D engineer (Lesta Games, Minsk)
-- Interests: custom engines, RE, electronics, OSINT, space/satellites, BY/RU tech business, open source
-- AI stack: Cursor, OpenCode, You.com, Scira, Claude/GPT/Gemini, LM Arena for calibration
-- Working style: spec-first, AGENTS.md + skills + MCP layers, parallel research, verify everything
-- Date context: {{date}}`,
+      body: `About me (reuse):\n- Evgeniy Gleba — C++ systems / game engine R&D engineer (Lesta Games, Minsk)\n- Interests: custom engines, RE, electronics, OSINT, space/satellites, BY/RU tech business, open source\n- AI stack: Cursor, OpenCode, You.com, Scira, Claude/GPT/Gemini, LM Arena for calibration\n- Working style: spec-first, AGENTS.md + skills + MCP layers, parallel research, verify everything\n- Date context: {{date}}`,
     },
   ],
 
@@ -743,76 +456,17 @@ Return:
     {
       id: "agents_md_template",
       title: "AGENTS.md starter (C++ / systems)",
-      body: `# AGENTS.md
-
-## Overview
-C++ systems / game-engine R&D. Prefer correctness, measurable perf, and small reviewable diffs.
-
-## Toolchain
-- Compiler / standard: <fill>
-- Build: cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...
-- Symlink compile_commands.json to repo root for clangd
-
-## Commands
-- Configure: <fill>
-- Build: <fill>
-- Test: <fill>
-- Format / lint: <fill>
-
-## Style
-- Boost-like snake_case for functions, variables, files
-- No leading-underscore public API names
-- Ownership explicit (unique/shared/span); no naked owning raw new/delete in new code
-
-## Agent rules
-- Spec first for non-trivial tasks
-- Run tests you can run; fix failures before claiming done
-- Do not invent credentials; do not commit secrets
-- Prefer official GitHub Actions for Pages/CI
-
-## PR
-- Clear why + test plan
-- Call out ABI / save-format / protocol risks
-`,
+      body: `# AGENTS.md\n\n## Overview\nC++ systems / game-engine R&D. Prefer correctness, measurable perf, and small reviewable diffs.\n\n## Toolchain\n- Compiler / standard: <fill>\n- Build: cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...\n- Symlink compile_commands.json to repo root for clangd\n\n## Commands\n- Configure: <fill>\n- Build: <fill>\n- Test: <fill>\n- Format / lint: <fill>\n\n## Style\n- Boost-like snake_case for functions, variables, files\n- No leading-underscore public API names\n- Ownership explicit (unique/shared/span); no naked owning raw new/delete in new code\n\n## Agent rules\n- Spec first for non-trivial tasks\n- Run tests you can run; fix failures before claiming done\n- Do not invent credentials; do not commit secrets\n- Prefer official GitHub Actions for Pages/CI\n\n## PR\n- Clear why + test plan\n- Call out ABI / save-format / protocol risks\n`,
     },
     {
       id: "skill_template",
       title: "SKILL.md starter",
-      body: `---
-name: cpp-compdb
-description: Regenerate compile_commands.json for this CMake project and verify clangd can resolve includes. Use when agents lack code intelligence or after toolchain changes.
----
-
-# cpp-compdb
-
-## Steps
-1. Configure with compile commands export
-2. Symlink/copy compile_commands.json to repo root
-3. Open a known TU and confirm includes resolve
-4. Report paths and any missing flags
-
-## Done
-- [ ] compile_commands.json present at expected path
-- [ ] Sample file resolves core headers
-- [ ] Commands documented in AGENTS.md if changed
-`,
+      body: `---\nname: cpp-compdb\ndescription: Regenerate compile_commands.json for this CMake project and verify clangd can resolve includes. Use when agents lack code intelligence or after toolchain changes.\n---\n\n# cpp-compdb\n\n## Steps\n1. Configure with compile commands export\n2. Symlink/copy compile_commands.json to repo root\n3. Open a known TU and confirm includes resolve\n4. Report paths and any missing flags\n\n## Done\n- [ ] compile_commands.json present at expected path\n- [ ] Sample file resolves core headers\n- [ ] Commands documented in AGENTS.md if changed\n`,
     },
     {
       id: "cursor_rule_template",
       title: ".cursor/rules snippet (.mdc)",
-      body: `---
-description: C++ systems conventions for this repo
-globs:
-  - "**/*.{cpp,hpp,h,cc,cxx}"
-alwaysApply: false
----
-
-# C++ conventions
-- Snake_case identifiers (Boost style)
-- Prefer spans / string_view at API boundaries when lifetimes are clear
-- Document thread-safety on shared types
-- No drive-by refactors outside the task scope
-`,
+      body: `---\ndescription: C++ systems conventions for this repo\nglobs:\n  - "**/*.{cpp,hpp,h,cc,cxx}"\nalwaysApply: false\n---\n\n# C++ conventions\n- Snake_case identifiers (Boost style)\n- Prefer spans / string_view at API boundaries when lifetimes are clear\n- Document thread-safety on shared types\n- No drive-by refactors outside the task scope\n`,
     },
   ],
 
@@ -932,31 +586,138 @@ alwaysApply: false
     },
   ],
 
+  /* —— decision trees —— */
+  decisions: [
+    {
+      id: "pick_model",
+      title: "Which model should I use?",
+      subtitle: "A context/cost/correctness decision tree",
+      root: {
+        q: "What matters most?",
+        children: [
+          {
+            a: "Highest correctness",
+            q: "Is it code / systems work?",
+            children: [
+              { a: "Yes", result: "Claude Opus 4 or Sonnet 4. Ground with files + compile_commands." },
+              { a: "No", result: "Claude Opus 4 for long docs; GPT-5 for general reasoning." },
+            ],
+          },
+          {
+            a: "Huge context",
+            q: "Need multimodal too?",
+            children: [
+              { a: "Yes", result: "Gemini 2.5 Pro / Flash — 1M context, images/video OK." },
+              { a: "No", result: "Claude 200k or Gemini Flash for cheap long scans." },
+            ],
+          },
+          {
+            a: "Lowest cost / volume",
+            q: "Quality bar?",
+            children: [
+              { a: "Acceptable quality", result: "DeepSeek-V3, Qwen 2.5, Gemini Flash." },
+              { a: "High quality", result: "Sonnet 4 or Gemini Pro — still cheaper than Opus." },
+            ],
+          },
+          {
+            a: "Privacy / offline",
+            result: "Local Ollama / llama.cpp. Pick model by your VRAM.",
+          },
+        ],
+      },
+    },
+    {
+      id: "pick_tool",
+      title: "Which AI tool for the job?",
+      subtitle: "IDE vs search vs chat vs agent",
+      root: {
+        q: "What are you doing?",
+        children: [
+          {
+            a: "Writing / editing code",
+            q: "Multi-file or single file?",
+            children: [
+              { a: "Multi-file", result: "Cursor or OpenCode with AGENTS.md." },
+              { a: "Single file / autocomplete", result: "GitHub Copilot or Cursor inline." },
+            ],
+          },
+          {
+            a: "Research / reading",
+            q: "How big are the sources?",
+            children: [
+              { a: "Huge PDFs / dumps", result: "You.com (up to ~20MB)." },
+              { a: "Quick lookup / citations", result: "Scira, Perplexity, or Gemini grounded search." },
+            ],
+          },
+          {
+            a: "Review / critique",
+            result: "Claude for careful review; Cursor agent for in-repo diff review.",
+          },
+          {
+            a: "Deploy / CI loop",
+            result: "OpenCode + MCP GitHub, or Cursor cloud agent.",
+          },
+        ],
+      },
+    },
+    {
+      id: "context_or_skill",
+      title: "Rule, skill, or MCP?",
+      subtitle: "How to layer agent instructions",
+      root: {
+        q: "How often does the agent need it?",
+        children: [
+          { a: "Every message", result: "Rule (AGENTS.md / .cursor/rules). Keep short." },
+          {
+            a: "On specific tasks",
+            q: "Is it a procedure with many steps?",
+            children: [
+              { a: "Yes", result: "Skill (.cursor/skills or .agents/skills)." },
+              { a: "No", result: "Prompt template or short rule." },
+            ],
+          },
+          {
+            a: "Needs live data / external action",
+            result: "MCP server. Design schemas first, least privilege.",
+          },
+        ],
+      },
+    },
+    {
+      id: "ship_or_spike",
+      title: "Ship now or spike first?",
+      subtitle: "Risk-based task routing",
+      root: {
+        q: "Do you understand the problem and solution?",
+        children: [
+          {
+            a: "Yes",
+            q: "Is the change risky (ABI, security, perf, public API)?",
+            children: [
+              { a: "Yes", result: "Spec + review pipeline. Use Claude/Opus for review." },
+              { a: "No", result: "Cursor/OpenCode implement with tests." },
+            ],
+          },
+          {
+            a: "No",
+            q: "Is it a research or engineering unknown?",
+            children: [
+              { a: "Research unknown", result: "Hard research pipeline first." },
+              { a: "Engineering unknown", result: "Time-boxed spike → decision memo." },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+
   practices: [
-    {
-      title: "角色 → 目标 → 格式 → 自检",
-      body: "Chinese top-tier pattern: lock role, lock goal, lock output schema, then self-check. Most quality jumps come from format + critique, not longer prompts.",
-    },
-    {
-      title: "Critique loop",
-      body: "Draft → adversary pass → fix pass. Separate the creator and the critic (two chats or two roles).",
-    },
-    {
-      title: "Context hygiene",
-      body: "Paste only the slice that matters. Dumping whole repos burns attention; link paths and cite symbols.",
-    },
-    {
-      title: "Rules thin, skills thick",
-      body: "Ambient rules stay short. Put long SOPs in skills so everyday chats stay cheap.",
-    },
-    {
-      title: "Eval over vibes",
-      body: "Keep golden tasks. Re-run when switching models. Use arenas to update priors.",
-    },
-    {
-      title: "Prompt as code",
-      body: "Version prompts. If it worked once, it becomes a template with {{vars}}.",
-    },
+    { title: "角色 → 目标 → 格式 → 自检", body: "Chinese top-tier pattern: lock role, lock goal, lock output schema, then self-check. Most quality jumps come from format + critique, not longer prompts." },
+    { title: "Critique loop", body: "Draft → adversary pass → fix pass. Separate the creator and the critic (two chats or two roles)." },
+    { title: "Context hygiene", body: "Paste only the slice that matters. Dumping whole repos burns attention; link paths and cite symbols." },
+    { title: "Rules thin, skills thick", body: "Ambient rules stay short. Put long SOPs in skills so everyday chats stay cheap." },
+    { title: "Eval over vibes", body: "Keep golden tasks. Re-run when switching models. Use arenas to update priors." },
+    { title: "Prompt as code", body: "Version prompts. If it worked once, it becomes a template with {{vars}}." },
   ],
 
   digests: [
