@@ -568,9 +568,10 @@
       },
 
       default_results() {
-        return this.items.filter((i) => ["daily", "hub_tools", "hub_prompts", "hub_skills", "hub_cpp"].includes(i.id)).concat(
-          this.items.filter((i) => i.kind === "tool").slice(0, 4)
-        );
+        return this.items
+          .filter((i) => ["daily", "hub_tools", "hub_flow", "hub_prompts", "hub_skills", "hub_cpp"].includes(i.id))
+          .concat(this.items.filter((i) => i.kind === "pipeline").slice(0, 3))
+          .concat(this.items.filter((i) => i.kind === "tool").slice(0, 3));
       },
 
       on_query() {
