@@ -1,25 +1,25 @@
 # context_engineering
 
-[handbook](../README.md) · prev: [parallel_agents](parallel_agents.md) · next: [mcp](mcp.md)
+[handbook](../readme.md) · prev: [parallel_agents](parallel_agents.md) · next: [chinese_practice](chinese_practice.md)
 
-The repo is the prompt. Most "the model is dumb" problems are missing context,
-not missing intelligence.
+**In one sentence:** the repository is the prompt — most "the model is stupid"
+problems are missing context, not missing intelligence.
 
-## the four layers
+## four layers
 
-| layer | always loaded | use for |
+| layer | loaded when | holds |
 | --- | --- | --- |
-| instructions (`AGENTS.md`) | yes | project truth: build, test, style, boundaries |
-| rules (scoped) | when the glob matches | per-directory or per-language conventions |
-| skills | on demand, when the task matches | procedures with steps, scripts, and examples |
-| tools / MCP | on call | live data and side effects |
+| instructions (`AGENTS.md`) | always | project truth: build, test, style, boundaries |
+| rules | when a file pattern matches | conventions for one directory or language |
+| skills | when the task matches | procedures with steps and examples |
+| tools and MCP | when called | live data and actions |
 
-Rule of thumb: facts go in instructions, procedures go in skills, capabilities
-go in tools. Putting a procedure in instructions burns context on every turn.
+Rule of thumb: facts go in instructions, procedures go in skills, capabilities go
+in tools. A procedure placed in instructions burns context on every single turn.
 
-## agents.md — the one file that matters
+## agents.md, the one file that matters
 
-Keep it under ~100 lines. It is read every session.
+Keep it under about 100 lines; it is read every session.
 
 ```markdown
 # project
@@ -37,49 +37,49 @@ One paragraph: what this is, what it is not.
 
 ## layout
 
-- `src/` engine core; no dependency on `tools/`
-- `include/` public headers; changing these is an ABI event
-- `tests/` one file per unit; name mirrors source
-- `third_party/` vendored, never edit
+- `src/` engine core; must not depend on `tools/`
+- `include/` public headers; changing these is a binary-interface event
+- `tests/` one file per unit, name mirrors the source
+- `third_party/` vendored, never edited
 
 ## conventions
 
-- C++23. snake_case for types and functions. No Hungarian, no `m_` prefixes.
+- C++23. snake_case for types and functions. No `m_` prefixes.
 - No exceptions across module boundaries; return `std::expected`.
-- No raw `new`/`delete`. Ownership is explicit in the type.
-- Headers: no transitive includes; include what you use.
+- No raw `new` or `delete`. Ownership is visible in the type.
+- Include what you use; no reliance on transitive includes.
 
 ## rules for agents
 
-- Minimum diff. Do not reformat untouched code.
+- Minimum change. Do not reformat untouched code.
 - Never edit `third_party/` or generated files.
-- Never change public headers without saying so in the PR description.
+- Never change public headers without saying so in the description.
 - If the build fails twice for the same reason, stop and report.
 - Prefer adding a failing test first.
 ```
 
-The value is in the constraints and the exact commands, not the prose.
+The value is in the exact commands and the constraints, not the prose.
 
-## directory layout for agent config
+## directory layout
 
 ```
 .
 ├── AGENTS.md                # project truth, always loaded
 ├── .cursor/
-│   ├── rules/               # scoped .mdc rules with globs
-│   └── skills/              # optional, editor-side skills
+│   ├── rules/               # scoped rules with file patterns
+│   └── skills/              # editor-side skills
 ├── .agents/
 │   └── skills/
 │       └── release_check/
 │           └── SKILL.md
 ├── .opencode/               # terminal agent config
-├── .mcp.json                # local mcp servers for this repo
-├── compile_commands.json    # generated; the single best c++ grounding artifact
+├── .mcp.json                # servers for this repository
+├── compile_commands.json    # generated; best grounding file for c++
 └── docs/
-    └── decisions/           # short adrs; agents read these instead of guessing
+    └── decisions/           # short decision records
 ```
 
-## scoped rule template
+## scoped rule
 
 ```markdown
 ---
@@ -88,49 +88,46 @@ globs: ["src/**/*.cpp", "src/**/*.hpp"]
 alwaysApply: false
 ---
 
-- Prefer `std::span` over pointer+length pairs.
+- Prefer `std::span` over a pointer and a length.
 - No `std::endl`; use `'\n'`.
-- Allocations in hot paths require a comment naming the arena.
+- An allocation in a hot path needs a comment naming the arena.
 - Public functions carry a one-line contract comment: preconditions only.
 ```
 
-Keep each rule file single-purpose. A 300-line rule file is ignored in practice.
+One purpose per rule file. A 300-line rule file is ignored in practice.
 
-## skill template
+## skill
 
 ```markdown
 ---
 name: release_check
 description: >
-  Pre-release verification for the engine. Use when preparing a tag,
-  cutting a release branch, or when asked to verify release readiness.
+  Pre-release verification for the engine. Use when preparing a tag, cutting a
+  release branch, or when asked to verify release readiness.
 ---
 
 # release_check
 
-1. Confirm the version bump in `CMakeLists.txt` matches the tag.
-2. Build with `-DCMAKE_BUILD_TYPE=RelWithDebInfo` and warnings as errors.
-3. Run `ctest` plus the asan and ubsan presets.
-4. Diff public headers against the previous tag; any change is a note in the changelog.
+1. Confirm the version in `CMakeLists.txt` matches the tag.
+2. Build with warnings as errors in release-with-debug-info.
+3. Run the test suite plus the address and undefined-behaviour presets.
+4. Diff public headers against the previous tag; any change goes in the changelog.
 5. Produce the changelog grouped as: breaking, features, fixes, internal.
 
-Stop and report if any step fails. Never auto-fix during a release check.
+Stop and report on any failure. Never auto-fix during a release check.
 ```
 
-Skill vs rule: a rule is a constraint that is always true; a skill is a
-procedure invoked for a class of task. If it has numbered steps, it is a skill.
+Rule or skill? A rule is a constraint that is always true. A skill is a procedure
+for a class of task. If it has numbered steps, it is a skill.
 
 ## context budget
 
 - Load the smallest set of files that makes the task decidable.
 - Prefer `file:line` citations over pasting whole files.
-- Re-anchor long sessions: restate goal, constraints, and current state every
-  few turns, or restart the session.
+- Restate goal, constraints, and current state every few turns — or restart.
 - A stale plan in context is worse than no plan. Delete it when it changes.
 
-## decisions folder
-
-Short ADRs beat tribal knowledge:
+## decision records
 
 ```markdown
 # 0007 — no exceptions across module boundaries
@@ -148,4 +145,5 @@ Module boundaries return `std::expected`. Exceptions may exist inside a module.
 Wrappers at boundaries; agents must not "simplify" by throwing across them.
 ```
 
-Agents follow written decisions. They cannot follow decisions that live in chat.
+Agents follow written decisions. They cannot follow decisions that live in a chat
+window.
