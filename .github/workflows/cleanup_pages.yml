@@ -1,0 +1,62 @@
+name: cleanup github pages
+
+# one-shot: remove leftover github-pages deployments/environment/site
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/cleanup_pages.yml
+
+permissions:
+  contents: read
+  deployments: write
+  pages: write
+
+jobs:
+  cleanup:
+    name: remove pages history
+    runs-on: ubuntu-latest
+    steps:
+      - name: delete github-pages deployments and environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          echo "Listing github-pages deployments..."
+          mapfile -t ids < <(
+            gh api --paginate \
+              "repos/${REPO}/deployments?environment=github-pages&per_page=100" \
+              --jq '.[].id'
+          )
+          echo "Found ${#ids[@]} deployment(s)."
+
+          for id in "${ids[@]+"${ids[@]}"}"; do
+            echo "Deleting deployment ${id}..."
+            # mark inactive first; some deployments require this before delete
+            gh api --method POST \
+              "repos/${REPO}/deployments/${id}/statuses" \
+              -f state=inactive \
+              -F auto_inactive=false \
+              >/dev/null || true
+            gh api --method DELETE "repos/${REPO}/deployments/${id}"
+          done
+
+          echo "Deleting github-pages environment..."
+          gh api --method DELETE "repos/${REPO}/environments/github-pages" || true
+
+          echo "Disabling GitHub Pages site..."
+          if gh api --method DELETE "repos/${REPO}/pages"; then
+            echo "Pages site disabled."
+          else
+            echo "Could not disable Pages via API (needs admin). Environment/deployments cleaned."
+          fi
+
+          echo "Remaining deployments:"
+          gh api "repos/${REPO}/deployments?environment=github-pages&per_page=100" --jq 'length'
+          echo "Remaining environments:"
+          gh api "repos/${REPO}/environments" --jq '.environments[].name // empty'
+          echo "Pages status:"
+          gh api "repos/${REPO}/pages" 2>&1 || echo "Pages not configured (expected after cleanup)."
