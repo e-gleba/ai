@@ -18,7 +18,7 @@ jobs:
     name: markdown style
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v19
@@ -29,7 +29,7 @@ jobs:
     name: internal links
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # offline mode only resolves relative paths, so a renamed page fails fast
       # and the job never depends on somebody else's uptime
