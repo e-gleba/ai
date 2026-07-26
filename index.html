@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evgeniy Gleba — AI operating system: prompts, daily drivers, pipelines, digests for game engines, RE, OSINT, space, and systems work.">
+  <meta name="author" content="Evgeniy Gleba">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
+  <meta property="og:title" content="e-gleba /ai — AI Operating System">
+  <meta property="og:description" content="Personal AI cheatsheet: prompts, tools, arenas, digests, pipelines. Portfolio subpage.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://e-gleba.github.io/ai/">
+  <meta name="twitter:card" content="summary">
+  <title>e-gleba /ai — AI Operating System</title>
+  <link rel="canonical" href="https://e-gleba.github.io/ai/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF6B9D'/%3E%3Cstop offset='50%25' style='stop-color:%23FF8C42'/%3E%3Cstop offset='100%25' style='stop-color:%23C792EA'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230a0a0f'/%3E%3Cpath d='M44 16 C28 14 14 22 14 32 C14 42 28 50 44 48 M14 32 L38 32 M44 16 C48 17 50 20 48 22' stroke='url(%23g)' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='48' cy='22' r='2.5' fill='%23FF6B9D' opacity='.8'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "e-gleba /ai — AI Operating System",
+    "url": "https://e-gleba.github.io/ai/",
+    "isPartOf": { "@type": "WebSite", "url": "https://e-gleba.github.io", "name": "Evgeniy Gleba" },
+    "author": {
+      "@type": "Person",
+      "name": "Evgeniy Gleba",
+      "jobTitle": "C++ Systems Engineer",
+      "url": "https://e-gleba.github.io",
+      "sameAs": ["https://github.com/e-gleba"]
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <header class="mobile-bar">
+    <div class="brand"><span class="pink">e</span><span class="dim">-</span>gleba<span class="ai">/ai</span></div>
+    <button type="button" class="ghost-btn" id="menu-toggle" aria-label="Open menu">menu</button>
+  </header>
+
+  <aside class="sidebar" aria-label="Section navigation">
+    <div class="brand">
+      <a href="https://e-gleba.github.io" title="Portfolio">
+        <span class="pink">e</span><span class="dim">-</span>gleba
+      </a>
+      <span class="ai">/ai</span>
+    </div>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Search  /" autocomplete="off" aria-label="Search cheatsheet">
+    </div>
+    <nav>
+      <ul class="nav">
+        <li><a href="#daily" class="active"><span class="mark">◉</span>Daily</a></li>
+        <li><a href="#identity"><span class="mark">◎</span>Identity</a></li>
+        <li><a href="#drivers"><span class="mark">⚡</span>Drivers</a></li>
+        <li><a href="#models"><span class="mark">▣</span>Models</a></li>
+        <li><a href="#prompts"><span class="mark">⌘</span>Prompts</a></li>
+        <li><a href="#pipelines"><span class="mark">→</span>Pipelines</a></li>
+        <li><a href="#mcp"><span class="mark">⬡</span>MCP</a></li>
+        <li><a href="#arenas"><span class="mark">⚔</span>Arenas</a></li>
+        <li><a href="#practices"><span class="mark">✧</span>Practices</a></li>
+        <li><a href="#digests"><span class="mark">✦</span>Digests</a></li>
+        <li><a href="#map"><span class="mark">▦</span>Map</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-foot">
+      <button type="button" class="ghost-btn" id="theme-toggle" aria-label="Toggle theme">light</button>
+      <a href="https://github.com/e-gleba/ai" target="_blank" rel="noopener">source</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="hero" id="top">
+      <div class="kicker"><span class="dot" aria-hidden="true"></span> Living playbook · portfolio subpage</div>
+      <h1>AI <span class="grad">Operating System</span></h1>
+      <p class="sub">Cheatsheet for how Evgeniy Gleba actually works with AI — prompts, tools, pipelines, digests. Built to revise, ship faster, and keep taste calibrated.</p>
+      <div class="hero-meta">
+        <span>C++ Systems · Game Engine R&D</span>
+        <span>Lesta Games · Minsk</span>
+        <a href="https://e-gleba.github.io">← portfolio</a>
+        <a href="https://github.com/e-gleba">github</a>
+      </div>
+    </header>
+
+    <section class="section" id="daily">
+      <div class="section-head">
+        <h2>Daily prompt</h2>
+        <p>Date-aware kickoff. Copy → paste into Cursor / Claude / GPT.</p>
+        <span class="badge">live date</span>
+      </div>
+      <div class="daily">
+        <div class="daily-top">
+          <span class="daily-date" id="daily-date">—</span>
+          <span class="badge" id="daily-prompt-title">prompt</span>
+        </div>
+        <h3 id="daily-focus">Focus</h3>
+        <p class="hint" id="daily-hint"></p>
+        <div class="prompt-box" id="daily-prompt"></div>
+        <div class="actions">
+          <button type="button" class="btn primary" id="copy-daily">copy prompt</button>
+          <button type="button" class="btn" id="reroll-daily">reroll focus</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="identity">
+      <div class="section-head">
+        <h2>Operator identity</h2>
+        <p>How I want to show up — and how I want agents to treat my context.</p>
+      </div>
+      <p class="sub" id="identity-blurb" style="margin-bottom:16px;color:var(--fg-dim);max-width:62ch"></p>
+      <div class="pillars" id="pillars"></div>
+    </section>
+
+    <section class="section" id="drivers">
+      <div class="section-head">
+        <h2>Daily drivers</h2>
+        <p>Tools I actually open. Filter by role.</p>
+      </div>
+      <div class="filters" id="driver-filters"></div>
+      <div class="grid" id="drivers-grid"></div>
+    </section>
+
+    <section class="section" id="models">
+      <div class="section-head">
+        <h2>Models for daily use</h2>
+        <p>Pick by job — not by leaderboard screenshot.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Model</th><th>Use</th><th>When</th></tr>
+          </thead>
+          <tbody id="models-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="prompts">
+      <div class="section-head">
+        <h2>Prompt library</h2>
+        <p>Ready to copy. <code>{{date}}</code> and placeholders filled for today.</p>
+        <span class="badge">copy-first</span>
+      </div>
+      <div class="filters" id="prompt-filters"></div>
+      <div id="prompts-list"></div>
+    </section>
+
+    <section class="section" id="pipelines">
+      <div class="section-head">
+        <h2>Pipelines</h2>
+        <p>Shipping loops — idea → agent → PR → human gate.</p>
+      </div>
+      <div id="pipelines"></div>
+    </section>
+
+    <section class="section" id="mcp">
+      <div class="section-head">
+        <h2>MCP & agent tooling</h2>
+        <p>Tools agents should call — least privilege, clear schemas.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>MCP / surface</th><th>Use</th></tr>
+          </thead>
+          <tbody id="mcp-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="arenas">
+      <div class="section-head">
+        <h2>Arenas & research</h2>
+        <p>Calibrate models. Watch trends. Don't marry a scoreboard.</p>
+      </div>
+      <div class="grid" id="arenas-grid"></div>
+    </section>
+
+    <section class="section" id="practices">
+      <div class="section-head">
+        <h2>Top-tier practices</h2>
+        <p>Incl. Chinese SOP patterns — role, format, self-check, critique loops.</p>
+      </div>
+      <div class="grid" id="practices-grid"></div>
+    </section>
+
+    <section class="section" id="digests">
+      <div class="section-head">
+        <h2>Interest digests</h2>
+        <p>Game engines · electronics · RE · OSINT · BY/RU · space · OSS. Copy a starter prompt per lane.</p>
+      </div>
+      <div class="grid" id="digests-grid"></div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="section-head">
+        <h2>Bookmark map</h2>
+        <p>Graph of places I watch — workbenches, arenas, OSINT, space.</p>
+      </div>
+      <div class="map" id="bookmark-map"></div>
+    </section>
+
+    <div class="empty" id="empty-state">No matches. Clear search or try another keyword.</div>
+
+    <footer style="margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:11px;color:var(--fg-mute);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between">
+      <span>© <span id="year"></span> Evgeniy Gleba · <a href="https://e-gleba.github.io" style="color:var(--accent)">e-gleba.github.io</a></span>
+      <span>static · GitHub Pages · edit <code>assets/js/data.js</code></span>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
