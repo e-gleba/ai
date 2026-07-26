@@ -18,17 +18,17 @@
   ];
 
   const colors = {
-    core: "#ff6b9d",
-    tools: "#ff8c42",
-    prompts: "#5ec8ff",
-    skills: "#3dd68c",
-    mcp: "#c792ea",
-    dirs: "#f0c674",
-    cpp: "#7aa2f7",
-    specs: "#bb9af7",
-    digests: "#e0af68",
-    watch: "#9ece6a",
-    org: "#ff9e64",
+    core: "#ff6363",
+    tools: "#ff8f6b",
+    prompts: "#5b9cff",
+    skills: "#34c759",
+    mcp: "#bf5af2",
+    dirs: "#ffd60a",
+    cpp: "#64d2ff",
+    specs: "#ac8eff",
+    digests: "#ff9f0a",
+    watch: "#30d158",
+    org: "#ff7a45",
   };
 
   const fill_vars = (tpl, extra = {}) => {
@@ -253,10 +253,15 @@
     return items;
   };
 
-  const build_graph = (items) => {
+  const build_graph = (items, is_light) => {
     const nodes = [];
     const edges = [];
     const seen = new Set();
+    const edge_soft = is_light ? "rgba(15, 20, 40, 0.16)" : "rgba(255,255,255,0.14)";
+    const edge_faint = is_light ? "rgba(15, 20, 40, 0.08)" : "rgba(255,255,255,0.07)";
+    const leaf_bg = is_light ? "#ffffff" : "#16161c";
+    const leaf_fg = is_light ? "#1c1c22" : "#ececf1";
+    const leaf_hover = is_light ? "#f3f4f8" : "#22222c";
 
     const add_node = (n) => {
       if (seen.has(n.id)) return;
@@ -264,78 +269,115 @@
       nodes.push(n);
     };
 
-    hub_meta.forEach((h) => {
-      const is_core = h.id === "hub_core";
+    // Symmetrical radial blueprint: core center, hubs on a ring
+    const satellites = hub_meta.filter((h) => h.id !== "hub_core");
+    const ring = 270;
+
+    add_node({
+      id: "hub_core",
+      label: "AI OS",
+      title: hub_meta[0].plain,
+      group: "core",
+      x: 0,
+      y: 0,
+      fixed: true,
+      value: 52,
+      font: { size: 20, face: "Outfit, sans-serif", color: "#ffffff", bold: true },
+      color: {
+        background: colors.core,
+        border: colors.core,
+        highlight: { background: "#ffffff", border: colors.core },
+        hover: { background: colors.core, border: "#ffffff" },
+      },
+      borderWidth: 0,
+      shadow: true,
+    });
+
+    satellites.forEach((h, i) => {
+      const angle = (i / satellites.length) * Math.PI * 2 - Math.PI / 2;
+      const x = Math.cos(angle) * ring;
+      const y = Math.sin(angle) * ring;
       add_node({
         id: h.id,
         label: h.label,
         title: h.plain,
         group: h.group,
-        value: is_core ? 48 : 28,
-        font: { size: is_core ? 22 : 16, face: "Syne, Outfit, sans-serif", color: "#f4f4f8" },
+        x,
+        y,
+        fixed: true,
+        value: 30,
+        font: { size: 15, face: "Outfit, sans-serif", color: "#ffffff", bold: true },
         color: {
           background: colors[h.group],
-          border: colors[h.group],
+          border: is_light ? "#ffffff" : colors[h.group],
           highlight: { background: "#ffffff", border: colors[h.group] },
           hover: { background: colors[h.group], border: "#ffffff" },
         },
-        borderWidth: is_core ? 0 : 2,
+        borderWidth: is_light ? 2 : 0,
+        shadow: true,
       });
-      if (!is_core) {
-        edges.push({ from: "hub_core", to: h.id, color: { color: "rgba(255,255,255,0.14)", highlight: colors[h.group] } });
-      }
+      edges.push({
+        from: "hub_core",
+        to: h.id,
+        color: { color: edge_soft, highlight: colors[h.group] },
+        width: 1.25,
+      });
     });
 
-    // Cross links for a living map feel
-    const cross = [
-      ["hub_tools", "hub_skills"],
-      ["hub_skills", "hub_mcp"],
-      ["hub_dirs", "hub_skills"],
-      ["hub_cpp", "hub_dirs"],
-      ["hub_prompts", "hub_digests"],
-      ["hub_specs", "hub_dirs"],
-      ["hub_watch", "hub_tools"],
-    ];
-    cross.forEach(([a, b]) =>
-      edges.push({ from: a, to: b, dashes: true, color: { color: "rgba(255,255,255,0.08)" }, width: 1 })
-    );
-
     const leaves_per_hub = {
-      hub_tools: items.filter((i) => i.hub === "hub_tools").slice(0, 8),
-      hub_prompts: items.filter((i) => i.kind === "prompt").slice(0, 8),
+      hub_tools: items.filter((i) => i.hub === "hub_tools").slice(0, 6),
+      hub_prompts: items.filter((i) => i.kind === "prompt").slice(0, 6),
       hub_skills: items.filter((i) => i.kind === "skill"),
-      hub_mcp: items.filter((i) => i.kind === "mcp").slice(0, 6),
-      hub_dirs: items.filter((i) => i.kind === "dir").slice(0, 7),
+      hub_mcp: items.filter((i) => i.kind === "mcp").slice(0, 5),
+      hub_dirs: items.filter((i) => i.kind === "dir").slice(0, 6),
       hub_cpp: items.filter((i) => i.kind === "cpp"),
-      hub_specs: items.filter((i) => i.kind === "spec").slice(0, 6),
-      hub_digests: items.filter((i) => i.kind === "digest").slice(0, 8),
-      hub_watch: items.filter((i) => i.kind === "watch").slice(0, 8),
+      hub_specs: items.filter((i) => i.kind === "spec").slice(0, 5),
+      hub_digests: items.filter((i) => i.kind === "digest").slice(0, 6),
+      hub_watch: items.filter((i) => i.kind === "watch").slice(0, 6),
       hub_org: items.filter((i) => i.kind === "org"),
       hub_core: items.filter((i) => i.id === "daily"),
     };
 
+    const hub_pos = Object.fromEntries(
+      [["hub_core", { x: 0, y: 0 }]].concat(
+        satellites.map((h, i) => {
+          const angle = (i / satellites.length) * Math.PI * 2 - Math.PI / 2;
+          return [h.id, { x: Math.cos(angle) * ring, y: Math.sin(angle) * ring }];
+        })
+      )
+    );
+
     Object.entries(leaves_per_hub).forEach(([hub, leaves]) => {
-      leaves.forEach((item) => {
+      const origin = hub_pos[hub] || { x: 0, y: 0 };
+      const hub_angle = Math.atan2(origin.y, origin.x);
+      leaves.forEach((item, idx) => {
+        const spread = Math.min(1.1, 0.28 * leaves.length);
+        const local = -spread / 2 + (leaves.length <= 1 ? 0 : (idx / (leaves.length - 1)) * spread);
+        const a = (hub === "hub_core" ? -Math.PI / 2 : hub_angle) + local;
+        const dist = hub === "hub_core" ? 110 : 118;
         add_node({
           id: item.id,
-          label: item.title.length > 22 ? `${item.title.slice(0, 20)}…` : item.title,
+          label: item.title.length > 18 ? `${item.title.slice(0, 16)}…` : item.title,
           title: item.plain,
           group: item.group,
-          value: 14,
-          font: { size: 12, face: "Outfit, sans-serif", color: "#d8d8e0" },
+          x: origin.x + Math.cos(a) * dist,
+          y: origin.y + Math.sin(a) * dist,
+          value: 12,
+          font: { size: 12, face: "Outfit, sans-serif", color: leaf_fg },
           color: {
-            background: "#1a1a24",
+            background: leaf_bg,
             border: colors[item.group] || "#888",
-            highlight: { background: "#2a2a36", border: "#fff" },
-            hover: { background: "#222230", border: colors[item.group] || "#fff" },
+            highlight: { background: leaf_hover, border: colors.core },
+            hover: { background: leaf_hover, border: colors[item.group] || "#888" },
           },
           borderWidth: 1.5,
-          shape: item.kind === "prompt" || item.kind === "template" ? "box" : "dot",
+          shape: "dot",
+          shadow: true,
         });
         edges.push({
           from: hub,
           to: item.id,
-          color: { color: "rgba(255,255,255,0.12)" },
+          color: { color: edge_faint },
           width: 1,
         });
       });
@@ -355,6 +397,8 @@
       drawer_open: false,
       selected: null,
       active_result: 0,
+      map_busy: false,
+      busy_timer: 0,
       toast: "",
       toast_timer: 0,
       theme_mode: localStorage.getItem("ai_theme_mode") || "dark",
@@ -408,6 +452,14 @@
         if (this.network) this.mount_graph(true);
       },
 
+      mark_busy(ms = 900) {
+        this.map_busy = true;
+        clearTimeout(this.busy_timer);
+        this.busy_timer = setTimeout(() => {
+          if (!this.drawer_open) this.map_busy = false;
+        }, ms);
+      },
+
       mount_graph(remount = false) {
         const el = document.getElementById("graph");
         if (!el || typeof vis === "undefined") return;
@@ -415,22 +467,9 @@
           this.network.destroy();
           this.network = null;
         }
-        const { nodes, edges } = build_graph(this.items);
         const is_light = document.documentElement.getAttribute("data-theme") === "light";
-        const nodes_ds = new vis.DataSet(
-          nodes.map((n) => {
-            if (n.group !== "core" && n.value >= 28) return n;
-            if (n.value >= 28) return n;
-            return {
-              ...n,
-              font: { ...n.font, color: is_light ? "#22222a" : "#d8d8e0" },
-              color: {
-                ...n.color,
-                background: is_light ? "#ffffff" : "#1a1a24",
-              },
-            };
-          })
-        );
+        const { nodes, edges } = build_graph(this.items, is_light);
+        const nodes_ds = new vis.DataSet(nodes);
         const edges_ds = new vis.DataSet(edges);
         this.network = new vis.Network(
           el,
@@ -439,52 +478,47 @@
             autoResize: true,
             interaction: {
               hover: true,
-              tooltipDelay: 120,
+              tooltipDelay: 80,
               navigationButtons: false,
               keyboard: false,
               zoomView: true,
               dragView: true,
+              dragNodes: false,
             },
-            physics: {
-              enabled: true,
-              solver: "forceAtlas2Based",
-              forceAtlas2Based: {
-                gravitationalConstant: -42,
-                centralGravity: 0.012,
-                springLength: 90,
-                springConstant: 0.06,
-                damping: 0.5,
-                avoidOverlap: 0.6,
-              },
-              stabilization: { iterations: 120, fit: true },
-            },
+            physics: { enabled: false },
+            layout: { randomSeed: 7, improvedLayout: false },
             nodes: {
               shape: "dot",
-              scaling: { min: 10, max: 48 },
+              scaling: { min: 10, max: 52 },
               shadow: {
                 enabled: true,
-                color: "rgba(0,0,0,0.35)",
-                size: 12,
+                color: is_light ? "rgba(30,40,70,0.14)" : "rgba(0,0,0,0.45)",
+                size: 14,
                 x: 0,
-                y: 4,
+                y: 6,
               },
             },
             edges: {
-              smooth: { type: "continuous", roundness: 0.25 },
+              smooth: { type: "cubicBezier", forceDirection: "none", roundness: 0.35 },
               selectionWidth: 2,
             },
           }
         );
 
-        this.network.once("stabilizationIterationsDone", () => {
-          this.network.setOptions({ physics: { enabled: false } });
-          // gentle float: re-enable soft physics later? keep static for readability
+        this.network.once("afterDrawing", () => {
+          try {
+            this.network.fit({ animation: false, padding: 48 });
+          } catch (_) {}
         });
 
         this.network.on("click", (params) => {
+          this.mark_busy(1200);
           if (!params.nodes.length) return;
           this.open_item(params.nodes[0]);
         });
+        this.network.on("dragging", () => this.mark_busy(1400));
+        this.network.on("zoom", () => this.mark_busy(1100));
+        this.network.on("hoverNode", () => this.mark_busy(700));
       },
 
       open_palette() {
@@ -530,20 +564,25 @@
         if (!item) return;
         this.selected = item;
         this.drawer_open = true;
+        this.map_busy = true;
         this.palette_open = false;
         this.dismiss_hint();
         if (this.network) {
           try {
             this.network.selectNodes([id]);
-            this.network.focus(id, { scale: 1.15, animation: { duration: 450, easingFunction: "easeInOutQuad" } });
+            this.network.focus(id, {
+              scale: 1.12,
+              animation: { duration: 320, easingFunction: "easeInOutQuad" },
+            });
           } catch (_) {
-            /* hub-only or filtered */
+            /* ignore missing node */
           }
         }
       },
 
       close_drawer() {
         this.drawer_open = false;
+        this.mark_busy(400);
       },
 
       async copy_selected() {
