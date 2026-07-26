@@ -338,7 +338,7 @@ svg { display: block; }
   right: 12px;
   bottom: 12px;
   z-index: 50;
-  width: min(400px, calc(100vw - 24px));
+  width: min(440px, calc(100vw - 24px));
   border-radius: 22px;
   background: var(--glass-bg-strong);
   border: 1px solid var(--glass-border);
@@ -386,8 +386,14 @@ svg { display: block; }
 }
 .drawer_body .plain {
   color: var(--fg-dim);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-size: 0.95rem;
+}
+.when_line {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 12px;
 }
 .drawer_body .body {
   white-space: pre-wrap;
@@ -401,6 +407,126 @@ svg { display: block; }
   color: var(--fg);
   max-height: 48vh;
   overflow: auto;
+}
+
+.limits_block {
+  margin: 4px 0 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: var(--accent-soft);
+}
+.limits_block h3 {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.limits_block ul {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 6px;
+  color: var(--fg);
+  font-size: 13px;
+}
+.limits_block li::marker { color: var(--accent); }
+
+/* Pipeline subgraph — GitHub-Actions-like tree in the drawer */
+.pipe_tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 6px 0 12px;
+}
+.pipe_stage {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  min-height: 0;
+}
+.pipe_rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pipe_dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  flex: 0 0 auto;
+}
+.pipe_line {
+  width: 2px;
+  flex: 1;
+  min-height: 12px;
+  margin: 4px 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 55%, transparent), var(--line));
+  border-radius: 2px;
+}
+.pipe_card {
+  padding: 12px 12px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 45%, transparent);
+  margin-bottom: 10px;
+}
+.pipe_card_head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.pipe_card_head strong {
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+}
+.pipe_tool {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 999px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+.pipe_note {
+  font-size: 12.5px;
+  color: var(--fg-dim);
+  margin-bottom: 8px;
+}
+.pipe_parallel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 4px;
+  padding-left: 8px;
+  border-left: 2px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+.pipe_branch {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--fg) 4%, transparent);
+}
+.pipe_footnote {
+  font-size: 12.5px;
+  color: var(--fg-mute);
+  margin-top: 4px;
+}
+.btn.tiny {
+  padding: 6px 10px;
+  font-size: 11px;
+  border-radius: 9px;
 }
 .drawer_actions {
   display: flex;

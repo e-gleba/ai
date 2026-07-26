@@ -14,6 +14,7 @@
     { id: "hub_specs", label: "Guides", group: "specs", plain: "Official docs & specs", detail: "AGENTS.md, Cursor, OpenCode, MCP, clangd — canonical links." },
     { id: "hub_digests", label: "Interests", group: "digests", plain: "Topics I follow", detail: "Engines, electronics, RE, OSINT, space, business." },
     { id: "hub_watch", label: "Watch", group: "watch", plain: "Where to look next", detail: "Changelogs, arenas, talks, OSINT, space feeds." },
+    { id: "hub_flow", label: "Pipelines", group: "flow", plain: "Multistage how-to scenarios", detail: "Clean subgraphs — ship, research, PR review, C++ onboard, multi-agent, MCP. Stages live in the drawer, not the global map." },
     { id: "hub_org", label: "Organize", group: "org", plain: "Keep the system tidy", detail: "Thin rules, thick skills, human gates, golden tasks." },
   ];
 
@@ -28,6 +29,7 @@
     specs: "#ac8eff",
     digests: "#ff9f0a",
     watch: "#30d158",
+    flow: "#ff375f",
     org: "#ff7a45",
   };
 
@@ -82,20 +84,50 @@
       })
     );
 
-    catalog.daily_drivers.forEach((t, i) =>
+    catalog.daily_drivers.forEach((t, i) => {
+      const limits = t.limits || [];
+      const body = [t.note, limits.length ? "Limitations:" : "", ...limits.map((l) => `• ${l}`)]
+        .filter(Boolean)
+        .join("\n");
       push({
         id: `tool_${i}`,
         kind: "tool",
         title: t.name,
         plain: t.note,
-        body: t.note,
+        body,
+        limits,
         url: t.url,
         group: "tools",
         tags: t.tags,
-        copy: t.url,
+        copy: body,
         hub: "hub_tools",
-      })
-    );
+      });
+    });
+
+    (catalog.pipelines || []).forEach((pipe) => {
+      const stage_lines = [];
+      (pipe.stages || []).forEach((stage, idx) => {
+        if (stage.parallel) {
+          stage_lines.push(`${idx + 1}. ${stage.title} (parallel)`);
+          stage.parallel.forEach((p) => stage_lines.push(`   ├─ ${p.title} · ${p.tool || ""}`));
+        } else {
+          stage_lines.push(`${idx + 1}. ${stage.title}${stage.tool ? ` · ${stage.tool}` : ""}`);
+        }
+      });
+      push({
+        id: `pipeline_${pipe.id}`,
+        kind: "pipeline",
+        title: pipe.title,
+        plain: pipe.plain || pipe.note,
+        body: `${pipe.when || ""}\n${pipe.note || ""}\n\n${stage_lines.join("\n")}`.trim(),
+        when: pipe.when,
+        note: pipe.note,
+        stages: pipe.stages || [],
+        group: "flow",
+        copy: pipe.note || pipe.plain || pipe.title,
+        hub: "hub_flow",
+      });
+    });
 
     catalog.prompts.forEach((p) => {
       const body = fill_vars(p.body);
@@ -334,6 +366,7 @@
       hub_specs: items.filter((i) => i.kind === "spec").slice(0, 5),
       hub_digests: items.filter((i) => i.kind === "digest").slice(0, 6),
       hub_watch: items.filter((i) => i.kind === "watch").slice(0, 6),
+      hub_flow: items.filter((i) => i.kind === "pipeline"),
       hub_org: items.filter((i) => i.kind === "org"),
       hub_core: items.filter((i) => i.id === "daily"),
     };
@@ -408,6 +441,7 @@
       filters: [
         { id: "all", label: "All" },
         { id: "tools", label: "Tools" },
+        { id: "flow", label: "Pipelines" },
         { id: "prompts", label: "Prompts" },
         { id: "skills", label: "Skills" },
         { id: "dirs", label: "Folders" },
@@ -534,9 +568,10 @@
       },
 
       default_results() {
-        return this.items.filter((i) => ["daily", "hub_tools", "hub_prompts", "hub_skills", "hub_cpp"].includes(i.id)).concat(
-          this.items.filter((i) => i.kind === "tool").slice(0, 4)
-        );
+        return this.items
+          .filter((i) => ["daily", "hub_tools", "hub_flow", "hub_prompts", "hub_skills", "hub_cpp"].includes(i.id))
+          .concat(this.items.filter((i) => i.kind === "pipeline").slice(0, 3))
+          .concat(this.items.filter((i) => i.kind === "tool").slice(0, 3));
       },
 
       on_query() {
@@ -637,8 +672,45 @@
             org: "Practice",
             template: "Template",
             daily: "Today",
+            pipeline: "Pipeline",
           }[kind] || kind
         );
+      },
+
+      stage_prompt(stage) {
+        return fill_vars(stage.prompt || "");
+      },
+
+      async copy_stage(stage) {
+        const text = this.stage_prompt(stage);
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          this.show_toast("Stage prompt copied");
+        } catch {
+          this.show_toast("Copy failed");
+        }
+      },
+
+      async copy_pipeline() {
+        if (!this.selected || this.selected.kind !== "pipeline") return;
+        const chunks = [`# ${this.selected.title}`, this.selected.note || "", ""];
+        (this.selected.stages || []).forEach((stage, idx) => {
+          if (stage.parallel) {
+            chunks.push(`## ${idx + 1}. ${stage.title}`);
+            stage.parallel.forEach((p) => {
+              chunks.push(`### ${p.title} (${p.tool || ""})`, this.stage_prompt(p), "");
+            });
+          } else {
+            chunks.push(`## ${idx + 1}. ${stage.title} (${stage.tool || ""})`, this.stage_prompt(stage), "");
+          }
+        });
+        try {
+          await navigator.clipboard.writeText(chunks.join("\n"));
+          this.show_toast("Full pipeline copied");
+        } catch {
+          this.show_toast("Copy failed");
+        }
       },
 
       today_label() {

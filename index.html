@@ -106,10 +106,72 @@
         </div>
         <div class="drawer_body">
           <p class="plain" x-text="selected.plain"></p>
-          <div class="body" x-text="selected.body"></div>
+          <p class="when_line" x-show="selected.when" x-text="selected.when"></p>
+
+          <!-- Tool limitations -->
+          <template x-if="selected.kind === 'tool' && selected.limits?.length">
+            <div class="limits_block">
+              <h3>Limitations</h3>
+              <ul>
+                <template x-for="(lim, li) in selected.limits" :key="li">
+                  <li x-text="lim"></li>
+                </template>
+              </ul>
+            </div>
+          </template>
+
+          <!-- Pipeline subgraph (stages stay out of the global map) -->
+          <template x-if="selected.kind === 'pipeline'">
+            <div class="pipe_tree" aria-label="Pipeline stages">
+              <template x-for="(stage, si) in selected.stages" :key="si">
+                <div class="pipe_stage">
+                  <div class="pipe_rail" aria-hidden="true">
+                    <span class="pipe_dot" x-text="si + 1"></span>
+                    <span class="pipe_line" x-show="si < selected.stages.length - 1"></span>
+                  </div>
+                  <div class="pipe_card">
+                    <template x-if="!stage.parallel">
+                      <div>
+                        <div class="pipe_card_head">
+                          <strong x-text="stage.title"></strong>
+                          <span class="pipe_tool" x-text="stage.tool"></span>
+                        </div>
+                        <p class="pipe_note" x-text="stage.note"></p>
+                        <button type="button" class="btn tiny" @click="copy_stage(stage)" x-show="stage.prompt">Copy stage prompt</button>
+                      </div>
+                    </template>
+                    <template x-if="stage.parallel">
+                      <div>
+                        <div class="pipe_card_head">
+                          <strong x-text="stage.title"></strong>
+                          <span class="pipe_tool">parallel</span>
+                        </div>
+                        <p class="pipe_note" x-text="stage.note"></p>
+                        <div class="pipe_parallel">
+                          <template x-for="(branch, bi) in stage.parallel" :key="bi">
+                            <div class="pipe_branch">
+                              <div class="pipe_card_head">
+                                <strong x-text="branch.title"></strong>
+                                <span class="pipe_tool" x-text="branch.tool"></span>
+                              </div>
+                              <p class="pipe_note" x-text="branch.note"></p>
+                              <button type="button" class="btn tiny" @click="copy_stage(branch)" x-show="branch.prompt">Copy</button>
+                            </div>
+                          </template>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+
+          <div class="body" x-show="selected.kind !== 'pipeline'" x-text="selected.body"></div>
+          <p class="pipe_footnote" x-show="selected.kind === 'pipeline'" x-text="selected.note"></p>
         </div>
         <div class="drawer_actions">
-          <button type="button" class="btn primary" @click="copy_selected()">Copy</button>
+          <button type="button" class="btn primary" @click="selected.kind === 'pipeline' ? copy_pipeline() : copy_selected()" x-text="selected.kind === 'pipeline' ? 'Copy pipeline' : 'Copy'"></button>
           <a class="btn" x-show="selected.url" :href="selected.url" target="_blank" rel="noopener">Open</a>
           <button type="button" class="btn" @click="open_palette()">Search</button>
         </div>
