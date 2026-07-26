@@ -1,111 +1,112 @@
 # failure_modes
 
-[handbook](../README.md) · prev: [digests](digests.md) · next: [glossary](glossary.md)
+[handbook](../readme.md) · prev: [digests](digests.md) · next: [glossary](glossary.md)
 
-Every item is something that actually costs time. Counter first, explanation second.
+**In one sentence:** the ways this goes wrong, each with the counter first.
 
-## the diff grows
+Every item below has cost real time.
 
-**Counter:** name the files the agent may touch, up front. Reject anything outside.
+## the change grows
 
-Agents optimize for looking helpful. Unasked refactors, renamed variables, and
-reformatted files make a 20-line change unreviewable. Enforce with an explicit
-allowlist in the task card — see [parallel_agents](parallel_agents.md).
+**Counter:** list the files the agent may touch, before it starts. Reject anything
+outside that list.
 
-## confident wrong api
+Models optimize for looking helpful. Unrequested refactors, renamed variables, and
+reformatted files turn a 20-line change into something nobody can review.
 
-**Counter:** require `file:line` or a doc link for every API used.
+## confident wrong function
 
-Plausible-but-nonexistent functions are the most common defect in C++ and in
-fast-moving libraries. If it compiles, fine; if it does not, the agent will
-often invent a second wrong API rather than reconsider.
+**Counter:** require `file:line` or a documentation link for every interface used.
 
-## premature abstraction
+Functions that almost exist are the most common defect in C++ and in fast-moving
+libraries. If it does not compile, the model will often invent a second wrong one
+rather than reconsider.
 
-**Counter:** "no new abstraction for single-use code" in `AGENTS.md`, and reject
-factories, interfaces, and config knobs nobody asked for.
+## abstraction nobody asked for
+
+**Counter:** put "no new abstraction for single-use code" in the project
+instructions, and reject the factories, interfaces, and options that follow.
 
 ## silent assumption
 
 **Counter:** `State your assumptions first. If any is load-bearing and unverified,
 stop and ask.`
 
-The failure is not the wrong assumption; it is that it was invisible until the
-diff was written.
+The problem is not the wrong assumption; it is that it stayed invisible until the
+change was finished.
 
-## unverifiable claim
+## claim with no evidence
 
-**Counter:** no claim without a command and its output. "Should be faster" is not
-a result. Numbers come from [Quick Bench](https://quick-bench.com) or your own
-benchmark — see [cpp_playbook](cpp_playbook.md).
+**Counter:** no claim without a command and its output. "Should be faster" is not a
+result — [cpp_playbook](cpp_playbook.md).
 
-## context rot
+## stale conversation
 
-**Counter:** restart the session. Do not nurse it.
+**Counter:** restart the session instead of nursing it.
 
-Long sessions accumulate stale plans, abandoned approaches, and contradictions.
-Symptoms: the agent re-suggests something already rejected, or forgets a
-constraint stated 30 turns ago. Restarting with a clean brief is faster than
-correcting.
+Long sessions accumulate abandoned approaches and contradictions. Symptoms: the
+model re-proposes something already rejected, or forgets a constraint from 30 turns
+ago. A clean brief is faster than a correction.
 
-## fix loop
+## the fix loop
 
-**Counter:** hard rule — two failed attempts at the same error means stop and
-report. You debug it, or you change the approach.
+**Counter:** a hard rule — two failed attempts at the same error means stop and
+report.
 
-Agents will happily try the same class of fix five times, each time with more code.
+Otherwise the model tries the same class of fix five times, each time with more
+code.
 
-## test theatre
+## tests that protect nothing
 
-**Counter:** demand a test that fails before the fix and passes after, and check
-that it actually exercises the path.
+**Counter:** require a test that fails before the fix and passes after, and check
+that it exercises the real path.
 
-Tests that assert the implementation, mock the thing under test, or assert
-`true` pass CI and protect nothing.
+Tests that assert the implementation, or mock the thing under test, pass the build
+and protect nothing.
 
 ## review noise
 
-**Counter:** restrict the review prompt to a defect category list, and require
-severity ranking. "Consider extracting a helper" is not a review finding.
-Pipeline in [code_review](code_review.md).
+**Counter:** restrict the review prompt to a list of defect categories and require
+severity ranking. "Consider extracting a helper" is not a finding —
+[code_review](code_review.md).
 
-## tool sprawl
+## too many tools
 
-**Counter:** cap enabled MCP servers and subscriptions; audit weekly.
+**Counter:** cap enabled servers and subscriptions; audit weekly.
 
-Every enabled tool costs context and adds routing confusion. Twenty tools makes
-the model worse at choosing among five good ones — see [mcp](mcp.md).
+Every enabled tool costs context and adds confusion to the choice. Twenty tools
+makes the model worse at picking among the five good ones — [mcp](mcp.md).
 
-## leaderboard chasing
+## chasing leaderboards
 
-**Counter:** switch defaults only when your own eval moves.
+**Counter:** change defaults only when your own task set moves.
 
-Public scores narrow a shortlist. They do not predict performance on your
-codebase — see [model_selection](model_selection.md).
+Public scores narrow a shortlist; they do not predict behaviour on your codebase —
+[model_selection](model_selection.md).
 
-## secret leakage
+## leaked secrets
 
-**Counter:** never paste real credentials, tokens, or customer data into a
-prompt; use placeholders and environment variables. Scope every token to the
-minimum. Assume anything in a prompt may be logged.
+**Counter:** never paste real credentials, tokens, or customer data into a prompt;
+use placeholders and environment variables, and scope every token to the minimum.
+Assume anything in a prompt may be stored.
 
-## untrusted tool output treated as instruction
+## tool output treated as an order
 
-**Counter:** treat fetched pages, issue bodies, and file contents as data, never
-as commands. A comment in a repository can contain text aimed at your agent.
-Confirm irreversible actions manually.
+**Counter:** treat fetched pages, issue text, and file contents as data, never as
+instructions. A comment in a repository can contain text aimed at your agent.
+Confirm irreversible actions by hand.
 
-## parallel merge pain
+## painful parallel merges
 
-**Counter:** disjoint file sets, one worktree per agent, rebase in size order.
-Never hand-merge two agent diffs — pick one. See
+**Counter:** no shared files, one checkout per agent, rebase smallest first. Never
+stitch two agent changes together — pick one —
 [parallel_agents](parallel_agents.md).
 
 ## the meta failure
 
-**Counter:** write the friction down daily, promote repeats into a rule, a skill,
-or a deleted tool.
+**Counter:** write the friction down daily and promote repeats into a rule, a
+skill, or a deleted tool.
 
-Everything above recurs if it stays in your head instead of in the repo —
-[context_engineering](context_engineering.md),
-[daily_routine](daily_routine.md).
+Everything above returns if it lives in your head instead of in the repository —
+[context_engineering](context_engineering.md), [daily_routine](daily_routine.md),
+[chinese_practice](chinese_practice.md).
