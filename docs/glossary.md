@@ -22,18 +22,24 @@ Newcomers should start with [start_here](start_here.md).
 - **tool** — something a model is allowed to use: read a file, run a test, search.
 - **agent** — a model in a loop with tools: act, observe, retry.
 - **agentic coding** — the agent edits, builds, tests, and iterates on its own.
-- **AGENTS.md** — always-loaded project instructions: build, test, style, limits.
+- **AGENTS.md** — always-loaded project instructions, in an open format read by most
+  agents [agents.md](https://agents.md).
 - **rule** — a constraint applied when a file pattern matches.
-- **skill** — an on-demand procedure with numbered steps.
+- **skill** — an on-demand procedure in a `SKILL.md` folder
+  [specification](https://agentskills.io/specification); ready ones in
+  [skills](../skills/readme.md).
 - **hook** — a script that runs automatically at a lifecycle point, not a suggestion.
 - **grounding** — giving the model verifiable facts instead of trusting its memory.
 - **context rot** — quality decay caused by stale or contradictory context.
+- **progressive disclosure** — loading a skill's description first and its body only
+  when the task matches, so many skills cost little context.
 
 More: [context_engineering](context_engineering.md).
 
 ## protocol
 
-- **MCP** — a common plug shape between AI applications and tools or data.
+- **MCP** — a common plug shape between AI applications and tools or data
+  [modelcontextprotocol.io](https://modelcontextprotocol.io).
 - **tool (MCP)** — an action the model can call.
 - **resource** — readable context the application supplies.
 - **prompt (MCP)** — a reusable template the user picks.
@@ -66,7 +72,8 @@ More: [local_models](local_models.md).
 
 ## c++ and toolchain
 
-- **compile_commands.json** — the exact compiler flags per file; best grounding file.
+- **compile_commands.json** — the exact compiler flags per file, in a documented
+  format [compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html).
 - **clangd** — the language server that reads those flags.
 - **undefined behaviour** — code the standard gives no meaning to; the compiler may
   assume it never happens.
@@ -76,8 +83,11 @@ More: [local_models](local_models.md).
   anything already built against it.
 - **hot path** — code where copies, allocations, and dispatch are measurable.
 - **minimal reproducer** — the smallest program that still shows the bug.
+- **target (CMake)** — the unit a build is described in; properties propagate from it
+  to its consumers [cmake skill](../skills/cmake/SKILL.md).
 
-More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md).
+More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md),
+[cpp20 skill](../skills/cpp20/SKILL.md).
 
 ## research
 
@@ -98,4 +108,4 @@ More: [research_osint](research_osint.md).
 - **retrospective** — a short review of the process after a task, not of the person.
 - **friction note** — the end-of-day record of what wasted time.
 
-More: [parallel_agents](parallel_agents.md), [chinese_practice](chinese_practice.md).
+More: [parallel_agents](parallel_agents.md), [best_practice](best_practice.md).
