@@ -28,8 +28,8 @@ availability, and unit cost — not about beating the frontier.
 | [vLLM](https://github.com/vllm-project/vllm) | serving many concurrent requests with high throughput |
 | [LM Studio](https://lmstudio.ai) | a graphical way to compare models quickly |
 
-All of them speak the same HTTP shape as the hosted vendors, so one client can
-point at either. Keep that switch in a single place.
+All of them expose an OpenAI-compatible HTTP endpoint, so one client can point at
+either local or hosted. Keep that switch in a single place.
 
 ## sizing, in practice
 
@@ -40,6 +40,8 @@ the conversation cache grows with context length, not with model size
 ```
 
 - A smaller model at good quality usually beats a larger one squeezed too hard.
+  Background on the trade-off:
+  [llama.cpp quantization notes](https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md).
 - Long context costs memory continuously. Do not set a huge window "just in case".
 - Measure tokens per second on your own hardware before building on it.
 
@@ -52,7 +54,7 @@ Shortlist from the open-weights columns in
 - Does it hold a required output format across a hundred calls?
 - Does it emit valid tool calls without retries?
 - Does quality fall off a cliff at half the context window?
-- Does the license allow your use, including redistribution and fine-tuning?
+- Does the licence allow your use, including redistribution and fine-tuning?
 
 ## bulk pipeline
 
@@ -65,7 +67,7 @@ Shortlist from the open-weights columns in
 ```
 
 This turns an expensive job into a cheap one with a small paid audit — the same
-economics as [chinese_practice](chinese_practice.md).
+economics as [best_practice](best_practice.md).
 
 ## prompting a small model
 
@@ -86,6 +88,8 @@ Input:
 - List the allowed values; never ask for a free-form label.
 - Give one example, not five: examples eat the small context window.
 - Temperature 0 for anything you will parse.
+- Where the runtime supports it, constrain output with a grammar or schema instead
+  of asking politely.
 
 ## hardware, briefly
 
