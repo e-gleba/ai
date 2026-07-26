@@ -9,9 +9,11 @@ config:
   MD024: false
   # ordered lists restart inside procedures
   MD029: false
-  # bold used as an inline label in list items
+  # bold used as an inline label in list items and index groups
   MD036: false
 globs:
   - "**/*.md"
 ignores:
   - "node_modules/**"
+  # github templates are fragments, not documents: no top-level heading
+  - ".github/**"
