@@ -1,6 +1,6 @@
 # context_engineering
 
-[handbook](../readme.md) · prev: [parallel_agents](parallel_agents.md) · next: [chinese_practice](chinese_practice.md)
+[handbook](../readme.md) · prev: [parallel_agents](parallel_agents.md) · next: [best_practice](best_practice.md)
 
 **In one sentence:** the repository is the prompt — most "the model is stupid"
 problems are missing context, not missing intelligence.
@@ -14,12 +14,27 @@ problems are missing context, not missing intelligence.
 | skills | when the task matches | procedures with steps and examples |
 | tools and MCP | when called | live data and actions |
 
-Rule of thumb: facts go in instructions, procedures go in skills, capabilities go
-in tools. A procedure placed in instructions burns context on every single turn.
+Facts go in instructions, procedures go in skills, capabilities go in tools. A
+procedure placed in instructions burns context on every single turn.
+
+## the files, where the format is defined, and who reads them
+
+| file | format defined by | read by |
+| --- | --- | --- |
+| `AGENTS.md` | [agents.md](https://agents.md), [repository](https://github.com/agentsmd/agents.md) | Codex, Cursor, Copilot coding agent, Gemini CLI, Aider, Zed, Amp, Jules, OpenCode and others; plain markdown, no front matter |
+| `CLAUDE.md` | [Claude Code memory](https://code.claude.com/docs/en/memory) | Claude Code; usually a one-line `@AGENTS.md` import so nothing is duplicated |
+| `.cursor/rules/*.mdc` | [Cursor rules](https://cursor.com/docs/context/rules) | Cursor only; front matter with `globs` scopes them to paths |
+| `SKILL.md` | [Agent Skills](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), [specification](https://agentskills.io/specification) | Claude and other skill-aware agents; `name` and `description` always loaded, body on trigger |
+| `.mcp.json` | [Model Context Protocol](https://modelcontextprotocol.io) | any MCP client — see [mcp](mcp.md) |
+| `compile_commands.json` | [clang compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html) | clangd, clang-tidy, and any agent that wants your real compiler flags |
+
+Rule: commit one `AGENTS.md`, because it has the widest readership, and add
+tool-specific files only as thin pointers to it.
 
 ## agents.md, the one file that matters
 
-Keep it under about 100 lines; it is read every session.
+Keep it under about 100 lines; it is read every session, and some tools cap the
+size they will load.
 
 ```markdown
 # project
@@ -65,19 +80,16 @@ The value is in the exact commands and the constraints, not the prose.
 ```
 .
 ├── AGENTS.md                # project truth, always loaded
-├── .cursor/
-│   ├── rules/               # scoped rules with file patterns
-│   └── skills/              # editor-side skills
-├── .agents/
-│   └── skills/
-│       └── release_check/
-│           └── SKILL.md
-├── .opencode/               # terminal agent config
+├── CLAUDE.md                # one line: @AGENTS.md
+├── .cursor/rules/           # path-scoped conventions, cursor only
+├── .agents/skills/          # portable skills, one folder each
+│   └── release_check/SKILL.md
 ├── .mcp.json                # servers for this repository
 ├── compile_commands.json    # generated; best grounding file for c++
-└── docs/
-    └── decisions/           # short decision records
+└── docs/decisions/          # short decision records
 ```
+
+Ready-made skills to copy into `.agents/skills/`: [skills](../skills/readme.md).
 
 ## scoped rule
 
@@ -118,7 +130,8 @@ Stop and report on any failure. Never auto-fix during a release check.
 ```
 
 Rule or skill? A rule is a constraint that is always true. A skill is a procedure
-for a class of task. If it has numbered steps, it is a skill.
+for a class of task. If it has numbered steps, it is a skill. The `description` is
+what decides whether it loads, so write it as "what it does and when to use it".
 
 ## context budget
 
@@ -145,5 +158,5 @@ Module boundaries return `std::expected`. Exceptions may exist inside a module.
 Wrappers at boundaries; agents must not "simplify" by throwing across them.
 ```
 
-Agents follow written decisions. They cannot follow decisions that live in a chat
-window.
+Format background: [architecture decision records](https://adr.github.io). Agents
+follow written decisions; they cannot follow decisions that live in a chat window.
