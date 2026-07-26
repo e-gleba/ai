@@ -1,0 +1,33 @@
+# AI pipeline example — validate pipeline configs and prompt templates
+name: AI Pipeline
+
+on:
+  push:
+    paths:
+      - 'pipelines/**'
+  pull_request:
+    paths:
+      - 'pipelines/**'
+  workflow_dispatch:
+
+jobs:
+  validate-pipelines:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate pipeline configs
+        run: |
+          echo "Checking pipeline definitions..."
+          for f in pipelines/*.yml pipelines/*.yaml; do
+            [ -f "$f" ] || continue
+            python3 -c "import yaml; yaml.safe_load(open('$f'))" && echo "OK $f valid" || exit 1
+          done
+
+      - name: Check prompt templates
+        run: |
+          echo "Checking prompt templates..."
+          for f in prompts/*.md; do
+            [ -f "$f" ] || continue
+            head -1 "$f" | grep -q '^#' && echo "OK $f has title" || echo "WARN $f missing title"
+          done
