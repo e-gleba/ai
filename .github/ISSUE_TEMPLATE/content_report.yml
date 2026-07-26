@@ -1,0 +1,39 @@
+name: content report
+description: a page is wrong, unclear, outdated, or missing
+labels: [documentation]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: kind
+      options:
+        - wrong or outdated fact
+        - unclear wording
+        - dead or moved link
+        - missing topic
+        - tool limitation changed
+    validations:
+      required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: page
+      description: file path, for example docs/tool_stack.md
+      placeholder: docs/
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: what is wrong
+      description: quote the line if you can, and say what it should say instead
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: source
+      description: a link that proves it, if the change is a fact

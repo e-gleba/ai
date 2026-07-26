@@ -1,0 +1,12 @@
+version: 2
+
+updates:
+  # the only dependencies here are the actions used by ci
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
+    labels:
+      - dependencies

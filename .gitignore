@@ -1,0 +1,11 @@
+# local tooling, if you run the checks by hand
+node_modules/
+lychee/
+.lycheecache
+
+# editor and os noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
