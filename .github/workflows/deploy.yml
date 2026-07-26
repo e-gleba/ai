@@ -1,4 +1,4 @@
-# Official GitHub Pages static deploy — no Jekyll, no gem dance.
+# Official GitHub Pages static deploy — no Jekyll.
 # Uses well-maintained actions from actions/* only.
 name: Deploy to GitHub Pages
 
@@ -31,16 +31,15 @@ jobs:
 
       - name: Prepare artifact
         run: |
-          mkdir -p _site
-          cp index.html .nojekyll _site/
-          cp -r assets _site/
-          # Keep README out of the public artifact noise
-          test -f robots.txt && cp robots.txt _site/ || true
+          mkdir -p site
+          cp index.html .nojekyll site/
+          cp -r assets site/
+          test -f robots.txt && cp robots.txt site/ || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: site
 
       - name: Deploy to GitHub Pages
         id: deployment

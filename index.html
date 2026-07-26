@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-theme-mode="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Evgeniy Gleba — AI operating system: prompts, daily drivers, pipelines, digests for game engines, RE, OSINT, space, and systems work.">
+  <meta name="description" content="Evgeniy Gleba — AI operating system: AGENTS.md, skills, MCP, Cursor, OpenCode, C++ workflows, prompts, digests.">
   <meta name="author" content="Evgeniy Gleba">
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#0a0a0f" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)">
   <meta property="og:title" content="e-gleba /ai — AI Operating System">
-  <meta property="og:description" content="Personal AI cheatsheet: prompts, tools, arenas, digests, pipelines. Portfolio subpage.">
+  <meta property="og:description" content="Agents, skills, MCP, C++ playbooks, prompts, arenas — personal AI OS.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://e-gleba.github.io/ai/">
   <meta name="twitter:card" content="summary">
@@ -42,7 +42,7 @@
 
   <header class="mobile-bar">
     <div class="brand"><span class="pink">e</span><span class="dim">-</span>gleba<span class="ai">/ai</span></div>
-    <button type="button" class="ghost-btn" id="menu-toggle" aria-label="Open menu">menu</button>
+    <button type="button" class="ghost-btn" id="menu_toggle" aria-label="Open menu">menu</button>
   </header>
 
   <aside class="sidebar" aria-label="Section navigation">
@@ -59,19 +59,31 @@
       <ul class="nav">
         <li><a href="#daily" class="active"><span class="mark">◉</span>Daily</a></li>
         <li><a href="#identity"><span class="mark">◎</span>Identity</a></li>
+        <li><a href="#layers"><span class="mark">≡</span>Layers</a></li>
+        <li><a href="#dirs"><span class="mark">/</span>Dirs</a></li>
+        <li><a href="#skills"><span class="mark">*</span>Skills</a></li>
+        <li><a href="#mcp"><span class="mark">⬡</span>MCP</a></li>
+        <li><a href="#specs"><span class="mark">§</span>Specs</a></li>
+        <li><a href="#cpp"><span class="mark">++</span>C++</a></li>
+        <li><a href="#org"><span class="mark">▣</span>Organize</a></li>
         <li><a href="#drivers"><span class="mark">⚡</span>Drivers</a></li>
         <li><a href="#models"><span class="mark">▣</span>Models</a></li>
         <li><a href="#prompts"><span class="mark">⌘</span>Prompts</a></li>
+        <li><a href="#templates"><span class="mark">▤</span>Templates</a></li>
         <li><a href="#pipelines"><span class="mark">→</span>Pipelines</a></li>
-        <li><a href="#mcp"><span class="mark">⬡</span>MCP</a></li>
         <li><a href="#arenas"><span class="mark">⚔</span>Arenas</a></li>
         <li><a href="#practices"><span class="mark">✧</span>Practices</a></li>
         <li><a href="#digests"><span class="mark">✦</span>Digests</a></li>
+        <li><a href="#watch"><span class="mark">◎</span>Watch</a></li>
         <li><a href="#map"><span class="mark">▦</span>Map</a></li>
       </ul>
     </nav>
     <div class="sidebar-foot">
-      <button type="button" class="ghost-btn" id="theme-toggle" aria-label="Toggle theme">light</button>
+      <div class="theme_switch" role="group" aria-label="Theme">
+        <button type="button" class="theme_btn active" data-theme-mode="dark" aria-pressed="true" title="Dark">dark</button>
+        <button type="button" class="theme_btn" data-theme-mode="light" aria-pressed="false" title="Light">light</button>
+        <button type="button" class="theme_btn" data-theme-mode="system" aria-pressed="false" title="System">auto</button>
+      </div>
       <a href="https://github.com/e-gleba/ai" target="_blank" rel="noopener">source</a>
     </div>
   </aside>
@@ -80,7 +92,7 @@
     <header class="hero" id="top">
       <div class="kicker"><span class="dot" aria-hidden="true"></span> Living playbook · portfolio subpage</div>
       <h1>AI <span class="grad">Operating System</span></h1>
-      <p class="sub">Cheatsheet for how Evgeniy Gleba actually works with AI — prompts, tools, pipelines, digests. Built to revise, ship faster, and keep taste calibrated.</p>
+      <p class="sub">How Evgeniy Gleba actually works with agents — AGENTS.md, skills, MCP, Cursor, OpenCode, C++ grounding, prompts that ship.</p>
       <div class="hero-meta">
         <span>C++ Systems · Game Engine R&D</span>
         <span>Lesta Games · Minsk</span>
@@ -92,20 +104,20 @@
     <section class="section" id="daily">
       <div class="section-head">
         <h2>Daily prompt</h2>
-        <p>Date-aware kickoff. Copy → paste into Cursor / Claude / GPT.</p>
+        <p>Date-aware kickoff. Copy → paste into Cursor / OpenCode / Claude / GPT.</p>
         <span class="badge">live date</span>
       </div>
       <div class="daily">
         <div class="daily-top">
-          <span class="daily-date" id="daily-date">—</span>
-          <span class="badge" id="daily-prompt-title">prompt</span>
+          <span class="daily-date" id="daily_date">—</span>
+          <span class="badge" id="daily_prompt_title">prompt</span>
         </div>
-        <h3 id="daily-focus">Focus</h3>
-        <p class="hint" id="daily-hint"></p>
-        <div class="prompt-box" id="daily-prompt"></div>
+        <h3 id="daily_focus">Focus</h3>
+        <p class="hint" id="daily_hint"></p>
+        <div class="prompt-box" id="daily_prompt"></div>
         <div class="actions">
-          <button type="button" class="btn primary" id="copy-daily">copy prompt</button>
-          <button type="button" class="btn" id="reroll-daily">reroll focus</button>
+          <button type="button" class="btn primary" id="copy_daily">copy prompt</button>
+          <button type="button" class="btn" id="reroll_daily">reroll focus</button>
         </div>
       </div>
     </section>
@@ -113,10 +125,96 @@
     <section class="section" id="identity">
       <div class="section-head">
         <h2>Operator identity</h2>
-        <p>How I want to show up — and how I want agents to treat my context.</p>
+        <p>How I show up — and how agents should treat my context.</p>
       </div>
-      <p class="sub" id="identity-blurb" style="margin-bottom:16px;color:var(--fg-dim);max-width:62ch"></p>
+      <p class="lede" id="identity_blurb"></p>
       <div class="pillars" id="pillars"></div>
+    </section>
+
+    <section class="section" id="layers">
+      <div class="section-head">
+        <h2>Context layers</h2>
+        <p>Rules ≠ skills ≠ MCP ≠ hooks. One job each — don't mix them.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Layer</th><th>Job</th><th>When</th><th>Where</th><th>Example</th></tr>
+          </thead>
+          <tbody id="layers_body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="dirs">
+      <div class="section-head">
+        <h2>Agent directories</h2>
+        <p>Standard paths Cursor, OpenCode, Codex, Claude & friends actually read.</p>
+        <span class="badge">layout</span>
+      </div>
+      <div class="grid" id="dirs_grid"></div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <p>What they are, vs rules, how to author, examples worth keeping.</p>
+      </div>
+      <p class="lede" id="skills_blurb"></p>
+      <div class="table-wrap" style="margin-bottom:16px">
+        <table>
+          <thead>
+            <tr><th>Aspect</th><th>Rule</th><th>Skill</th></tr>
+          </thead>
+          <tbody id="skills_vs_body"></tbody>
+        </table>
+      </div>
+      <h3 class="subhead">How to use</h3>
+      <ol class="checklist" id="skills_how"></ol>
+      <h3 class="subhead">Example skills</h3>
+      <div class="grid" id="skills_examples"></div>
+    </section>
+
+    <section class="section" id="mcp">
+      <div class="section-head">
+        <h2>MCP</h2>
+        <p>Model Context Protocol — live tools agents can call.</p>
+      </div>
+      <p class="lede" id="mcp_blurb"></p>
+      <h3 class="subhead">Principles</h3>
+      <ul class="checklist" id="mcp_principles"></ul>
+      <div class="table-wrap" style="margin-top:16px">
+        <table>
+          <thead>
+            <tr><th>Surface</th><th>Use</th></tr>
+          </thead>
+          <tbody id="mcp_body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="specs">
+      <div class="section-head">
+        <h2>Specs & docs</h2>
+        <p>Canonical links — AGENTS.md, Cursor, OpenCode, MCP, clangd.</p>
+      </div>
+      <div class="grid" id="specs_grid"></div>
+    </section>
+
+    <section class="section" id="cpp">
+      <div class="section-head">
+        <h2>C++ agent playbook</h2>
+        <p>compile_commands, godbolt proof, sanitizers, review order.</p>
+      </div>
+      <div class="grid" id="cpp_grid"></div>
+    </section>
+
+    <section class="section" id="org">
+      <div class="section-head">
+        <h2>How to organize</h2>
+        <p>Thin ambient context. Thick skills. Human gates.</p>
+      </div>
+      <div class="grid" id="org_grid"></div>
     </section>
 
     <section class="section" id="drivers">
@@ -124,8 +222,8 @@
         <h2>Daily drivers</h2>
         <p>Tools I actually open. Filter by role.</p>
       </div>
-      <div class="filters" id="driver-filters"></div>
-      <div class="grid" id="drivers-grid"></div>
+      <div class="filters" id="driver_filters"></div>
+      <div class="grid" id="drivers_grid"></div>
     </section>
 
     <section class="section" id="models">
@@ -138,7 +236,7 @@
           <thead>
             <tr><th>Model</th><th>Use</th><th>When</th></tr>
           </thead>
-          <tbody id="models-body"></tbody>
+          <tbody id="models_body"></tbody>
         </table>
       </div>
     </section>
@@ -146,11 +244,19 @@
     <section class="section" id="prompts">
       <div class="section-head">
         <h2>Prompt library</h2>
-        <p>Ready to copy. <code>{{date}}</code> and placeholders filled for today.</p>
+        <p>Ready to copy. <code>{{date}}</code> filled for today.</p>
         <span class="badge">copy-first</span>
       </div>
-      <div class="filters" id="prompt-filters"></div>
-      <div id="prompts-list"></div>
+      <div class="filters" id="prompt_filters"></div>
+      <div id="prompts_list"></div>
+    </section>
+
+    <section class="section" id="templates">
+      <div class="section-head">
+        <h2>File templates</h2>
+        <p>AGENTS.md · SKILL.md · .cursor/rules — drop into a repo.</p>
+      </div>
+      <div id="templates_list"></div>
     </section>
 
     <section class="section" id="pipelines">
@@ -161,57 +267,50 @@
       <div id="pipelines"></div>
     </section>
 
-    <section class="section" id="mcp">
-      <div class="section-head">
-        <h2>MCP & agent tooling</h2>
-        <p>Tools agents should call — least privilege, clear schemas.</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>MCP / surface</th><th>Use</th></tr>
-          </thead>
-          <tbody id="mcp-body"></tbody>
-        </table>
-      </div>
-    </section>
-
     <section class="section" id="arenas">
       <div class="section-head">
         <h2>Arenas & research</h2>
         <p>Calibrate models. Watch trends. Don't marry a scoreboard.</p>
       </div>
-      <div class="grid" id="arenas-grid"></div>
+      <div class="grid" id="arenas_grid"></div>
     </section>
 
     <section class="section" id="practices">
       <div class="section-head">
         <h2>Top-tier practices</h2>
-        <p>Incl. Chinese SOP patterns — role, format, self-check, critique loops.</p>
+        <p>Chinese SOP patterns, critique loops, thin rules / thick skills.</p>
       </div>
-      <div class="grid" id="practices-grid"></div>
+      <div class="grid" id="practices_grid"></div>
     </section>
 
     <section class="section" id="digests">
       <div class="section-head">
         <h2>Interest digests</h2>
-        <p>Game engines · electronics · RE · OSINT · BY/RU · space · OSS. Copy a starter prompt per lane.</p>
+        <p>Engines · electronics · RE · OSINT · BY/RU · space. Copy a starter prompt.</p>
       </div>
-      <div class="grid" id="digests-grid"></div>
+      <div class="grid" id="digests_grid"></div>
+    </section>
+
+    <section class="section" id="watch">
+      <div class="section-head">
+        <h2>Where to watch</h2>
+        <p>Changelogs, arenas, C++ talks, OSINT, space — signal sources.</p>
+      </div>
+      <div class="map" id="watch_map"></div>
     </section>
 
     <section class="section" id="map">
       <div class="section-head">
         <h2>Bookmark map</h2>
-        <p>Graph of places I watch — workbenches, arenas, OSINT, space.</p>
+        <p>Full graph of places I keep one click away.</p>
       </div>
-      <div class="map" id="bookmark-map"></div>
+      <div class="map" id="bookmark_map"></div>
     </section>
 
-    <div class="empty" id="empty-state">No matches. Clear search or try another keyword.</div>
+    <div class="empty" id="empty_state">No matches. Clear search or try another keyword.</div>
 
-    <footer style="margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:11px;color:var(--fg-mute);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between">
-      <span>© <span id="year"></span> Evgeniy Gleba · <a href="https://e-gleba.github.io" style="color:var(--accent)">e-gleba.github.io</a></span>
+    <footer class="site_foot">
+      <span>© <span id="year"></span> Evgeniy Gleba · <a href="https://e-gleba.github.io">e-gleba.github.io</a></span>
       <span>static · GitHub Pages · edit <code>assets/js/data.js</code></span>
     </footer>
   </main>
