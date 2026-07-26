@@ -2,8 +2,8 @@
 window.ai_data = {
   meta: {
     brand: "e-gleba",
-    title: "AI Operating System",
-    tagline: "Personal AI guidebook — recipes, tools, prompts, music, business, BY law. Reopen daily.",
+    title: "AI Recipe Book",
+    tagline: "Simple AI cooking guide — tools, prompts, pipelines, digests. Reopen daily.",
     person: "Evgeniy Gleba",
     role: "C++ Systems Engineer · Game Engine R&D",
     where: "Lesta Games · Minsk",
@@ -13,12 +13,12 @@ window.ai_data = {
 
   identity: {
     blurb:
-      "C++ systems / game-engine engineer in Minsk. AI as leverage — engines, RE, chips, space, BY/RU business & law. Soundtrack: Orchestra · Twin Atlantic · Halo. Career math inspired by Осознанная Меркантильность: clear value, clear ask, copy only what ships.",
+      "C++ systems / game-engine engineer in Minsk. AI as leverage — engines, RE, chips, space, BY/RU business & law. Soundtrack: Orchestra · Twin Atlantic · Halo. Working rule: clear value, clear ask, copy only what ships.",
     pillars: [
       { t: "Spec first", d: "Write the contract before the chat. Ambiguity is the tax." },
       { t: "Layer context", d: "AGENTS.md + rules + skills + MCP — each layer has one job." },
       { t: "Verify always", d: "AI drafts. I own correctness, UB, perf, and security." },
-      { t: "Clear ask", d: "Conscious mercantile — value, ask, next step. No cope." },
+      { t: "Clear ask", d: "State the value, the ask, and the next step. No fluff." },
     ],
   },
 
@@ -26,7 +26,7 @@ window.ai_data = {
     blurb: "Minsk · engines · RE · chips · space · clear asks. Soundtrack optional but recommended.",
     traits: [
       { t: "Systems taste", d: "C++ / engines / RE — correctness before cleverness." },
-      { t: "Conscious mercantile", d: "Clear value, clear ask — Осознанная Меркантильность energy." },
+      { t: "Clear ask", d: "Lead with value, exact ask, easy next step." },
       { t: "Builder curiosity", d: "Chips, satellites, OSINT, BY/RU business reality." },
       { t: "Soundtrack", d: "Orchestra · Twin Atlantic · Halo — focus fuel." },
     ],
@@ -40,17 +40,16 @@ window.ai_data = {
   ],
 
   signals: [
-    { name: "Осознанная Меркантильность", url: "https://t.me/m0rtymerr_channel", note: "Anton Nazarov — IT career, comp, clear asks." },
-    { name: "OM on YouTube", url: "https://www.youtube.com/@om_nazarov", note: "Hiring, salary growth, professional leverage." },
-    { name: "OM on Boosty", url: "https://boosty.to/m0rtymerr", note: "Community / deeper materials." },
     { name: "LM Arena", url: "https://lmarena.ai", note: "Calibrate models, not vibes." },
     { name: "Artificial Analysis", url: "https://artificialanalysis.ai", note: "Speed / quality / price dashboards." },
+    { name: "OpenRouter", url: "https://openrouter.ai", note: "Try models behind one API." },
+    { name: "Hugging Face", url: "https://huggingface.co", note: "Models, datasets, spaces." },
   ],
 
   business: [
     { title: "Company ask / mailing", plain: "Email that gets a yes", prompt_id: "business_ask", note: "Intros, data, partnerships — clear next step." },
     { title: "BY / regional law research", plain: "Orientation for counsel", prompt_id: "by_law", note: "Not legal advice — prepare questions for a licensed expert." },
-    { title: "Career / comp framing", plain: "OM-style leverage memo", prompt_id: "om_career", note: "Before a review, offer, or hard conversation." },
+    { title: "Career / comp framing", plain: "Clear-ask leverage memo", prompt_id: "career_ask", note: "Before a review, offer, or hard conversation." },
   ],
 
   /* —— tools with full specs —— */
@@ -500,7 +499,7 @@ Style: engineer notes. Skip hype.`,
 From: Evgeniy Gleba — C++ systems / game engine R&D (Minsk)
 To: {{company}}
 Goal: {{goal}}
-Tone: professional, concise, no fluff — clear ask, clear value (осознанная меркантильность).
+Tone: professional, concise, no fluff — clear value, clear ask, easy next step.
 
 Include:
 - 2-line context who I am
@@ -532,11 +531,11 @@ Deliver:
 Separate: fact vs interpretation. Date: {{date}}.`,
     },
     {
-      id: "om_career",
-      title: "Career / comp framing (OM-style)",
+      id: "career_ask",
+      title: "Career / comp framing",
       cat: "business",
       tags: ["career", "business"],
-      body: `Help me think with осознанная меркантильность — clear value, clear ask, no cope.
+      body: `Help me think with clear value and a clear ask — no fluff, no cope.
 
 Context: C++ systems / game-engine R&D eng in Minsk.
 Situation: {{goal}}
@@ -892,9 +891,9 @@ Date: {{date}}. Direct tone.`,
       { n: "Twin Atlantic", u: "https://open.spotify.com/search/Twin%20Atlantic" },
       { n: "Halo OST", u: "https://open.spotify.com/search/Halo%20soundtrack" },
     ]},
-    { group: "Career signal", links: [
-      { n: "OM Telegram", u: "https://t.me/m0rtymerr_channel" },
-      { n: "OM YouTube", u: "https://www.youtube.com/@om_nazarov" },
+    { group: "Law / research (BY)", links: [
+      { n: "pravo.by", u: "https://pravo.by" },
+      { n: "etalonline.by", u: "https://etalonline.by" },
     ]},
     { group: "Me", links: [
       { n: "Portfolio", u: "https://e-gleba.github.io" },
@@ -910,6 +909,6 @@ Date: {{date}}. Direct tone.`,
     { day: 3, focus: "Chips & silicon", hint: "Foundry, GPU/NPU, export controls", prompt_id: "chips_digest" },
     { day: 4, focus: "OSINT / politeconomy", hint: "BY·RU · sanctions · industry", prompt_id: "osint_digest" },
     { day: 5, focus: "Space & astronomy", hint: "Orbits, EO, open tools", prompt_id: "space_digest" },
-    { day: 6, focus: "Career & clear asks", hint: "OM-style leverage + mailings", prompt_id: "om_career" },
+    { day: 6, focus: "Career & clear asks", hint: "Leverage memo + mailings", prompt_id: "career_ask" },
   ],
 };

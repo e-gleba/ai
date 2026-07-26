@@ -8,11 +8,11 @@
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#0e0e10" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f0f1f5" media="(prefers-color-scheme: light)">
-  <meta property="og:title" content="e-gleba / ai — Personal AI OS">
-  <meta property="og:description" content="Daily prompts, tool limits, pipelines, digests, BY law & career asks — reopen every day.">
+  <meta property="og:title" content="e-gleba / ai — AI Recipe Book">
+  <meta property="og:description" content="Simple AI cooking guide: daily prompts, tools, pipelines, digests — reopen every day.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://e-gleba.github.io/ai/">
-  <title>e-gleba / ai — Personal AI OS</title>
+  <title>e-gleba / ai — Recipe Book</title>
   <link rel="canonical" href="https://e-gleba.github.io/ai/">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff6a3d'/%3E%3Cstop offset='100%25' style='stop-color:%23ffb347'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%230e0e10'/%3E%3Ccircle cx='32' cy='32' r='11' fill='url(%23g)'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +36,7 @@
     <header class="topbar">
       <a class="brand" :href="meta.portfolio" title="Portfolio">
         <span class="a" x-text="meta.brand"></span><span class="dim">/</span>ai
-        <span class="tag">OS</span>
+        <span class="tag">recipes</span>
       </a>
 
       <button type="button" class="spotlight glass" @click="open_palette()" aria-label="Open spotlight">
@@ -79,7 +79,7 @@
       <div class="hero-meta">
         <a :href="meta.portfolio" target="_blank" rel="noopener">Portfolio</a>
         <a :href="meta.github" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://t.me/m0rtymerr_channel" target="_blank" rel="noopener">Осознанная меркантильность</a>
+        <a href="https://lmarena.ai" target="_blank" rel="noopener">LM Arena</a>
         <span x-text="today_label()"></span>
       </div>
 
@@ -114,7 +114,7 @@
 
       <template x-if="active_filter === 'today'">
         <div>
-          <p class="section_label">How I work</p>
+          <p class="section_label">Kitchen rules</p>
           <div class="pillars">
             <template x-for="p in identity.pillars" :key="p.t">
               <div class="pillar">
@@ -124,7 +124,7 @@
             </template>
           </div>
 
-          <p class="section_label">Personality</p>
+          <p class="section_label">Taste</p>
           <div class="pillars">
             <template x-for="t in personality.traits" :key="t.t">
               <div class="pillar">
@@ -134,7 +134,7 @@
             </template>
           </div>
 
-          <p class="section_label">Jump in</p>
+          <p class="section_label">Quick recipes</p>
           <div class="grid">
             <template x-for="item in items.filter(i => ['tool_0','tool_2','pipeline_ship_feature','biz_0','music_0','digest_chips'].includes(i.id) || i.kind === 'prompt').slice(0, 8)" :key="item.id">
               <article class="card glass" @click="open_item(item.id)">
@@ -183,7 +183,7 @@
         ·
         <a href="https://lmarena.ai" target="_blank" rel="noopener">lm arena</a>
         ·
-        <a href="https://t.me/m0rtymerr_channel" target="_blank" rel="noopener">om channel</a>
+        <a href="https://artificialanalysis.ai" target="_blank" rel="noopener">model benches</a>
       </span>
     </footer>
   </div>

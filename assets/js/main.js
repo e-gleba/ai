@@ -1,4 +1,4 @@
-/* Personal AI OS — Alpine + Fuse only. No graph. Content in data.js. */
+/* Personal AI recipe book — Alpine + Fuse only. Content in data.js. */
 (() => {
   const catalog = window.ai_data;
   if (!catalog) return;

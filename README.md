@@ -26,7 +26,7 @@ Content source of truth: [`assets/js/data.js`](assets/js/data.js).
 - **Prompts** ready to copy (`{{vars}}` fillers)
 - **Pipelines** with parallel stages
 - **Digests**: engines, RE, chips, OSINT, space, BY/RU business, …
-- **Business & law** asks + career framing (Осознанная Меркантильность)
+- **Business & law** asks + career framing (clear value, clear ask)
 - **Soundtrack**: Orchestra · Twin Atlantic · Halo
 - **Bookmarks / arenas**: LM Arena, Artificial Analysis, watch lists
 
