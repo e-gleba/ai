@@ -1,94 +1,101 @@
 # glossary
 
-[handbook](../README.md) · prev: [failure_modes](failure_modes.md)
+[handbook](../readme.md) · prev: [failure_modes](failure_modes.md)
 
-One line each. Terms used across this handbook.
+**In one sentence:** every term used in this handbook, one line each, plain words.
 
-## agents and context
+Newcomers should start with [start_here](start_here.md).
 
-- **agent** — a model in a loop with tools, allowed to act and observe results.
+## basics
+
+- **model** — a program that predicts text; you give words, it returns words.
+- **prompt** — the message you send to a model.
+- **token** — roughly a word fragment; cost and limits are counted in tokens.
+- **context** — everything the model can see right now.
+- **context window** — how much it can see at once.
+- **hallucination** — a confident invention; the model tracks plausibility, not truth.
+- **temperature** — how much randomness is allowed; zero for anything you will parse.
+- **reasoning effort** — how much internal deliberation is spent per answer.
+
+## agents and configuration
+
+- **tool** — something a model is allowed to use: read a file, run a test, search.
+- **agent** — a model in a loop with tools: act, observe, retry.
 - **agentic coding** — the agent edits, builds, tests, and iterates on its own.
-- **AGENTS.md** — always-loaded project instructions: build, test, style, boundaries.
-- **rule** — a scoped constraint applied when a path glob matches.
-- **skill** — an on-demand procedure with steps, loaded when the task matches.
-- **hook** — a deterministic script fired at a lifecycle point, not a suggestion.
-- **context window** — total tokens the model can attend to in one request.
-- **context rot** — quality decay from stale, contradictory, or over-full context.
-- **grounding** — supplying verifiable facts (files, compile flags, logs) instead
-  of relying on the model's memory.
-- **effort / reasoning setting** — how much internal deliberation is spent per request.
+- **AGENTS.md** — always-loaded project instructions: build, test, style, limits.
+- **rule** — a constraint applied when a file pattern matches.
+- **skill** — an on-demand procedure with numbered steps.
+- **hook** — a script that runs automatically at a lifecycle point, not a suggestion.
+- **grounding** — giving the model verifiable facts instead of trusting its memory.
+- **context rot** — quality decay caused by stale or contradictory context.
 
-See [context_engineering](context_engineering.md).
+More: [context_engineering](context_engineering.md).
 
 ## protocol
 
-- **MCP** — Model Context Protocol: one wire format between AI clients and
-  tools, data, and prompts.
-- **tool** — model-invoked action with side effects or live data.
-- **resource** — readable context the application selects.
-- **prompt (MCP)** — reusable parameterized template the user selects.
-- **spec revision** — dated protocol version; upgrades can break clients.
+- **MCP** — a common plug shape between AI applications and tools or data.
+- **tool (MCP)** — an action the model can call.
+- **resource** — readable context the application supplies.
+- **prompt (MCP)** — a reusable template the user picks.
+- **revision** — a dated protocol version; upgrades can break clients.
 
-See [mcp](mcp.md).
+More: [mcp](mcp.md).
 
 ## evaluation
 
-- **Elo / arena rating** — ranking from blind pairwise human votes.
+- **benchmark** — a fixed set of tasks used to compare models.
+- **arena rating** — a score from blind human votes between two answers.
 - **contamination** — benchmark questions present in training data, inflating scores.
-- **SWE-bench Verified** — human-filtered 500 real GitHub issues; patch must pass
-  the project's tests.
-- **Aider polyglot** — 225 Exercism exercises across six languages, scored on
-  edits that apply and pass.
-- **LiveCodeBench** — rotating competitive programming problems collected after
-  model cutoffs.
-- **cost per successful task** — spend divided by tasks that landed without rework;
-  the only cost number worth tracking.
-- **personal eval** — your own 5–10 real tasks with known-good answers.
+- **SWE-bench Verified** — 500 human-checked real issues; the patch must pass tests.
+- **Aider polyglot** — 225 exercises in six languages, scored on edits that pass.
+- **LiveCodeBench** — fresh contest problems collected after training cut-offs.
+- **cost per success** — spend divided by tasks that landed without rework.
+- **personal task set** — your own 5 to 10 real tasks with known-good answers.
 
-See [arenas_and_benchmarks](arenas_and_benchmarks.md).
+More: [arenas_and_benchmarks](arenas_and_benchmarks.md).
 
-## serving and local
+## running models yourself
 
-- **open weights** — downloadable parameters; license still governs use.
-- **quantization** — lower-precision weights to cut memory, at some quality cost.
-- **GGUF** — quantized model file format used by llama.cpp.
-- **kv cache** — per-request memory holding attention state; grows with context.
-- **tokens/s** — throughput on your hardware; measure, do not assume.
-- **OpenAI-compatible endpoint** — common HTTP shape that lets one client target
-  local or cloud backends.
+- **open weights** — downloadable parameters; the licence still governs use.
+- **quantization** — storing weights at lower precision to save memory.
+- **GGUF** — a common file format for quantized models.
+- **conversation cache** — per-request memory that grows with context length.
+- **tokens per second** — throughput on your hardware; measure it, do not assume.
 
-See [local_models](local_models.md).
+More: [local_models](local_models.md).
 
 ## c++ and toolchain
 
-- **compile_commands.json** — compilation database: exact flags per translation
-  unit; the best single grounding artifact for C++ agents.
-- **clangd** — language server that consumes the compilation database.
-- **UB** — undefined behaviour; the compiler may assume it never happens.
-- **asan / ubsan / tsan** — sanitizers for memory, undefined behaviour, and threads.
-- **ABI** — binary interface; changing it silently breaks linked consumers.
-- **hot path** — code where allocations, copies, and virtual calls are measurable.
-- **minimal reproducer** — smallest self-contained program that shows the bug.
+- **compile_commands.json** — the exact compiler flags per file; best grounding file.
+- **clangd** — the language server that reads those flags.
+- **undefined behaviour** — code the standard gives no meaning to; the compiler may
+  assume it never happens.
+- **sanitizer** — a build mode that catches memory, threading, or undefined-behaviour
+  bugs at run time.
+- **binary interface (ABI)** — how compiled code fits together; changing it breaks
+  anything already built against it.
+- **hot path** — code where copies, allocations, and dispatch are measurable.
+- **minimal reproducer** — the smallest program that still shows the bug.
 
-See [cpp_playbook](cpp_playbook.md).
+More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md).
 
 ## research
 
 - **primary source** — the document itself: filing, standard, datasheet, source code.
 - **triangulation** — three genuinely independent sources, not three reprints.
-- **provenance** — where a claim came from and when you read it.
-- **`[unverified]`** — marker for anything not traced to a primary or
-  institutional source.
+- **provenance** — where a claim came from, and when you read it.
+- **[unverified]** — the marker for anything not traced to a solid source.
 
-See [research_osint](research_osint.md).
+More: [research_osint](research_osint.md).
 
 ## process
 
-- **task card** — the fixed brief given to one agent: scope, files, verification.
-- **worktree** — separate checkout of the same repo, one per agent.
-- **fan-out** — running several agents in parallel on disjoint tasks.
-- **surgical diff** — every changed line traces to the stated request.
-- **friction note** — end-of-day record of what wasted time; the input to
-  improving the whole setup.
+- **task card** — the fixed brief for one agent: scope, files, checks.
+- **worktree** — a separate checkout of the same repository, one per agent.
+- **fan-out** — running several agents at once on non-overlapping tasks.
+- **surgical change** — every changed line traces to the request.
+- **acceptance criteria** — what must be true for the work to count as done.
+- **retrospective** — a short review of the process after a task, not of the person.
+- **friction note** — the end-of-day record of what wasted time.
 
-See [parallel_agents](parallel_agents.md), [daily_routine](daily_routine.md).
+More: [parallel_agents](parallel_agents.md), [chinese_practice](chinese_practice.md).
