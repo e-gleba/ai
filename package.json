@@ -1,0 +1,11 @@
+{
+  "name": "ai-handbook-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build-site.mjs"
+  },
+  "devDependencies": {
+    "marked": "18.0.7"
+  }
+}
