@@ -1,5 +1,5 @@
 const root = document.documentElement;
-const themeButton = document.querySelector('[data-theme]');
+const themeButton = document.querySelector('button[data-theme]');
 const menuButton = document.querySelector('[data-menu]');
 const scrim = document.querySelector('[data-scrim]');
 const toast = document.querySelector('.toast');
