@@ -2,10 +2,10 @@
 name: cpp20
 description: >
   Modern C++ design practice: C++23 by default, value semantics, ranges,
-  concepts, error handling, and the reuse-first discipline behind the
-  standard library and Boost. Use when writing, reviewing, or refactoring
-  C++, choosing between designs, or deciding whether a standard facility is
-  the right tool.
+  concepts, error handling, contracts without dependencies, and the
+  reuse-first discipline behind the standard library and Boost. Use when
+  writing, reviewing, or refactoring C++, choosing between designs, or
+  deciding whether a standard facility is the right tool.
 ---
 
 # cpp20
@@ -36,10 +36,13 @@ and the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCore
 1. The standard library.
 2. [Boost](https://www.boost.org) — the proving ground most of the standard
    came from.
-3. A well-starred, maintained library: [fmt](https://github.com/fmtlib/fmt),
+3. A well-starred, maintained library **already linked by the project**:
+   [fmt](https://github.com/fmtlib/fmt),
    [spdlog](https://github.com/gabime/spdlog),
-   [GSL](https://github.com/microsoft/GSL) for `gsl::not_null` and
-   `gsl::narrow`, [abseil](https://github.com/abseil/abseil-cpp).
+   [GSL](https://github.com/microsoft/GSL),
+   [abseil](https://github.com/abseil/abseil-cpp).
+4. A ten-line polyfill in your own namespace. Never add a dependency for
+   one small facility — write the concept of it once and reuse that.
 
 Never hand-roll what a tested library already does. When a design or trick
 is taken from one, cite it at the call site:
@@ -48,6 +51,79 @@ is taken from one, cite it at the call site:
 // small-buffer optimisation, approach from boost::container::small_vector
 // https://www.boost.org/doc/libs/release/doc/html/container.html
 ```
+
+## mechanical habits — the compiler enforces all of these
+
+```cpp
+struct tank_state final                  // final: not designed as a base
+{
+    std::uint64_t id{};                  // every member initialized
+    float         hit_points{100.0F};
+    std::string   name{"tank"};
+};
+
+// aggregates: designated initializers name the fields, not the order
+const auto state = tank_state{.id = 42, .name = "t-34"};
+
+// braces everywhere: no narrowing, no most-vexing parse
+const std::vector<int> ids{1, 2, 3};     // not ids(1, 2, 3)
+```
+
+- Initialize every variable at declaration. An uninitialized scalar is
+  undefined behaviour waiting for a reader.
+- `{}` over `()`: braces reject narrowing conversions and can never parse
+  as a function declaration.
+- Designated initializers (`.member = value`) for aggregates — the reader
+  sees field names, not field order.
+- `final` on every type not designed as a base class. Unplanned
+  inheritance is a planned bug.
+- RAII owns every resource: acquire in the constructor, release in the
+  destructor. No `new`/`delete`, `fclose`, or manual `unlock` in user
+  code — and no early return that skips a release.
+
+## contracts without dependencies
+
+No GSL in the project? The whole vocabulary is a few lines:
+
+```cpp
+namespace tb
+{
+    [[noreturn]] inline void contract_failed(
+        const char*                expr,
+        const std::source_location loc = std::source_location::current()) noexcept
+    {
+        std::fprintf(stderr, "contract failed: %s at %s:%u\n",
+                     expr, loc.file_name(), loc.line());
+        std::abort();
+    }
+
+    // gsl::finally, ten lines: runs f at scope exit, whatever the path
+    template <typename F>
+    struct [[nodiscard]] scope_exit final
+    {
+        F f;
+        scope_exit(const scope_exit&)            = delete;
+        scope_exit& operator=(const scope_exit&) = delete;
+        ~scope_exit() noexcept(std::is_nothrow_invocable_v<F>) { f(); }
+    };
+    template <typename F>
+    scope_exit(F) -> scope_exit<F>;
+}
+
+#define tb_expects(cond) \
+    ((cond) ? static_cast<void>(0) : ::tb::contract_failed(#cond))
+```
+
+```cpp
+tb_expects(index < size);                                    // precondition
+const auto cleanup = tb::scope_exit{[&] { release(handle); }};
+```
+
+std already replaces the rest of GSL: `std::span` for `gsl::span`,
+`std::string_view`, `std::as_const`, `[[nodiscard]]`. A reference
+parameter, or a `tb_expects(p != nullptr)` on entry, covers most of
+`gsl::not_null`. Where the project already links GSL, use
+`gsl::Expects` and `gsl::Ensures` instead of the macro.
 
 ## the three ideas
 
@@ -108,9 +184,8 @@ Say the guarantee in the signature, then keep it:
   at compile time.
 - A function that can fail returns `std::expected` or a checked status,
   never a magic value. The caller checks explicitly; no silent fallthrough.
-- Preconditions and postconditions: `gsl::Expects` and `gsl::Ensures` from
-  the [GSL](https://github.com/microsoft/GSL), or `assert` where GSL is
-  absent.
+- Preconditions and postconditions: `tb_expects` from the section above, or
+  `gsl::Expects` and `gsl::Ensures` where GSL is already linked.
 
 ## ranges, sharp edges named
 
@@ -158,11 +233,13 @@ header. Name them after the requirement, not the types that satisfy it.
 
 1. Lifetime and ownership: who owns it, what outlives what.
 2. Undefined behaviour: aliasing, alignment, signed overflow, uninit reads.
-3. Concurrency: memory orders, invariants spanning members, false sharing.
-4. Error paths: leaks, half-constructed objects, ignored results.
-5. Interface and binary-interface impact.
-6. Performance, with numbers.
-7. Style, delegated to the linter.
+3. Mechanical: uninitialized variables, `()` narrowing, missing `final`,
+   missing `[[nodiscard]]` / `noexcept` / `constexpr`.
+4. Concurrency: memory orders, invariants spanning members, false sharing.
+5. Error paths: leaks, half-constructed objects, ignored results.
+6. Interface and binary-interface impact.
+7. Performance, with numbers.
+8. Style, delegated to the linter.
 
 Longer version with prompts: [cpp_playbook](../../docs/cpp_playbook.md).
 
