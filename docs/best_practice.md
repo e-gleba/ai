@@ -130,7 +130,7 @@ down, refuses, returns malformed output, or is quietly replaced.
 Collect the inputs that produced bad output and turn them into your own evaluation
 set. Re-run it whenever you change a model or a prompt. After a few months this set
 is worth more than any public table —
-[arenas_and_benchmarks](arenas_and_benchmarks.md).
+[model_selection](model_selection.md).
 
 ## 11. language is a tool choice
 
