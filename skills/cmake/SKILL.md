@@ -1,59 +1,69 @@
 ---
 name: cmake
 description: >
-  Modern CMake practice for C++ projects: target-based design, presets,
-  dependencies, install and packaging, and the compilation database agents need.
-  Use when writing or reviewing CMakeLists.txt, CMakePresets.json, toolchain files,
-  install rules, or when a build works on one machine and not another.
+  Modern CMake practice: target-based design, presets, dependencies, install
+  and packaging, and the compilation database agents need. Use when writing
+  or reviewing CMakeLists.txt, CMakePresets.json, toolchain files, install
+  rules, or when a build works on one machine and not another.
 ---
 
 # cmake
 
-References for everything below: the official
-[cmake documentation](https://cmake.org/cmake/help/latest/),
+Primary sources, in order: the
+[official documentation](https://cmake.org/cmake/help/latest/),
 [cmake-buildsystem](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html),
 [cmake-presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html),
-and *Professional CMake: A Practical Guide* by Craig Scott
-[book](https://crascit.com/professional-cmake/), which is the closest thing to a
-style guide the ecosystem has.
+*Professional CMake: A Practical Guide* by Craig Scott
+[book](https://crascit.com/professional-cmake/), and
+[Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
 
 ## the one idea
 
-Everything is a target with properties, and properties propagate. Variables that
-change global state are the old way and cause the "works on my machine" class of
+Everything is a target with properties; properties propagate to consumers.
+Global state is the old way and causes the "works on my machine" class of
 bug.
 
 ```cmake
+cmake_minimum_required(VERSION 4.2)   # default floor; lower only on request
+project(tb_core VERSION 1.0 LANGUAGES CXX)
+
+# no modules in use -> do not pay for scanning them
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+
 add_library(tb_core)
+add_library(tb::core ALIAS tb_core)
+
 target_sources(tb_core PRIVATE src/core.cpp)
-target_include_directories(tb_core PUBLIC include)   # consumers get this
 target_compile_features(tb_core PUBLIC cxx_std_23)
+set_target_properties(tb_core PROPERTIES CXX_EXTENSIONS OFF)
+
+# build tree sees the source dir, installed tree sees the prefix: no leaks
+target_include_directories(tb_core PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
 target_link_libraries(tb_core PUBLIC tb::math PRIVATE fmt::fmt)
 ```
 
-`PUBLIC` propagates to consumers, `PRIVATE` does not, `INTERFACE` applies only to
-consumers. Getting these three right removes most build breakage.
+`PUBLIC` propagates, `PRIVATE` does not, `INTERFACE` applies only to
+consumers. Most build breakage is one of these three being wrong.
 
 ## rules
 
-1. Never touch `CMAKE_CXX_FLAGS`, `include_directories`, `link_libraries`, or
-   `add_definitions`. Use the `target_*` forms.
-2. Never use `file(GLOB)` for sources: the build does not notice a new file. List
-   sources explicitly.
-3. Set an honest minimum version, and use `project()` with `VERSION` and `LANGUAGES`.
-4. Do not set the build type inside the project; that is the caller's choice through
-   a preset or the command line.
-5. Alias every exported library so in-tree and installed use look the same:
-   `add_library(tb::core ALIAS tb_core)`.
-6. Warnings belong on the target, guarded per compiler, and never `PUBLIC`.
-7. Generated files go in the binary directory, never in the source tree.
-8. One `CMakeLists.txt` per directory that owns a target; no path gymnastics across
-   directories.
+1. Never touch `CMAKE_CXX_FLAGS`, `include_directories`, `link_libraries`,
+   or `add_definitions`. Use the `target_*` forms.
+2. No `file(GLOB)` for sources: the build does not notice a new file.
+3. Do not set `CMAKE_BUILD_TYPE` in the project; that is the preset's job.
+4. Alias every exported library: in-tree and installed use look identical.
+5. Warnings on the target, guarded per compiler, never `PUBLIC`.
+6. Generated files stay in the binary directory.
+7. Your variables `snake_case`; CMake's own stay as they are.
+8. One `CMakeLists.txt` per directory that owns a target.
 
 ## presets, the entry point
 
-`CMakePresets.json` makes the build one command for a human, an agent, and CI. Keep
-the names stable, because they end up in the project instructions.
+One command for a human, an agent, and CI. Keep preset names stable; they
+end up in project instructions.
 
 ```json
 {
@@ -66,7 +76,7 @@ the names stable, because they end up in the project instructions.
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "TB_WARNINGS_AS_ERRORS": "ON"
+        "tb_warnings_as_errors": "ON"
       }
     },
     {
@@ -91,26 +101,25 @@ cmake --preset dev && cmake --build --preset dev -j && ctest --preset dev
 
 ## the compilation database
 
-`CMAKE_EXPORT_COMPILE_COMMANDS=ON` produces `compile_commands.json`: the exact flags
-per file, in the format defined by
-[clang's compilation database spec](https://clang.llvm.org/docs/JSONCompilationDatabase.html).
-It is consumed by `clangd`, `clang-tidy`, `include-what-you-use`, and by coding
-agents that need your real dialect. Symlink it to the source root:
+`CMAKE_EXPORT_COMPILE_COMMANDS=ON` produces `compile_commands.json`: the
+exact flags per file, per the
+[clang spec](https://clang.llvm.org/docs/JSONCompilationDatabase.html).
+Consumed by `clangd`, `clang-tidy`, and every coding agent that needs your
+real dialect. Symlink it to the source root:
 
 ```sh
 ln -sf build/dev/compile_commands.json .
 ```
 
-Without it an agent guesses the language standard and the include paths, and its
-guesses are confidently wrong.
+Without it an agent guesses the standard and the include paths, confidently
+wrong.
 
 ## dependencies, in order of preference
 
-1. Already on the system, found with `find_package(... CONFIG REQUIRED)`.
-2. A package manager the project already uses (vcpkg or Conan through a toolchain
-   file, never hard-coded paths).
+1. On the system: `find_package(... CONFIG REQUIRED)`.
+2. The project's package manager, vcpkg or Conan, through a toolchain file.
 3. `FetchContent` for small, well-behaved libraries.
-4. Vendored source, pinned, never edited, excluded from your warning settings.
+4. Vendored source: pinned, never edited, excluded from your warnings.
 
 Depend on imported targets, never on variables holding paths.
 
@@ -118,30 +127,38 @@ Depend on imported targets, never on variables holding paths.
 
 ```cmake
 include(GNUInstallDirs)
+
+target_sources(tb_core PUBLIC FILE_SET HEADERS BASE_DIRS include
+  FILES include/tb/core.hpp)
+
 install(TARGETS tb_core EXPORT tb_targets
-        FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(EXPORT tb_targets NAMESPACE tb:: DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tb)
+  FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT tb_targets NAMESPACE tb::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/tb)
 ```
 
-A project is reusable only when a consumer can call `find_package(tb)` and get the
-same target name they used in-tree.
+Reusable means a consumer calls `find_package(tb)` and gets the same
+`tb::core` they used in-tree. The `$<INSTALL_INTERFACE:...>` generator
+expression above is what keeps your absolute build paths out of the
+installed package.
 
-## review checklist for a cmake change
+## review checklist
 
-- Does any command set global state instead of target properties?
-- Is `PUBLIC` used where `PRIVATE` would do? That leaks flags to consumers.
-- Are new sources listed explicitly?
-- Does it work from a clean build directory, not only incrementally?
-- Do the presets still produce a compilation database?
-- Does cross-compilation still work: no host-only assumptions, no absolute paths?
-- Is generated output confined to the binary directory?
+- Global state set anywhere instead of target properties?
+- `PUBLIC` where `PRIVATE` would do? That leaks flags to consumers.
+- New sources listed explicitly?
+- Works from a clean build directory, not only incrementally?
+- Presets still produce a compilation database?
+- No host-only assumptions or absolute paths, so cross-compilation works?
+- Module scan disabled if modules are not used?
 
-## when a build breaks on one machine only
+## breaks on one machine only
 
 ```
 1. Reproduce from a clean build directory. Half of these vanish.
-2. Compare the failing compile command in compile_commands.json with a working one.
-3. Check cache variables: cmake -LAH build/dev | grep -i <suspect>
+2. Diff the failing compile command in compile_commands.json against a
+   working one.
+3. cmake -LAH build/dev | grep -i <suspect>
 4. Check generator and toolchain differences before touching code.
 5. Only then change CMake.
 ```

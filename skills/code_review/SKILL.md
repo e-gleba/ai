@@ -1,31 +1,18 @@
+---
+name: code_review
+description: >
+  Review a change with plain git, no hosting CLI. Diff extraction, author
+  self-check, four reviewer passes, and raw-diff copy commands for Bitbucket
+  and any other host. Use when preparing a pull request, reviewing one, or
+  triaging a review queue.
+---
+
 # code_review
 
-[handbook](../readme.md) · prev: [prompt_library](prompt_library.md) · next: [parallel_agents](parallel_agents.md)
-
-**In one sentence:** review is where AI pays best, because a wrong suggestion
-costs nothing when a human decides.
-
-The agent produces findings; the human approves. A finding without
-`file:line` is not a finding. Drop-in version:
-[code_review skill](../skills/code_review/SKILL.md).
-
-## the pipeline
-
-```mermaid
-flowchart LR
-    A[author self-review] --> B[pull request]
-    B --> C[1 intent]
-    C --> D[2 correctness]
-    D --> E[3 design]
-    E --> F[4 hygiene]
-    F --> G[human decides]
-```
-
-One prompt per pass. One prompt doing all four does all four badly.
+One rule: the agent produces findings, the human approves. A finding without
+`file:line` is not a finding.
 
 ## get the diff, any host
-
-No hosting CLI needed — plain git covers everything:
 
 ```sh
 git fetch origin main
@@ -33,7 +20,7 @@ git diff origin/main...HEAD > pr.diff     # three dots: from the merge base
 git log origin/main..HEAD --oneline       # the commits
 ```
 
-Or copy the raw diff from the browser:
+Or copy the raw diff from the browser, no CLI:
 
 - Bitbucket Cloud:
   `https://api.bitbucket.org/2.0/repositories/<workspace>/<repo>/pullrequests/<id>/diff`
@@ -43,13 +30,14 @@ Or copy the raw diff from the browser:
   [api reference](https://developer.atlassian.com/server/bitbucket/rest/)
 - GitHub without `gh`: append `.diff` to the pull request URL.
 
-A failing build log pasted into the prompt beats any amount of speculation.
+Paste the diff or the failing build log into the prompt. Facts beat
+descriptions.
 
-## author side, before opening the pull request
+## author, before opening
 
 1. `git diff --stat` — over about 400 changed lines, split it.
-2. Read your own diff first. Never send an agent diff you have not read.
-3. Run the pass below and fix what it finds, so reviewers get a clean change.
+2. Read your own diff. Never send an agent diff you have not read.
+3. Run this pass and fix what it finds:
 
 ```
 Here is my diff: {{diff}}
@@ -80,7 +68,9 @@ Exact commands run and their results; before and after numbers if performance.
 No marketing, no emoji, no line-by-line retelling of the diff.
 ```
 
-## reviewer side, four separate passes
+## reviewer, four passes
+
+One prompt per pass. One prompt doing all four does all four badly.
 
 | pass | question | model class |
 | --- | --- | --- |
@@ -99,8 +89,8 @@ Answer three things only:
 3. Is the goal itself the right fix, or is it treating a symptom?
 ```
 
-Pass 2 is the hostile-review prompt from the author side, run on their diff.
-Pass 4 is a linter's job; a cheap model or `clang-tidy` handles it.
+Pass 2 is the hostile-review prompt above, run on their diff. Pass 4 is a
+linter's job; a cheap model or `clang-tidy` handles it.
 
 Pass 3:
 
@@ -115,7 +105,7 @@ Verdict: approve, approve with nits, or request changes, plus the single most
 important change.
 ```
 
-## triage of the queue
+## triage the queue
 
 ```
 My open review requests: {{list}}
@@ -124,11 +114,10 @@ For each: estimated review time, the first thing to check, and whether a linter
 could handle it instead of my attention.
 ```
 
-## rules that keep this honest
+## rules
 
-- Reject "consider extracting a helper" noise — [failure_modes](failure_modes.md).
+- Reject "consider extracting a helper" noise.
 - If two passes disagree, correctness wins.
-- Batch reviews into two slots a day — [daily_routine](daily_routine.md).
-- On engine code, two extra gates come first: platform boundary and binary
-  interface — [engine_rnd](engine_rnd.md) and the
-  [tb_engine skill](../skills/tb_engine/SKILL.md).
+- Batch reviews into two slots a day.
+- Engine code gets two extra gates first: platform boundary and binary
+  interface — [tb_engine](../tb_engine/SKILL.md).
