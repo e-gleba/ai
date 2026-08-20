@@ -117,8 +117,9 @@ async function output(path, content) {
 
 async function renderPage(source, destination, active, title, options = {}) {
   const markdown = await read(source);
-  const normalized = normalizeMarkdown(markdown, source);
-  const body = marked.parse(normalized, { gfm: true, breaks: false });
+  const body = options.skill
+    ? `<pre><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
+    : marked.parse(normalizeMarkdown(markdown, source), { gfm: true, breaks: false });
   await output(destination, shell({
     title,
     description: options.description || `AI Handbook: ${title}`,
