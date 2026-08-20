@@ -44,16 +44,16 @@ function normalizeMarkdown(markdown, sourcePath) {
 }
 
 function nav(active = '') {
-  const groups = sections.map(([heading, pages]) => `
+  const skillLinks = skills.map(([name, label]) => `<a ${active === `skills/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/${name}/">${label}</a>`).join('');
+  const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}</section>`;
+  const groups = sections.map(([heading, pages], index) => `
     <section class="nav-group">
       <h2>${heading}</h2>
       ${pages.map((name) => `<a ${active === `docs/${name}` ? 'aria-current="page"' : ''} href="${base}/docs/${name}/">${titleCase(name)}</a>`).join('')}
-    </section>`).join('');
-  const skillLinks = skills.map(([name, label]) => `<a ${active === `skills/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/${name}/">${label}</a>`).join('');
+    </section>${index === 0 ? skillsGroup : ''}`).join('');
   return `<nav id="sidebar" class="sidebar" aria-label="Handbook navigation">
     <a class="brand" href="${base}/"><span class="brand-mark">AI</span><span>Handbook</span></a>
     ${groups}
-    <section class="nav-group"><h2>Skills</h2>${skillLinks}</section>
   </nav>`;
 }
 
