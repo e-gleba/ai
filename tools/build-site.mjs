@@ -18,7 +18,12 @@ const sections = [
 const skills = [
   ['cmake', 'Modern CMake'],
   ['cpp20', 'Modern C++'],
+  ['python', 'Python'],
+  ['code_review', 'Code review'],
   ['tb_engine', 'TB Engine'],
+  ['android_studio', 'Android Studio'],
+  ['wwise', 'Wwise'],
+  ['rnd', 'R&D spikes'],
   ['cursor_workflow', 'Cursor workflow'],
   ['sustainable_pace', 'Sustainable pace'],
 ];
