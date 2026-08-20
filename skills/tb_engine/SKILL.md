@@ -26,6 +26,7 @@ says.
 
 Related skills: [wwise](../wwise/SKILL.md) for audio,
 [android_studio](../android_studio/SKILL.md) for the mobile targets,
+[crash_investigation](../crash_investigation/SKILL.md) when it crashes,
 [cmake](../cmake/SKILL.md) and [cpp20](../cpp20/SKILL.md) for the basics.
 
 ## hard rules

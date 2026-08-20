@@ -45,7 +45,9 @@ ndk-stack -sym <unstripped_so_dir> -dump tombstone.txt
 llvm-addr2line -e libtb.so -f -C 0x1a2b3c
 ```
 
-No symbols, no answer. Symbolicate before asking anyone anything.
+No symbols, no answer. Symbolicate before asking anyone anything. The full
+pipeline from capture to regression test:
+[crash_investigation](../crash_investigation/SKILL.md).
 
 ## profile, do not guess
 

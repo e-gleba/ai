@@ -22,6 +22,7 @@ the whole point of the format
 | [code_review](code_review/SKILL.md) | preparing or reviewing a pull request with plain git |
 | [tb_engine](tb_engine/SKILL.md) | working in a DAVA-derived engine fork with a `tb::` namespace |
 | [android_studio](android_studio/SKILL.md) | building, profiling, or debugging an Android target |
+| [crash_investigation](crash_investigation/SKILL.md) | reading a native crash: minidump, symbols, the five shapes |
 | [wwise](wwise/SKILL.md) | integrating or debugging Wwise audio in a game engine |
 | [rnd](rnd/SKILL.md) | running a research spike that must end in a decision |
 | [cursor_workflow](cursor_workflow/SKILL.md) | running an editor agent session that stays reviewable |
