@@ -33,23 +33,23 @@ Working rule: two independent tools, then the primary document.
 ## reading and proving code
 
 - [Compiler Explorer](https://godbolt.org) — what the compiler actually produced;
-  settles performance arguments.
+ settles performance arguments.
 - [Quick Bench](https://quick-bench.com) — measure before you claim a win.
 - [cppreference](https://en.cppreference.com) — the exact rule the model
-  paraphrased incorrectly.
+ paraphrased incorrectly.
 - [clangd](https://clangd.llvm.org) with `compile_commands.json` — the single most
-  valuable grounding file for C++ work.
+ valuable grounding file for C++ work.
 
 ## glue
 
 - [MCP](https://modelcontextprotocol.io) — one plug shape for tools and data:
-  [mcp](mcp.md)
-- Plain git — `git diff origin/main...HEAD` gives the model facts instead of
-  guesses: [code_review](code_review.md).
+ [mcp](mcp.md)
+- [GitHub CLI](https://cli.github.com) — `gh pr diff`, `gh run view --log-failed`;
+ give the model facts instead of guesses.
 - [pre-commit](https://pre-commit.com) — formatting decided by a hook, so agents
-  stop reformatting files.
+ stop reformatting files.
 - [just](https://github.com/casey/just) or plain `make` — a named verb per task
-  (`just build`, `just test`) is the cheapest interface an agent can use.
+ (`just build`, `just test`) is the cheapest interface an agent can use.
 
 ## local
 

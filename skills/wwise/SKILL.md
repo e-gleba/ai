@@ -1,16 +1,16 @@
 ---
 name: wwise
 description: >
-  Audiokinetic Wwise integration in a game engine: events not raw sounds,
-  soundbank lifecycle, RTPCs, states and switches, memory and voice budgets,
-  and profiler-driven debugging. Use when touching audio code, integrating
-  Wwise callbacks, diagnosing missing or late sounds, or reviewing audio
-  memory use.
+ Audiokinetic Wwise integration in a game engine: events not raw sounds,
+ soundbank lifecycle, RTPCs, states and switches, memory and voice budgets,
+ and profiler-driven debugging. Use when touching audio code, integrating
+ Wwise callbacks, diagnosing missing or late sounds, or reviewing audio
+ memory use.
 ---
 
 # wwise
 
-Sources: the [Wwise SDK documentation](https://www.audiokinetic.com/en/library/edge/?source=SDK&id=soundengine__index.html),
+Sources: the [Wwise SDK documentation](https://www.audiokinetic.com/en/library/edge/?source=SDK&id=index.html),
 the integration course [Wwise-101](https://www.audiokinetic.com/en/courses/wwise101/),
 and [Wwise-251](https://www.audiokinetic.com/en/courses/wwise251/) for
 performance. The profiler answers most questions this skill gets.
@@ -42,12 +42,12 @@ AK::SoundEngine::UnloadBank(AK::BANKS::MAIN, nullptr);
 ```
 
 - Register every game object before posting on it:
-  `AK::SoundEngine::RegisterGameObj(id)` — an unregistered id is the most
-  common silent failure.
+ `AK::SoundEngine::RegisterGameObj(id)` — an unregistered id is the most
+ common silent failure.
 - Unload what the scene left behind; a bank that never unloads is a leak.
 - `RenderAudio` runs every frame; a stalled audio thread is late sound.
 - Every `AKRESULT` and every `AkPlayingID` is checked. The profiler shows
-  the failure in the studio; the check is what catches it in production.
+ the failure in the studio; the check is what catches it in production.
 
 ## dynamics without code changes
 
@@ -63,19 +63,19 @@ If a value changes per frame, it is an RTPC, not a new event.
 ## budgets
 
 - Voice count and virtual-voice thresholds live in the authoring project;
-  the game respects them, it does not override them.
+ the game respects them, it does not override them.
 - Watch `AK::MemoryMgr` statistics in the profiler.
 - Streaming for music and long ambience; in-memory for short,
-  latency-critical one-shots.
+ latency-critical one-shots.
 
 ## debug with the profiler
 
 1. Build with the communication module enabled — profile or debug config,
-   never release.
+ never release.
 2. Wwise authoring, Connect to Platform, capture.
 3. The capture log shows every event, voice, RTPC, and error with
-   timestamps. Paste the relevant excerpt into any prompt about audio
-   behaviour — it replaces guessing.
+ timestamps. Paste the relevant excerpt into any prompt about audio
+ behaviour — it replaces guessing.
 
 ## review gates for audio diffs
 

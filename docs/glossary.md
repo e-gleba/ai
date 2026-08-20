@@ -23,23 +23,23 @@ Newcomers should start with [start_here](start_here.md).
 - **agent** — a model in a loop with tools: act, observe, retry.
 - **agentic coding** — the agent edits, builds, tests, and iterates on its own.
 - **AGENTS.md** — always-loaded project instructions in an open format read by most
-  agents [agents.md](https://agents.md).
+ agents [agents.md](https://agents.md).
 - **rule** — a constraint applied when a file pattern matches.
 - **skill** — an on-demand procedure in a `SKILL.md` folder
-  [specification](https://agentskills.io/specification); ready ones in
-  [skills](../skills/readme.md).
+ [specification](https://agentskills.io/specification); ready ones in
+ [skills](../skills/readme.md).
 - **hook** — a script that runs automatically at a lifecycle point, not a suggestion.
 - **grounding** — giving the model verifiable facts instead of trusting its memory.
 - **context rot** — quality decay caused by stale or contradictory context.
 - **progressive disclosure** — loading a skill's description first and its body only
-  when the task matches, so many skills cost little context.
+ when the task matches, so many skills cost little context.
 
 More: [context_engineering](context_engineering.md).
 
 ## protocol
 
 - **MCP** — a common plug shape between AI applications and tools or data
-  [modelcontextprotocol.io](https://modelcontextprotocol.io).
+ [modelcontextprotocol.io](https://modelcontextprotocol.io).
 - **tool (MCP)** — an action the model can call.
 - **resource** — readable context the application supplies.
 - **prompt (MCP)** — a reusable template the user picks.
@@ -52,6 +52,9 @@ More: [mcp](mcp.md).
 - **benchmark** — a fixed set of tasks used to compare models.
 - **arena rating** — a score from blind human votes between two answers.
 - **contamination** — benchmark questions present in training data, inflating scores.
+- **SWE-bench Verified** — 500 human-checked real issues; the patch must pass tests.
+- **Aider polyglot** — 225 exercises in six languages, scored on edits that pass.
+- **LiveCodeBench** — fresh contest problems collected after training cut-offs.
 - **cost per success** — spend divided by tasks that landed without rework.
 - **personal task set** — your own 5 to 10 real tasks with known-good answers.
 
@@ -70,18 +73,18 @@ More: [local_models](local_models.md).
 ## c++ and toolchain
 
 - **compile_commands.json** — the exact compiler flags per file, in a documented format
-  [compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html).
+ [compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html).
 - **clangd** — the language server that reads those flags.
 - **undefined behaviour** — code the standard gives no meaning to; the compiler may
-  assume it never happens.
+ assume it never happens.
 - **sanitizer** — a build mode that catches memory, threading, or undefined-behaviour
-  bugs at run time.
+ bugs at run time.
 - **binary interface (ABI)** — how compiled code fits together; changing it breaks
-  anything already built against it.
+ anything already built against it.
 - **hot path** — code where copies, allocations, and dispatch are measurable.
 - **minimal reproducer** — the smallest program that still shows the bug.
 - **target (CMake)** — the unit a build is described in; its properties propagate to
-  consumers [cmake skill](../skills/cmake/SKILL.md).
+ consumers [cmake skill](../skills/cmake/SKILL.md).
 
 More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md),
 [cpp20 skill](../skills/cpp20/SKILL.md).
@@ -89,6 +92,7 @@ More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md),
 ## research
 
 - **primary source** — the document itself: filing, standard, datasheet, source code.
+- **triangulation** — three genuinely independent sources, not three reprints.
 - **provenance** — where a claim came from, and when you read it.
 - **[unverified]** — the marker for anything not traced to a solid source.
 
