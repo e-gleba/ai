@@ -64,7 +64,7 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | skill | use when |
 | --- | --- |
 | [cmake](skills/cmake/SKILL.md) | targets, presets, install, packaging, compilation database |
-| [cpp20](skills/cpp20/SKILL.md) | modern C++23: value semantics, ranges, concepts, reuse-first |
+| [cpp20](skills/cpp20/SKILL.md) | modern C++23 in namespace tb: fixed-width ints, value semantics, reuse-first |
 | [python](skills/python/SKILL.md) | stdlib first, black, ruff, type hints |
 | [code_review](skills/code_review/SKILL.md) | review with plain git, on any host |
 | [tb_engine](skills/tb_engine/SKILL.md) | a DAVA-derived engine fork under a `tb::` namespace |

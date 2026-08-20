@@ -17,7 +17,7 @@ the whole point of the format
 | skill | use when |
 | --- | --- |
 | [cmake](cmake/SKILL.md) | writing or fixing CMake: targets, presets, install, packaging |
-| [cpp20](cpp20/SKILL.md) | modern C++: value semantics, ranges, concepts, reuse-first design |
+| [cpp20](cpp20/SKILL.md) | modern C++ in namespace tb: fixed-width ints, value semantics, reuse-first |
 | [python](python/SKILL.md) | writing or reviewing Python: stdlib first, black, ruff, hints |
 | [code_review](code_review/SKILL.md) | preparing or reviewing a pull request with plain git |
 | [tb_engine](tb_engine/SKILL.md) | working in a DAVA-derived engine fork with a `tb::` namespace |
