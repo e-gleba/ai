@@ -9,26 +9,26 @@ description: >
 
 # sustainable_pace
 
-Output over a year is decided by consistency, not intensity. Hours beyond a normal
-week buy a short burst and then a longer deficit, and burnout is a recognised
-occupational phenomenon with defined symptoms
+**Remember five words: stop, two, unfinished, morning, off.**
+
+Output over a year is decided by consistency, not intensity. Burnout is a recognised
+occupational phenomenon, not a character flaw
 [WHO classification](https://www.who.int/news/item/28-05-2019-burn-out-an-occupational-phenomenon-international-classification-of-diseases).
 
-## the operating limits
+## the five limits
 
-1. **A fixed stop time.** Decide when the day ends before it starts. Work expands to
-   fill whatever space it is given.
-2. **Two deep blocks a day, no more.** Concentrated work is the scarce resource;
-   meetings and reviews are not deep blocks.
-3. **Unfinished is normal.** Stop mid-task with a written note about the next step.
-   Chasing a clean stopping point is how evenings disappear.
-4. **No decisions when tired.** Architecture, negotiations, and replies to irritating
-   messages all wait for the morning.
-5. **One weekend day fully off the machine.** Not "light work" — off.
+1. **stop** — a fixed stop time, decided before the day starts. Work expands to fill
+   the space given.
+2. **two** — two deep blocks a day, no more. Meetings and reviews are not deep blocks.
+3. **unfinished** — stop mid-task with a note on the next step. Chasing a clean
+   stopping point is how evenings disappear.
+4. **morning** — no decisions when tired. Architecture, negotiations, and replies to
+   irritating messages wait for the morning.
+5. **off** — one weekend day fully off the machine. Not "light work" — off.
 
 ## estimates and saying no
 
-Most stress comes from a commitment nobody negotiated.
+Most stress is a commitment nobody negotiated. Offer a trade out loud:
 
 ```
 Ask: {{request}}
@@ -38,63 +38,43 @@ Answer in this shape:
 - what I need to go faster: <a decision, access, or a removed dependency>
 ```
 
-That is not refusal; it is a trade offered out loud. Refusing without an alternative
-creates conflict; agreeing silently creates a missed date.
-
-Estimate rules:
-
-- Give a range, never a single number.
-- Price the unknowns separately: "two days if the format is documented, a week if I
-  have to reverse it."
-- Restate the estimate the moment a new fact appears. Silence reads as agreement.
+Estimate rules: give a range, never one number; price unknowns separately; restate
+the estimate the moment a new fact appears. Silence reads as agreement.
 
 ## reviews and criticism
 
 - Separate the code from yourself. A rejected change is information, not a verdict.
 - Ask for the reason, not the fix: "what breaks if we keep it this way?"
-- If a comment is unclear, ask once in writing, then move to a call. Long threads
-  cost more energy than the change is worth.
-- Do not defend a change you no longer believe in for the sake of consistency.
-- As a reviewer, say what is wrong and what would be right instead. Vague disapproval
-  is the most expensive thing in a review — [code_review](../../docs/code_review.md).
+- Unclear comment → ask once in writing, then a call. Long threads cost more than the
+  change.
+- As a reviewer, say what's wrong and what would be right instead
+  ([code_review](../../docs/code_review.md)).
 
-## avoiding the pressure in the first place
-
-- Small changes. A large change is a large argument, a large risk, and a long wait.
-- Write decisions down when they are made, so they are not relitigated —
-  [context_engineering](../../docs/context_engineering.md).
-- Automate anything that has annoyed you twice.
-- Make hidden work visible: an issue, a note, a message. Invisible work is unrewarded
-  and infinite.
-- Do not become the only person who can do something. That is not job security, it is
-  a permanent on-call rota.
-
-## warning signs, in order of appearance
+## warning signs, in order
 
 ```
-1. Weekends spent recovering rather than doing anything.
+1. Weekends spent recovering, not living.
 2. Irritation at ordinary review comments.
-3. Avoiding the task you know matters most.
-4. Working longer with less to show for it.
+3. Avoiding the task that matters most.
+4. Working longer with less to show.
 5. Cynicism about work that used to be interesting.
 ```
 
-At 1 or 2, cut hours for a week and watch. At 3 or 4, change what you are working on.
-At 5, treat it as a real condition, not a character flaw, and get help.
+At 1–2: cut hours for a week. At 3–4: change what you're working on. At 5: treat it
+as a real condition and get help.
 
-## weekly check, two minutes
+## weekly check, 2 min
 
 ```
 Date: {{date}}
 - Did I stop on time? How many days?
-- Which commitment did I accept without negotiating it?
+- Which commitment did I accept without negotiating?
 - What did I automate or delete?
-- Energy this week: up, flat, or down?
-If energy is down two weeks running, cut scope before it is cut for you.
+- Energy: up, flat, or down?
+Down two weeks running → cut scope before it's cut for you.
 ```
 
 ## the point
 
-You are paid for judgement, and judgement is the first thing exhaustion removes.
-Protecting the conditions for good decisions is part of the work, not a reward for
-finishing it.
+You're paid for judgement, and judgement is the first thing exhaustion removes.
+Protecting it is part of the work, not a reward for finishing it.
