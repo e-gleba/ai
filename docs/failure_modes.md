@@ -1,6 +1,6 @@
 # failure_modes
 
-[handbook](../readme.md) · prev: [digests](digests.md) · next: [glossary](glossary.md)
+[handbook](../readme.md) · prev: [cpp_playbook](cpp_playbook.md) · next: [glossary](glossary.md)
 
 **In one sentence:** the ways this goes wrong, each with the counter first.
 

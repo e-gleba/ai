@@ -28,8 +28,7 @@ benchmark — see [cpp_playbook](cpp_playbook.md).
 | [Perplexity](https://www.perplexity.ai) | a quick second opinion | weakest of the four here: shallow summaries, drops inconvenient sources — use Scira first and treat this as a cross-check |
 | [DeepWiki](https://deepwiki.com) | asking questions about an unfamiliar repository | index lags for very new or private code |
 
-Working rule: two independent tools, then the primary document. Method in
-[research_osint](research_osint.md).
+Working rule: two independent tools, then the primary document.
 
 ## reading and proving code
 
@@ -45,8 +44,8 @@ Working rule: two independent tools, then the primary document. Method in
 
 - [MCP](https://modelcontextprotocol.io) — one plug shape for tools and data:
   [mcp](mcp.md)
-- [GitHub CLI](https://cli.github.com) — `gh pr diff`, `gh run view --log-failed`;
-  give the model facts instead of guesses.
+- Plain git — `git diff origin/main...HEAD` gives the model facts instead of
+  guesses: [code_review](code_review.md).
 - [pre-commit](https://pre-commit.com) — formatting decided by a hook, so agents
   stop reformatting files.
 - [just](https://github.com/casey/just) or plain `make` — a named verb per task

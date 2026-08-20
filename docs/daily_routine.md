@@ -7,20 +7,13 @@ progress does not depend on mood.
 
 ## 09:00 — intake, 10 minutes
 
-Goal: know what changed overnight in one pass, without opening a feed.
-
 ```
 Date: {{date}}.
-Give me a compressed intake brief. Sections, max 5 bullets each, one line per
-bullet, with a source link:
-
-1. Model and tooling releases that change how I work (agents, editors, MCP,
-   context limits, pricing).
+Compressed intake brief, max 5 bullets per section, one line each, a source
+link per bullet:
+1. Model and tooling releases that change how I work.
 2. C++ and systems: standards papers, compiler releases, engine tech.
-3. Hardware and semiconductors: fabs, GPUs, embedded, supply chain.
-4. Belarus and Russia: economy, IT sector, sanctions, labour market, regulation.
-5. Space and astronomy: launches, satellites, missions, notable observations.
-
+3. Anything that would change my current defaults.
 No speculation, no filler. Mark anything unverified as [unverified].
 If a section has nothing real, write "nothing material".
 ```
@@ -54,12 +47,6 @@ Unblocking other people always comes before your own feature.
 Batch reviews instead of reacting to notifications. Pipeline in
 [code_review](code_review.md).
 
-## 30 minutes — deep item
-
-Rotate through: reverse engineering, a Compiler Explorer experiment, a paper, an
-OSINT question, an electronics build. Prompts in
-[research_osint](research_osint.md) and [digests](digests.md).
-
 ## end of day — 5 minutes, the ledger
 
 ```
@@ -79,7 +66,8 @@ or a deleted tool — see [context_engineering](context_engineering.md).
 ## weekly, 20 minutes
 
 - Reread the friction lines; promote repeats into project instructions.
-- Recheck model defaults against [arenas_and_benchmarks](arenas_and_benchmarks.md).
+- Recheck model defaults against your own task set —
+  [model_selection](model_selection.md).
 - Cancel anything unopened for seven days.
 - Delete dead prompts from [prompt_library](prompt_library.md). A small library
   is a used library.

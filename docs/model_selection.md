@@ -1,6 +1,6 @@
 # model_selection
 
-[handbook](../readme.md) · prev: [tool_stack](tool_stack.md) · next: [arenas_and_benchmarks](arenas_and_benchmarks.md)
+[handbook](../readme.md) · prev: [tool_stack](tool_stack.md) · next: [prompt_library](prompt_library.md)
 
 **In one sentence:** pick by the kind of task, verify on your own work, and always
 keep a second option.
@@ -42,8 +42,7 @@ Task 2: {{task}}
 ```
 
 Run it when you consider changing defaults. Record score, cost, and wall time.
-Public tables narrow the shortlist; this set decides —
-[arenas_and_benchmarks](arenas_and_benchmarks.md).
+Public tables narrow the shortlist; this set decides.
 
 ## settings before switching models
 

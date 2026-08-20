@@ -52,13 +52,10 @@ More: [mcp](mcp.md).
 - **benchmark** — a fixed set of tasks used to compare models.
 - **arena rating** — a score from blind human votes between two answers.
 - **contamination** — benchmark questions present in training data, inflating scores.
-- **SWE-bench Verified** — 500 human-checked real issues; the patch must pass tests.
-- **Aider polyglot** — 225 exercises in six languages, scored on edits that pass.
-- **LiveCodeBench** — fresh contest problems collected after training cut-offs.
 - **cost per success** — spend divided by tasks that landed without rework.
 - **personal task set** — your own 5 to 10 real tasks with known-good answers.
 
-More: [arenas_and_benchmarks](arenas_and_benchmarks.md).
+More: [model_selection](model_selection.md).
 
 ## running models yourself
 
@@ -92,11 +89,8 @@ More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md),
 ## research
 
 - **primary source** — the document itself: filing, standard, datasheet, source code.
-- **triangulation** — three genuinely independent sources, not three reprints.
 - **provenance** — where a claim came from, and when you read it.
 - **[unverified]** — the marker for anything not traced to a solid source.
-
-More: [research_osint](research_osint.md).
 
 ## process
 

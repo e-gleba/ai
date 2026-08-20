@@ -1,6 +1,6 @@
 # cpp_playbook
 
-[handbook](../readme.md) · prev: [mcp](mcp.md) · next: [research_osint](research_osint.md)
+[handbook](../readme.md) · prev: [mcp](mcp.md) · next: [failure_modes](failure_modes.md)
 
 **In one sentence:** C++ is the hardest case for a model, and grounding fixes most
 of it.

@@ -1,6 +1,6 @@
 # prompt_library
 
-[handbook](../readme.md) · prev: [arenas_and_benchmarks](arenas_and_benchmarks.md) · next: [code_review](code_review.md)
+[handbook](../readme.md) · prev: [model_selection](model_selection.md) · next: [code_review](code_review.md)
 
 **In one sentence:** a small set of blocks that get used, not a museum of clever
 prompts.
@@ -134,7 +134,5 @@ No hedging. Rank the objections by severity.
 
 - Review prompts: [code_review](code_review.md)
 - Design-first sequence and written procedures: [best_practice](best_practice.md)
-- Recurring digests: [digests](digests.md)
-- Sourcing and verification: [research_osint](research_osint.md)
 - C++ specifics: [cpp_playbook](cpp_playbook.md) and the
   [cpp20 skill](../skills/cpp20/SKILL.md)

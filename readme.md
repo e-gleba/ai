@@ -29,7 +29,6 @@ prompt.
 | [daily_routine](docs/daily_routine.md) | what to do at 09:00, at review time, at the end of the day |
 | [tool_stack](docs/tool_stack.md) | which tool for which job, and the real limitation of each |
 | [model_selection](docs/model_selection.md) | how to pick a model without reading marketing |
-| [arenas_and_benchmarks](docs/arenas_and_benchmarks.md) | where to get a number, and how to read it |
 
 **doing the work**
 
@@ -50,12 +49,10 @@ prompt.
 | [local_models](docs/local_models.md) | private, offline, and high-volume cheap work |
 | [mcp](docs/mcp.md) | the common plug shape for tools, and how not to misuse it |
 
-**knowing things**
+**reference**
 
 | page | what it answers |
 | --- | --- |
-| [research_osint](docs/research_osint.md) | sourcing, triangulation, verification, reverse engineering |
-| [digests](docs/digests.md) | recurring digest prompts per interest area |
 | [failure_modes](docs/failure_modes.md) | how this goes wrong, counter first |
 | [glossary](docs/glossary.md) | every term, one line each |
 

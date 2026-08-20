@@ -47,8 +47,8 @@ the conversation cache grows with context length, not with model size
 
 ## choosing an open model
 
-Shortlist from the open-weights columns in
-[arenas_and_benchmarks](arenas_and_benchmarks.md), then run your own set from
+Shortlist from [OpenRouter rankings](https://openrouter.ai/rankings) — real paid
+traffic is a strong signal — then run your own set from
 [model_selection](model_selection.md). What matters more than the score:
 
 - Does it hold a required output format across a hundred calls?
