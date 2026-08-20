@@ -1,77 +1,82 @@
 # model_selection
 
-[handbook](../readme.md) · prev: [tool_stack](tool_stack.md) · next: [local_models](local_models.md)
+[handbook](../readme.md) · prev: [tool_stack](tool_stack.md) · next: [prompt_library](prompt_library.md)
 
-**In one sentence:** there is no "best model" — there is the cheapest model that
-passes *your* check, and four public sources tell you which three to try first.
+**In one sentence:** pick by the kind of task, verify on your own work, and always
+keep a second option.
 
-Do not memorize model names. They rot in weeks. Memorize the four sources below
-and the five-minute habit at the end — that is the whole skill.
+Brand names change every few weeks. The classes below do not.
 
-## which model for what
+## classes
 
-Pick by the job, not by hype. Then confirm with the sources.
-
-| your job | what you actually need | where to look |
+| class | shape | use for |
 | --- | --- | --- |
-| writing code, fixing bugs | real-repo coding ability | [SWE-bench](https://www.swebench.com/) + [LMArena](https://lmarena.ai/) code |
-| long agent runs, tool calls | reliability over many steps | [OpenRouter](https://openrouter.ai/rankings) (what devs actually ship) |
-| summarizing, chat, drafting | what humans prefer | [LMArena](https://lmarena.ai/) |
-| high volume, tight budget | quality per dollar, speed | [Artificial Analysis](https://artificialanalysis.ai/) |
-| private / offline / no API | open weights, runs local | [LMArena](https://lmarena.ai/) open filter → [local_models](local_models.md) |
+| frontier reasoning | slow, expensive, high effort | architecture, hard bugs, concurrency, math |
+| frontier coding | strong at editing files and calling tools | implementation, multi-file refactors |
+| fast mid-tier | cheap, low latency | boilerplate, docs, commit messages, triage |
+| open weights, large | self-hosted or cheap through an API | bulk passes, privacy, offline, full control |
+| small local | runs on your own machine | search with meaning, redaction, air-gapped work |
 
-## the four sources (and how to read each)
+## routing table
 
-**[LMArena](https://lmarena.ai/)** — humans vote on two anonymous answers, models
-ranked by [Bradley-Terry / Elo-style](https://arena.ai/blog/ranking-method/) score.
-*Read it as:* what people actually prefer. Best for chat, writing, code taste.
-The method is open source ([arena-rank](https://github.com/lmarena/arena-rank)).
+```
+design note, invariants, "why does this break with 3 threads" -> frontier reasoning, high effort
+implement a scoped change with tests                          -> frontier coding, agentic
+review a change for correctness                               -> frontier reasoning
+review a change for style and consistency                     -> fast mid-tier
+summarize 200 pages                                           -> long-context mid-tier
+generate 500 test cases, mass rewrite                         -> open weights, bulk
+anything unreleased, confidential, or under NDA               -> local only
+```
 
-**[Artificial Analysis](https://artificialanalysis.ai/)** — independent lab measuring
-intelligence vs speed vs cost per task. *Read it as:* the price/performance table.
-Use it when cost or latency is the constraint.
+## the only benchmark that decides
 
-**[OpenRouter rankings](https://openrouter.ai/rankings)** — live ranking by tokens
-developers actually route through the API. *Read it as:* what the industry is
-shipping, not what benchmarks claim. It measures adoption, not quality — that is
-the point. Their [State of AI](https://openrouter.ai/state-of-ai) study shows the
-open-model field is now fragmented across DeepSeek, Qwen, Kimi, MiniMax and more —
-no single winner, so stay model-agnostic.
+Keep a personal set of 5 to 10 real tasks with known-good answers.
 
-**[SWE-bench](https://www.swebench.com/)** — models resolve real GitHub issues in a
-fixed harness. *Read it as:* the closest thing to "can it do my coding job". Use the
-Verified / mini-SWE-agent view for an apples-to-apples model comparison.
+```
+I will give you {{n}} tasks from my real codebase. Answer only, no preamble.
+I will grade against a known-good solution.
 
-## the only rule that matters
+Task 1: {{task}}
+Task 2: {{task}}
+```
 
-Leaderboards rank models on *their* tasks. Your task is different. So:
+Run it when you consider changing defaults. Record score, cost, and wall time.
+Public tables narrow the shortlist; this set decides.
 
-1. Shortlist **three** models from the sources above.
-2. Run them on **your own small test set** — real prompts from your work.
-3. Pick the **cheapest one that passes**.
+## settings before switching models
 
-That set, built from your own failures, beats any public table within a month.
-Method: [best_practice](best_practice.md) §10. Metric: cost per accepted result, in
-[best_practice](best_practice.md) §8.
+- For logic bugs, raising the reasoning effort usually beats moving to a bigger
+ model.
+- For cost, lowering effort usually beats moving to a smaller model: same tool
+ calls, less deliberation.
+- Long context degrades before it fails. Past roughly half the window, precision
+ drops. Split the work and restate the goal instead of dumping everything in.
 
-## track new releases in 5 minutes a week
+## cost, measured honestly
 
-Do not follow news. Check these once a week, in this order, stop when you have an
-answer:
+```
+cost per success = total spend / tasks that landed without rework
+```
 
-1. [OpenRouter rankings](https://openrouter.ai/rankings) — is a new model suddenly
-   getting real traffic? That is the market telling you something shipped.
-2. [LMArena](https://lmarena.ai/) — did the top of your category move?
-3. [Artificial Analysis](https://artificialanalysis.ai/) — did the price/performance
-   frontier move?
+A cheap model that needs two retries and a human fix is not cheap. Track cost per
+landed change, never tokens.
 
-If nothing moved, change nothing. A new model only earns a switch when it beats
-your current pick **on your own test set** — not on a launch post.
+## fallback
 
-## what to ignore
+Every default needs a second choice from a different vendor, plus a local model as
+the floor. Outages and quiet quality regressions are normal —
+[local_models](local_models.md).
 
-- A benchmark published by whoever sells the model.
-- A single viral screenshot of one good answer.
-- Any ranking with no method and no confidence interval.
-- The urge to switch weekly. Switching costs more than it saves until the gap is
-  real and measured on your tasks.
+## when a new model appears
+
+```
+New model: {{model}}. Vendor claims: {{claims}}.
+Tell me only:
+1. Context window, output limit, price in and out.
+2. Reliability of tool calling and structured output, with a source.
+3. Independent benchmark placement against my current default {{current}}.
+4. Regressions or refusals users report.
+5. Verdict: switch, trial on one workload, or ignore.
+Cite every point. Write [unverified] where no source exists.
+```

@@ -11,7 +11,7 @@ undefined behaviour.
 ## grounding, most valuable first
 
 1. `compile_commands.json` — the exact flags, includes, and language standard per
-   file. Without it the model guesses your dialect.
+ file. Without it the model guesses your dialect.
 2. One command to build, one command to test.
 3. Warnings as errors in the development preset.
 4. Sanitizer presets.
@@ -57,15 +57,15 @@ intuition and measurement beats assembly.
 Stop at the first category that fails.
 
 1. **Lifetime and ownership** — who owns it, what outlives what, references into
-   containers that reallocate.
+ containers that reallocate.
 2. **Undefined behaviour** — signed overflow, aliasing, misaligned access, cast
-   chains, out-of-range indexes, uninitialized reads.
+ chains, out-of-range indexes, uninitialized reads.
 3. **Concurrency** — ordering guarantees, atomics and their memory orders,
-   double-checked patterns, false sharing.
+ double-checked patterns, false sharing.
 4. **Error paths** — leaks on failure, half-constructed objects, ignored results.
 5. **Interfaces** — layout changes, inline changes, exported symbols.
 6. **Performance** — hidden copies, hidden allocations, allocation in hot loops,
-   virtual calls in inner loops.
+ virtual calls in inner loops.
 7. **Style** — last, and delegated to a linter.
 
 Full pipeline: [code_review](code_review.md). Engine-specific gates:
@@ -109,13 +109,13 @@ If it cannot be reproduced without a dependency, name the dependency and stop.
 ## what models get wrong repeatedly
 
 - Inventing standard library functions that almost exist, or that require a newer
-  standard than your flags allow.
+ standard than your flags allow.
 - Adding `std::move` where it does nothing, or where it breaks a later use.
 - "Modernizing" hot paths with wrappers that add cost.
 - Replacing a hand-written loop with an algorithm that changes the iteration
-  semantics.
+ semantics.
 - Reformatting whole files. Settle this with a formatting hook so there is nothing
-  to argue about.
+ to argue about.
 - Claiming a performance win with no measurement. Ask for the number, every time.
 
 Counters: [failure_modes](failure_modes.md).
