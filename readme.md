@@ -29,7 +29,6 @@ prompt.
 | [daily_routine](docs/daily_routine.md) | what to do at 09:00, at review time, at the end of the day |
 | [tool_stack](docs/tool_stack.md) | which tool for which job, and the real limitation of each |
 | [model_selection](docs/model_selection.md) | how to pick a model without reading marketing |
-| [arenas_and_benchmarks](docs/arenas_and_benchmarks.md) | where to get a number, and how to read it |
 
 **doing the work**
 
@@ -50,12 +49,10 @@ prompt.
 | [local_models](docs/local_models.md) | private, offline, and high-volume cheap work |
 | [mcp](docs/mcp.md) | the common plug shape for tools, and how not to misuse it |
 
-**knowing things**
+**reference**
 
 | page | what it answers |
 | --- | --- |
-| [research_osint](docs/research_osint.md) | sourcing, triangulation, verification, reverse engineering |
-| [digests](docs/digests.md) | recurring digest prompts per interest area |
 | [failure_modes](docs/failure_modes.md) | how this goes wrong, counter first |
 | [glossary](docs/glossary.md) | every term, one line each |
 
@@ -67,8 +64,13 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | skill | use when |
 | --- | --- |
 | [cmake](skills/cmake/SKILL.md) | targets, presets, install, packaging, compilation database |
-| [cpp20](skills/cpp20/SKILL.md) | modern C++ design: value semantics, ranges, concepts |
+| [cpp20](skills/cpp20/SKILL.md) | modern C++23: value semantics, ranges, concepts, reuse-first |
+| [python](skills/python/SKILL.md) | stdlib first, black, ruff, type hints |
+| [code_review](skills/code_review/SKILL.md) | review with plain git, on any host |
 | [tb_engine](skills/tb_engine/SKILL.md) | a DAVA-derived engine fork under a `tb::` namespace |
+| [android_studio](skills/android_studio/SKILL.md) | adb, profilers, Perfetto, native crashes, Gradle/NDK |
+| [wwise](skills/wwise/SKILL.md) | events, soundbanks, RTPCs, profiler-driven audio debugging |
+| [rnd](skills/rnd/SKILL.md) | spikes that end in a decision: hypothesis, timebox, kill criteria |
 | [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
 | [sustainable_pace](skills/sustainable_pace/SKILL.md) | bounded hours, honest estimates, early warning signs |
 

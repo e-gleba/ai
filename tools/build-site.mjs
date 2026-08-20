@@ -9,16 +9,21 @@ const base = '/ai';
 const siteUrl = 'https://e-gleba.github.io/ai';
 
 const sections = [
-  ['Foundations', ['start_here', 'daily_routine', 'tool_stack', 'model_selection', 'arenas_and_benchmarks']],
+  ['Foundations', ['start_here', 'daily_routine', 'tool_stack', 'model_selection']],
   ['Doing the work', ['prompt_library', 'code_review', 'parallel_agents', 'context_engineering', 'best_practice']],
   ['Hard mode', ['engine_rnd', 'cpp_playbook', 'local_models', 'mcp']],
-  ['Knowing things', ['research_osint', 'digests', 'failure_modes', 'glossary']],
+  ['Reference', ['failure_modes', 'glossary']],
 ];
 
 const skills = [
   ['cmake', 'Modern CMake'],
   ['cpp20', 'Modern C++'],
+  ['python', 'Python'],
+  ['code_review', 'Code review'],
   ['tb_engine', 'TB Engine'],
+  ['android_studio', 'Android Studio'],
+  ['wwise', 'Wwise'],
+  ['rnd', 'R&D spikes'],
   ['cursor_workflow', 'Cursor workflow'],
   ['sustainable_pace', 'Sustainable pace'],
 ];

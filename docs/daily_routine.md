@@ -2,84 +2,47 @@
 
 [handbook](../readme.md) · prev: [start_here](start_here.md) · next: [tool_stack](tool_stack.md)
 
-**In one sentence:** fixed slots in the day, each with a clear exit condition, so
-progress does not depend on mood.
+**In one sentence:** the day is **plan → blocks → ledger** — that's the whole thing.
 
-## 09:00 — intake, 10 minutes
+Remember three words: **Plan. Blocks. Ledger.**
 
-Goal: know what changed overnight in one pass, without opening a feed.
+## plan — 10 min, morning
 
-```
-Date: {{date}}.
-Give me a compressed intake brief. Sections, max 5 bullets each, one line per
-bullet, with a source link:
-
-1. Model and tooling releases that change how I work (agents, editors, MCP,
-   context limits, pricing).
-2. C++ and systems: standards papers, compiler releases, engine tech.
-3. Hardware and semiconductors: fabs, GPUs, embedded, supply chain.
-4. Belarus and Russia: economy, IT sector, sanctions, labour market, regulation.
-5. Space and astronomy: launches, satellites, missions, notable observations.
-
-No speculation, no filler. Mark anything unverified as [unverified].
-If a section has nothing real, write "nothing material".
-```
-
-Exit: one page of bullets. Anything actionable becomes a task, not a memory.
-
-## 09:15 — plan against the repository
+Ask the agent for today's list, then do it:
 
 ```
 Repo: {{repo}}. Branch: {{branch}}.
-Read the open issues and my open pull requests. Produce:
-- 3 things that unblock other people (review, answer, merge) — highest priority.
-- 2 things that move my own work forward, each under 90 minutes.
-- 1 thing to delete or simplify.
-For each: definition of done as a check I can run, not a feeling.
+Read open issues and my open PRs. Give me:
+- 3 things that unblock other people (review, answer, merge) — do these first
+- 2 things that move my own work, each under 90 min
+- 1 thing to delete or simplify
+For each: a check I can run, not a feeling.
 ```
 
-Unblocking other people always comes before your own feature.
+**Rule:** unblock others before your own feature.
 
-## work blocks — 90 minutes, one lead agent
+## blocks — 90 min each, one agent
 
-- One primary agent session per block. Read [parallel_agents](parallel_agents.md)
-  before running several.
-- Start by making the goal checkable: a test name, a number, or a command whose
-  output must change.
-- Never let an agent run longer than you can review. Diff over about 400 lines:
-  stop and split it.
+- One agent session per block. (Many agents → [parallel_agents](parallel_agents.md).)
+- Start by making the goal checkable: a test name, a number, a command.
+- Diff over ~400 lines → stop, split it.
 
-## review slots — twice a day
-
-Batch reviews instead of reacting to notifications. Pipeline in
-[code_review](code_review.md).
-
-## 30 minutes — deep item
-
-Rotate through: reverse engineering, a Compiler Explorer experiment, a paper, an
-OSINT question, an electronics build. Prompts in
-[research_osint](research_osint.md) and [digests](digests.md).
-
-## end of day — 5 minutes, the ledger
+## ledger — 5 min, end of day
 
 ```
-Date: {{date}}.
-Here is what I did today: {{raw_notes}}.
-Write:
-- shipped: what landed, one line each
-- in flight: state, and what unblocks it tomorrow
-- learned: at most 3 durable facts worth keeping
-- friction: what wasted time, and the one change that removes it
-Terse. No praise.
+Date: {{date}}. Today: {{raw_notes}}.
+Write, terse, no praise:
+- shipped: what landed
+- in flight: state + what unblocks it
+- learned: at most 3 durable facts
+- friction: what wasted time + the one change that removes it
 ```
 
-The friction line is the point. Every repeated friction becomes a rule, a skill,
-or a deleted tool — see [context_engineering](context_engineering.md).
+**The friction line is the point.** Repeated friction → a rule, a skill, or a deleted
+tool ([context_engineering](context_engineering.md)).
 
-## weekly, 20 minutes
+## weekly — 20 min
 
-- Reread the friction lines; promote repeats into project instructions.
-- Recheck model defaults against [arenas_and_benchmarks](arenas_and_benchmarks.md).
-- Cancel anything unopened for seven days.
-- Delete dead prompts from [prompt_library](prompt_library.md). A small library
-  is a used library.
+- Promote repeated friction into project instructions.
+- Recheck model defaults on your own tasks ([model_selection](model_selection.md)).
+- Cancel anything unopened for 7 days. Delete dead prompts.
