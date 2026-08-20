@@ -65,6 +65,9 @@ def load_config(path: Path) -> dict[str, str]:
   (PEP 585).
 - `pathlib.Path`, not string paths.
 - `with` for every resource.
+- A function that can fail raises a specific exception or returns a result
+  object — it never returns `None` and hopes.
+- The caller checks or catches deliberately; no silent fallthrough.
 - Exceptions carry context: `raise ConfigError(f"missing key: {key}") from exc`.
 - No `print` in libraries — `logging`.
 - f-strings, not `%` or `.format`.
@@ -73,7 +76,8 @@ def load_config(path: Path) -> dict[str, str]:
 
 1. Correctness: edge cases, `None` handling, mutable default arguments.
 2. Resources: files, sockets, and subprocesses closed on every path.
-3. Errors: no bare `except`, no swallowed failures.
+3. Errors: no bare `except`, no swallowed failures, no silent `None`
+   returns.
 4. Dependencies: was the standard library enough?
 5. Tests: pytest, one behaviour per test.
 6. Style: black and ruff already answered this.

@@ -92,7 +92,10 @@ namespace tb
 ```
 
 State the threading contract, the error contract, and the ownership. Those
-three facts prevent most wrong patches.
+three facts prevent most wrong patches. Mark the contract in the signature
+itself — `[[nodiscard]]` on every fallible call, `noexcept` on every
+function that cannot throw, per the [cpp20](../cpp20/SKILL.md) contract
+rules.
 
 ## asset and tool pipeline
 

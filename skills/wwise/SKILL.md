@@ -21,8 +21,11 @@ The game posts events; the sound designer owns what an event does. Code that
 names a sound file bypasses the authoring tool and breaks the contract.
 
 ```cpp
-// right: an event id from the generated header
-AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_TANK_SHOT, game_object_id);
+// right: an event id from the generated header, and the result checked
+const AkPlayingID playing_id =
+    AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_TANK_SHOT, game_object_id);
+if (playing_id == AK_INVALID_PLAYING_ID)
+    log_audio_error("tank_shot", game_object_id);   // fail loud, not silent
 
 // wrong: reaching past the event layer
 // AK::SoundEngine::PostEvent(L"play_shot_final_v2.wav", game_object_id);
@@ -31,7 +34,9 @@ AK::SoundEngine::PostEvent(AK::EVENTS::PLAY_TANK_SHOT, game_object_id);
 ## lifecycle
 
 ```cpp
-AK::SoundEngine::LoadBank(AK::BANKS::MAIN);      // per scene, not per sound
+const AKRESULT bank_result = AK::SoundEngine::LoadBank(AK::BANKS::MAIN);
+if (bank_result != AK_Success)
+    return;   // the level has no audio; that is a bug, not a mood
 // ... level runs ...
 AK::SoundEngine::UnloadBank(AK::BANKS::MAIN, nullptr);
 ```
@@ -41,6 +46,8 @@ AK::SoundEngine::UnloadBank(AK::BANKS::MAIN, nullptr);
   common silent failure.
 - Unload what the scene left behind; a bank that never unloads is a leak.
 - `RenderAudio` runs every frame; a stalled audio thread is late sound.
+- Every `AKRESULT` and every `AkPlayingID` is checked. The profiler shows
+  the failure in the studio; the check is what catches it in production.
 
 ## dynamics without code changes
 
@@ -78,4 +85,5 @@ If a value changes per frame, it is an RTPC, not a new event.
 2. is every bank load matched by an unload on each exit path?
 3. per-frame RTPC spam where a state would do?
 4. new memory use measured in the profiler?
+5. is every AKRESULT checked, every playing id validated?
 ```

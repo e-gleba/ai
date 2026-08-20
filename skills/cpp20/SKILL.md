@@ -90,6 +90,28 @@ Rules that hold in nearly all cases:
 - Rule of zero: no special member functions unless the type manages a
   resource. Write one, owe the rest.
 
+## function contracts
+
+Say the guarantee in the signature, then keep it:
+
+```cpp
+[[nodiscard]] constexpr std::uint64_t hash(std::string_view text) noexcept;
+```
+
+- `[[nodiscard]]` on anything whose result matters: error returns, factory
+  functions, pure queries. An ignored result is a bug the compiler can see —
+  let it.
+- `noexcept` only when honestly promised: no allocation, no throwing call
+  inside. It is a contract with the optimizer and with `std::vector` move,
+  not a decoration.
+- `constexpr` where it costs nothing, `consteval` where the value must exist
+  at compile time.
+- A function that can fail returns `std::expected` or a checked status,
+  never a magic value. The caller checks explicitly; no silent fallthrough.
+- Preconditions and postconditions: `gsl::Expects` and `gsl::Ensures` from
+  the [GSL](https://github.com/microsoft/GSL), or `assert` where GSL is
+  absent.
+
 ## ranges, sharp edges named
 
 ```cpp
@@ -140,7 +162,7 @@ header. Name them after the requirement, not the types that satisfy it.
 4. Error paths: leaks, half-constructed objects, ignored results.
 5. Interface and binary-interface impact.
 6. Performance, with numbers.
-7. Style, delegated to a linter.
+7. Style, delegated to the linter.
 
 Longer version with prompts: [cpp_playbook](../../docs/cpp_playbook.md).
 
