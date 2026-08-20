@@ -1,30 +1,59 @@
 ---
 name: cpp20
 description: >
-  Modern C++ design practice: C++23 by default, value semantics, ranges,
-  concepts, error handling, contracts without dependencies, and the
-  reuse-first discipline behind the standard library and Boost. Use when
-  writing, reviewing, or refactoring C++, choosing between designs, or
-  deciding whether a standard facility is the right tool.
+  Modern C++ ground rules for the tb engine fork: C++23, all project code
+  in namespace tb, fixed-width integers (std::int32_t, never bare int),
+  value semantics, ranges, concepts, dependency-free contracts, and
+  reuse-first across the standard library, Boost, and a short list of
+  well-starred libraries. Use when writing, reviewing, or refactoring C++,
+  choosing between designs, or deciding whether a standard facility is the
+  right tool.
 ---
 
 # cpp20
 
-Ground every answer in a primary source, in this order:
-[cppreference](https://en.cppreference.com/w/cpp/),
-the [working draft](https://eel.is/c++draft/) when exact wording matters,
-[compiler support tables](https://en.cppreference.com/w/cpp/compiler_support)
-before assuming a feature exists in the toolchain, and
-[Compiler Explorer](https://godbolt.org) for what the compiler actually
-produced.
+The whole skill is one fenced block — a raw prompt, one copy click. Longer
+prose version with prompts: [cpp_playbook](../../docs/cpp_playbook.md).
 
-Default standard: the project's. If none is stated, C++23.
+````markdown
+cpp20 — ground rules for modern C++ in the tb engine
+
+Ground every answer in a primary source, in this order:
+1. https://en.cppreference.com/w/cpp/
+2. https://eel.is/c++draft/ — when the exact wording matters
+3. https://en.cppreference.com/w/cpp/compiler_support — before assuming the
+   toolchain has a feature
+4. https://godbolt.org — what the compiler actually produced
+
+Default standard: C++23. Everything the project owns lives in namespace tb.
+
+## namespace
+
+- All project code lives in `namespace tb`. Nothing at global scope except
+  `main`.
+- `tb::detail` holds implementation internals; it never appears in a public
+  header.
+- No `using namespace` at file scope, ever. A `using std::string_view;`
+  inside one function is fine.
+- Third-party and upstream-derived code keeps its own namespace; never mix
+  two namespaces in one header.
+
+## integers: fixed-width and explicit
+
+- `std::int32_t`, `std::uint32_t`, `std::int64_t`, `std::uint64_t` from
+  `<cstdint>` — always with the `std::` prefix.
+- Bare `int` only where an outside API forces it (`main`'s argc, C
+  callbacks). `int32_t` without `std::` is the C header leaking through —
+  do not use it.
+- `std::size_t` for sizes and container indices, `std::ptrdiff_t` for
+  pointer differences.
+- Brace initialization rejects narrowing conversions; never "fix" that
+  error by switching to `()`.
 
 ## naming and style
 
-Boost style, per the
-[Boost library guidelines](https://www.boost.org/development/library_guidelines.html)
-and the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines):
+Boost style, per https://www.boost.org/development/library_guidelines.html
+and https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines :
 
 - `snake_case` for types, functions, variables, namespaces
 - `UPPER_CASE` for macros only
@@ -34,15 +63,25 @@ and the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCore
 ## reuse first, in this order
 
 1. The standard library.
-2. [Boost](https://www.boost.org) — the proving ground most of the standard
+2. Boost — https://www.boost.org — the proving ground most of the standard
    came from.
-3. A well-starred, maintained library **already linked by the project**:
-   [fmt](https://github.com/fmtlib/fmt),
-   [spdlog](https://github.com/gabime/spdlog),
-   [GSL](https://github.com/microsoft/GSL),
-   [abseil](https://github.com/abseil/abseil-cpp).
-4. A ten-line polyfill in your own namespace. Never add a dependency for
-   one small facility — write the concept of it once and reuse that.
+3. A well-starred, maintained library already linked by the project:
+
+   | need | library |
+   | --- | --- |
+   | formatting | https://github.com/fmtlib/fmt |
+   | logging | https://github.com/gabime/spdlog |
+   | json | https://github.com/nlohmann/json |
+   | contracts vocabulary | https://github.com/microsoft/GSL |
+   | missing std pieces | https://github.com/abseil/abseil-cpp |
+   | entity-component system | https://github.com/skypjack/entt |
+   | graphics math | https://github.com/g-truc/glm |
+   | single-header utilities | https://github.com/nothings/stb |
+   | tests | https://github.com/catchorg/Catch2 |
+   | micro-benchmarks | https://github.com/google/benchmark |
+
+4. A ten-line polyfill in `tb::`. Never add a dependency for one small
+   facility — write the concept of it once and reuse that.
 
 Never hand-roll what a tested library already does. When a design or trick
 is taken from one, cite it at the call site:
@@ -55,18 +94,21 @@ is taken from one, cite it at the call site:
 ## mechanical habits — the compiler enforces all of these
 
 ```cpp
-struct tank_state final                  // final: not designed as a base
+namespace tb
 {
-    std::uint64_t id{};                  // every member initialized
-    float         hit_points{100.0F};
-    std::string   name{"tank"};
-};
+    struct tank_state final              // final: not designed as a base
+    {
+        std::uint64_t id{};              // every member initialized
+        std::int32_t  hit_points{100};
+        std::string   name{"tank"};
+    };
+}
 
 // aggregates: designated initializers name the fields, not the order
-const auto state = tank_state{.id = 42, .name = "t-34"};
+const auto state = tb::tank_state{.id = 42, .name = "t-34"};
 
 // braces everywhere: no narrowing, no most-vexing parse
-const std::vector<int> ids{1, 2, 3};     // not ids(1, 2, 3)
+const std::vector<std::int32_t> ids{1, 2, 3};   // not ids(1, 2, 3)
 ```
 
 - Initialize every variable at declaration. An uninitialized scalar is
@@ -83,7 +125,7 @@ const std::vector<int> ids{1, 2, 3};     // not ids(1, 2, 3)
 
 ## contracts without dependencies
 
-No GSL in the project? The whole vocabulary is a few lines:
+No GSL in the project? The whole vocabulary is a few lines, in `tb::`:
 
 ```cpp
 namespace tb
@@ -122,8 +164,8 @@ const auto cleanup = tb::scope_exit{[&] { release(handle); }};
 std already replaces the rest of GSL: `std::span` for `gsl::span`,
 `std::string_view`, `std::as_const`, `[[nodiscard]]`. A reference
 parameter, or a `tb_expects(p != nullptr)` on entry, covers most of
-`gsl::not_null`. Where the project already links GSL, use
-`gsl::Expects` and `gsl::Ensures` instead of the macro.
+`gsl::not_null`. Where the project already links GSL, use `gsl::Expects`
+and `gsl::Ensures` instead of the macro.
 
 ## the three ideas
 
@@ -132,27 +174,30 @@ parameter, or a `tb_expects(p != nullptr)` on entry, covers most of
    and shared ownership only when the design requires them.
 2. **Algorithms over loops, concepts over types.** State the requirement,
    not the type — the generic-programming tradition from Stepanov's
-   *Elements of Programming* [book](http://elementsofprogramming.com).
+   Elements of Programming, http://elementsofprogramming.com
 3. **Zero overhead means measured, not assumed.** An abstraction is free
    only if the generated code says so.
 
 ## defaults
 
 ```cpp
-// ownership visible in the type
-std::unique_ptr<texture> load(std::filesystem::path const& path);
+namespace tb
+{
+    // ownership visible in the type
+    std::unique_ptr<texture> load(const std::filesystem::path& path);
 
-// non-owning views as parameters, by value
-void upload(std::span<std::byte const> bytes);
-void log(std::string_view message);
+    // non-owning views as parameters, by value
+    void upload(std::span<const std::byte> bytes);
+    void log(std::string_view message);
 
-// errors that must be handled, no exceptions across a boundary
-std::expected<config, parse_error> parse(std::string_view text);
+    // errors that must be handled, no exceptions across a boundary
+    std::expected<config, parse_error> parse(std::string_view text);
 
-// requirements, not type lists
-template <std::ranges::input_range range>
-  requires std::convertible_to<std::ranges::range_value_t<range>, double>
-double sum(range&& values);
+    // requirements, not type lists
+    template <std::ranges::input_range range>
+        requires std::convertible_to<std::ranges::range_value_t<range>, double>
+    double sum(range&& values);
+}
 ```
 
 Rules that hold in nearly all cases:
@@ -175,13 +220,13 @@ Say the guarantee in the signature, then keep it:
 ```
 
 - `[[nodiscard]]` on anything whose result matters: error returns, factory
-  functions, pure queries. An ignored result is a bug the compiler can see —
-  let it.
+  functions, pure queries. An ignored result is a bug the compiler can
+  see — let it.
 - `noexcept` only when honestly promised: no allocation, no throwing call
   inside. It is a contract with the optimizer and with `std::vector` move,
   not a decoration.
-- `constexpr` where it costs nothing, `consteval` where the value must exist
-  at compile time.
+- `constexpr` where it costs nothing, `consteval` where the value must
+  exist at compile time.
 - A function that can fail returns `std::expected` or a checked status,
   never a magic value. The caller checks explicitly; no silent fallthrough.
 - Preconditions and postconditions: `tb_expects` from the section above, or
@@ -191,28 +236,30 @@ Say the guarantee in the signature, then keep it:
 
 ```cpp
 auto visible = entities
-             | std::views::filter([](auto const& e) { return e.visible; })
-             | std::views::transform(&entity::bounds);
+             | std::views::filter([](const auto& e) { return e.visible; })
+             | std::views::transform(&tb::entity::bounds);
 ```
 
 - Views are lazy and non-owning. Never return a view over a local.
 - A pipeline re-evaluates on each traversal.
 - `std::ranges::to` materializes; do it once, deliberately.
 - Hot path: compare generated code against a plain loop on
-  [Compiler Explorer](https://godbolt.org), measure on
-  [Quick Bench](https://quick-bench.com). Readability wins outside hot
-  paths; numbers decide inside them.
+  https://godbolt.org and measure on https://quick-bench.com — readability
+  wins outside hot paths; numbers decide inside them.
 
 ## concepts instead of enable_if
 
 ```cpp
-template <typename T>
-concept trivially_serializable =
-    std::is_trivially_copyable_v<T> &&
-    std::has_unique_object_representations_v<T>;
+namespace tb
+{
+    template <typename T>
+    concept trivially_serializable =
+        std::is_trivially_copyable_v<T> &&
+        std::has_unique_object_representations_v<T>;
 
-template <trivially_serializable T>
-void write(std::span<std::byte> out, T const& value);
+    template <trivially_serializable T>
+    void write(std::span<std::byte> out, const T& value);
+}
 ```
 
 Concepts make the error point at the caller's mistake, not line 900 of a
@@ -233,18 +280,18 @@ header. Name them after the requirement, not the types that satisfy it.
 
 1. Lifetime and ownership: who owns it, what outlives what.
 2. Undefined behaviour: aliasing, alignment, signed overflow, uninit reads.
-3. Mechanical: uninitialized variables, `()` narrowing, missing `final`,
-   missing `[[nodiscard]]` / `noexcept` / `constexpr`.
+3. Mechanical: uninitialized variables, `()` narrowing, bare `int` where a
+   fixed-width type was meant, missing `final`, missing `[[nodiscard]]` /
+   `noexcept` / `constexpr`.
 4. Concurrency: memory orders, invariants spanning members, false sharing.
 5. Error paths: leaks, half-constructed objects, ignored results.
 6. Interface and binary-interface impact.
 7. Performance, with numbers.
 8. Style, delegated to the linter.
 
-Longer version with prompts: [cpp_playbook](../../docs/cpp_playbook.md).
-
 ## when asked "is this the modern way"
 
 Answer with a source, a compiler-support check, and generated code. Fashion
 is not an argument. If the standard facility is heavier than the
 hand-written version in this context, say so and show the measurement.
+````

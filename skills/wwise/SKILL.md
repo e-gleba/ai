@@ -10,7 +10,7 @@ description: >
 
 # wwise
 
-Sources: the [Wwise SDK documentation](https://www.audiokinetic.com/en/library/edge/?source=SDK&id=soundengine__index.html),
+Sources: the [Wwise SDK documentation](https://www.audiokinetic.com/en/library/edge/?source=SDK&id=index.html),
 the integration course [Wwise-101](https://www.audiokinetic.com/en/courses/wwise101/),
 and [Wwise-251](https://www.audiokinetic.com/en/courses/wwise251/) for
 performance. The profiler answers most questions this skill gets.
