@@ -22,6 +22,7 @@ const skills = [
   ['code_review', 'Code review'],
   ['tb_engine', 'TB Engine'],
   ['android_studio', 'Android Studio'],
+  ['crash_investigation', 'Crash investigation'],
   ['wwise', 'Wwise'],
   ['rnd', 'R&D spikes'],
   ['cursor_workflow', 'Cursor workflow'],
