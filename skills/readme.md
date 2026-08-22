@@ -60,6 +60,9 @@ installable with `npx skills add <owner>/<repo>` —
 
 - `name`: lowercase, underscores, matches the folder.
 - `description`: what it does **and** when to use it — this is the trigger.
+- Self-contained: link only to stable external documentation, never to other
+  files in this repository. A copied skill must work on its own — the agent
+  that loads it cannot see this repository.
 - Body under about 500 lines; move detail into `references/` beside it.
 - Procedures with steps belong here. Constraints that are always true belong
-  in `AGENTS.md` — see [context_engineering](../docs/context_engineering.md).
+  in `AGENTS.md` — [agents.md](https://agents.md).

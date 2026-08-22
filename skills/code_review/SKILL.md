@@ -119,5 +119,6 @@ could handle it instead of my attention.
 - Reject "consider extracting a helper" noise.
 - If two passes disagree, correctness wins.
 - Batch reviews into two slots a day.
-- Engine code gets two extra gates first: platform boundary and binary
-  interface — [tb_engine](../tb_engine/SKILL.md).
+- Engine code gets two extra gates first: platform-specific code stays in
+  the platform layer, and public-header or ABI changes need a deprecation
+  path.

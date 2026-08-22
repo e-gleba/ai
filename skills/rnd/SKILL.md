@@ -44,13 +44,13 @@ Decision: keep | kill | pivot
 Rule for next time: {{one sentence added to the project docs}}
 ```
 
-The record goes in the repository, not the chat. Teams that skip this re-run
-the same spike every quarter — [best_practice](../../docs/best_practice.md).
+The record goes in the repository, not the chat — the
+[ADR format](https://adr.github.io) is the stable reference. Teams that
+skip this re-run the same spike every quarter.
 
 ## agent use in a spike
 
 Good: generating the harness, the test data, the comparison table, the
 literature summary with citations. Bad: judging the result — the agent has
-not seen your production constraints. Grounding rules from
-[cpp_playbook](../../docs/cpp_playbook.md) apply: sanitizers for claims
-about correctness, measurements for claims about speed.
+not seen your production constraints. Ground every claim: sanitizers for
+claims about correctness, measurements for claims about speed.

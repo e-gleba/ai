@@ -24,23 +24,17 @@ Treat these as **shape references only**. Names, layering, and asset formats
 have diverged; the fork's behaviour always beats anything a public mirror
 says.
 
-Related skills: [wwise](../wwise/SKILL.md) for audio,
-[android_studio](../android_studio/SKILL.md) for the mobile targets,
-[crash_investigation](../crash_investigation/SKILL.md) when it crashes,
-[cmake](../cmake/SKILL.md) and [cpp20](../cpp20/SKILL.md) for the basics.
-
 ## hard rules
 
 1. Nothing from the private tree goes into a hosted model: no engine
    sources, no platform SDK headers, no unreleased hardware notes, no asset
    dumps. Reproduce the question with public API shapes and generic names,
-   or use a local model — [local_models](../../docs/local_models.md).
+   or use a local model.
 2. Everything the fork owns lives in `tb::`. Upstream-derived code kept for
    compatibility stays under its original namespace; never mix the two in
    one header.
 3. Platform-specific code lives only in the platform layer. Portable code
-   that includes a platform header is a defect, not a shortcut —
-   [engine_rnd](../../docs/engine_rnd.md).
+   that includes a platform header is a defect, not a shortcut.
 4. Public headers are a contract. Layout, inline definitions, and exported
    symbols change only with a deprecation path.
 5. Generated code, vendored third-party code, and tool output are read-only.
@@ -58,8 +52,7 @@ namespace tb
 namespace tb::detail {}   // implementation only; never in a public header
 ```
 
-- `snake_case` for types and functions, matching the fork's existing style
-  and the [cpp20](../cpp20/SKILL.md) defaults.
+- `snake_case` for types and functions, matching the fork's existing style.
 - No `m_` prefixes, no Hungarian notation.
 - A type in a public header must be forward-declarable: no platform type in
   its signature.
@@ -95,8 +88,7 @@ namespace tb
 State the threading contract, the error contract, and the ownership. Those
 three facts prevent most wrong patches. Mark the contract in the signature
 itself — `[[nodiscard]]` on every fallible call, `noexcept` on every
-function that cannot throw, per the [cpp20](../cpp20/SKILL.md) contract
-rules.
+function that cannot throw.
 
 ## asset and tool pipeline
 
@@ -142,7 +134,7 @@ IF BLOCKED: write BLOCKED.md and stop. Do not invent a platform workaround.
 
 ## grounding checklist before asking for engine help
 
-- `compile_commands.json` present and current — [cmake](../cmake/SKILL.md)
+- `compile_commands.json` present and current (`CMAKE_EXPORT_COMPILE_COMMANDS=ON`)
 - the build command for the platform in question
 - the profile, trace, or crash data when the task is about behaviour
 - the module dependency rules: who may include whom
