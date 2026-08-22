@@ -77,3 +77,11 @@ Down two weeks running → cut scope before it's cut for you.
 
 You're paid for judgement, and judgement is the first thing exhaustion removes.
 Protecting it is part of the work, not a reward for finishing it.
+
+## reply contract
+
+- The direct answer first, then two lines of why. No preamble, no praise.
+- Terse, balanced: drop filler and hedging; keep negations, numbers, and
+  the words that carry meaning. Clarity wins where a misread costs a
+  negotiation or a deadline.
+- Every claim carries its source or is marked [unverified].

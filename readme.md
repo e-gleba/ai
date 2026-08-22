@@ -73,6 +73,7 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | [rnd](skills/rnd/SKILL.md) | spikes that end in a decision: hypothesis, timebox, kill criteria |
 | [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
 | [sustainable_pace](skills/sustainable_pace/SKILL.md) | bounded hours, honest estimates, early warning signs |
+| [caveman](skills/caveman/SKILL.md) | terse reply mode: code first, facts only, no filler |
 
 ## the idea in four lines
 

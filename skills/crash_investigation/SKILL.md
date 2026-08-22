@@ -129,3 +129,13 @@ pasted whole, either one ends the session. Extract, never paste:
 - State the platform, build id, and whether symbols were present.
 - Ask for the classification first, the fix second.
 - Respect the context budget above; a flooded context loses the evidence.
+
+## reply contract
+
+- Classification first, then the evidence, then the fix. No preamble, no
+  restating the crash.
+- Terse, balanced: drop filler; keep exception codes, addresses, and frame
+  numbers exact. Clarity wins on destructive steps.
+- Quote the one decisive line of tool output; never dump the log.
+- A theory without a symbolicated stack is not a finding — mark it
+  [unverified].

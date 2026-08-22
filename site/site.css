@@ -133,20 +133,25 @@ svg { width: 1.1rem; height: 1.1rem; flex: none; }
 .prose pre code { padding: 0; border: 0; background: transparent; line-height: 1.65; }
 
 .code-block { position: relative; margin: 1.5rem 0; }
-.code-block > pre { margin: 0; padding-right: 3rem; }
-.code-copy {
+.code-block > pre { margin: 0; padding-right: 3.2rem; }
+.code-block:has(.code-link) > pre { padding-right: 5.6rem; }
+.code-block:has(.code-scira) > pre { padding-right: 8rem; }
+.code-actions {
   position: absolute; top: .55rem; right: .55rem;
+  display: flex; gap: .4rem; opacity: .75; transition: opacity .15s;
+}
+.code-block:hover .code-actions, .code-actions:focus-within { opacity: 1; }
+.code-copy, .code-link, .code-scira {
   display: inline-flex; align-items: center; justify-content: center;
   width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--border);
   border-radius: 8px; background: color-mix(in srgb, var(--bg) 88%, transparent);
-  color: var(--muted); cursor: pointer; opacity: .75; backdrop-filter: blur(10px);
-  transition: opacity .15s, color .15s, background .15s, border-color .15s, transform .15s;
+  color: var(--muted); cursor: pointer; backdrop-filter: blur(10px);
+  transition: color .15s, background .15s, border-color .15s, transform .15s;
 }
-.code-block:hover .code-copy, .code-copy:focus-visible { opacity: 1; }
-.code-copy:hover { background: var(--panel-hover); color: var(--text); border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
-.code-copy:active { transform: translateY(1px); }
-.code-copy.copied { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); opacity: 1; }
-.code-copy svg { width: 1rem; height: 1rem; }
+.code-copy:hover, .code-link:hover, .code-scira:hover { background: var(--panel-hover); color: var(--text); border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.code-copy:active, .code-link:active, .code-scira:active { transform: translateY(1px); }
+.code-copy.copied { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.code-actions svg { width: 1rem; height: 1rem; }
 
 .prose blockquote { margin: 1.5rem 0; padding: .1rem 1.2rem; border-left: 3px solid var(--accent); color: var(--muted); }
 .prose table { display: block; width: 100%; margin: 1.5rem 0; overflow-x: auto; border-collapse: collapse; font-size: .9rem; }
@@ -187,6 +192,6 @@ footer a { display: inline-flex; align-items: center; gap: .4rem; text-decoratio
 }
 
 @media print {
-  .sidebar, .topbar, .page-actions, .toast, .scrim, .code-copy { display: none !important; }
+  .sidebar, .topbar, .page-actions, .toast, .scrim, .code-actions { display: none !important; }
   .main { width: 100%; margin: 0; padding: 0; }
 }

@@ -7,6 +7,8 @@ const themes = ['auto', 'light', 'dark'];
 
 const svgCopy = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const svgCheck = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+const svgLink = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07.07l2-2A5 5 0 0 0 12 4l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07-.07l-2 2A5 5 0 0 0 12 20l1.15-1.15"/></svg>';
+const svgExternal = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
 
 function resolvedTheme() {
   if (root.dataset.theme !== 'auto') return root.dataset.theme;
@@ -65,7 +67,7 @@ menuButton?.addEventListener('click', () => {
 scrim?.addEventListener('click', closeMenu);
 document.addEventListener('keydown', (event) => event.key === 'Escape' && closeMenu());
 
-document.querySelectorAll('[data-copy-link]').forEach((button) => button.addEventListener('click', () => {
+document.querySelectorAll('button[data-copy-link]').forEach((button) => button.addEventListener('click', () => {
   copy(new URL(button.dataset.copyLink, location.origin).href, 'Raw link copied');
 }));
 document.querySelectorAll('[data-copy-content]').forEach((button) => button.addEventListener('click', async () => {
@@ -80,14 +82,47 @@ document.querySelectorAll('.prose pre').forEach((pre) => {
   pre.replaceWith(wrapper);
   wrapper.append(pre);
 
+  const actions = document.createElement('div');
+  actions.className = 'code-actions';
+  const codeText = () => (pre.querySelector('code') ?? pre).innerText;
+
+  // skill pages only: copy the skill, then open Scira — the user pastes,
+  // adds a task, and submits when ready; no auto-eval on arrival
+  if (pre.hasAttribute('data-scira')) {
+    const sciraButton = document.createElement('button');
+    sciraButton.type = 'button';
+    sciraButton.className = 'code-scira';
+    sciraButton.setAttribute('aria-label', 'Copy skill and open Scira');
+    sciraButton.title = 'Copy skill and open Scira';
+    sciraButton.innerHTML = svgExternal;
+    sciraButton.addEventListener('click', async () => {
+      if (!await copy(codeText(), 'Skill copied — paste it in Scira, then add your task')) return;
+      window.open('https://scira.ai/', '_blank', 'noopener');
+    });
+    actions.append(sciraButton);
+  }
+
+  // skill pages only: the raw-link button lives on the block, not the page top
+  if (pre.dataset.copyLink) {
+    const linkButton = document.createElement('button');
+    linkButton.type = 'button';
+    linkButton.className = 'code-link';
+    linkButton.setAttribute('aria-label', 'Copy raw link');
+    linkButton.title = 'Copy raw link';
+    linkButton.innerHTML = svgLink;
+    linkButton.addEventListener('click', () => {
+      copy(new URL(pre.dataset.copyLink, location.origin).href, 'Raw link copied');
+    });
+    actions.append(linkButton);
+  }
+
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'code-copy';
   button.setAttribute('aria-label', 'Copy code');
   button.innerHTML = svgCopy;
   button.addEventListener('click', async () => {
-    const code = pre.querySelector('code');
-    if (!await copy((code ?? pre).innerText, 'Code copied')) return;
+    if (!await copy(codeText(), 'Code copied')) return;
     button.classList.add('copied');
     button.innerHTML = svgCheck;
     button.setAttribute('aria-label', 'Copied');
@@ -98,7 +133,8 @@ document.querySelectorAll('.prose pre').forEach((pre) => {
       button.setAttribute('aria-label', 'Copy code');
     }, 1600);
   });
-  wrapper.append(button);
+  actions.append(button);
+  wrapper.append(actions);
 });
 
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeLabel);

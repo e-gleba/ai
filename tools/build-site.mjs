@@ -27,6 +27,7 @@ const skills = [
   ['rnd', 'R&D spikes'],
   ['cursor_workflow', 'Cursor workflow'],
   ['sustainable_pace', 'Sustainable pace'],
+  ['caveman', 'Caveman'],
 ];
 
 const escapeHtml = (value) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -117,16 +118,16 @@ async function output(path, content) {
 async function renderPage(source, destination, active, title, options = {}) {
   const markdown = await read(source);
   // a skill is a file to copy, not prose to render: raw source, front matter
-  // included, in one code block — site.js puts the copy button on the block
+  // included, in one code block — site.js puts the action buttons on the block
   const body = options.skill
-    ? `<h1 class="sr-only">${escapeHtml(title)}</h1><pre><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
+    ? `<h1 class="sr-only">${escapeHtml(title)}</h1><pre data-copy-link="${options.rawUrl}" data-scira><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
     : marked.parse(normalizeMarkdown(markdown, source), { gfm: true, breaks: false });
   await output(destination, shell({
     title,
     description: options.description || `AI Handbook: ${title}`,
     body,
     active,
-    rawUrl: options.rawUrl,
+    rawUrl: options.skill ? '' : options.rawUrl,
     copyContent: !options.skill,
   }));
 }

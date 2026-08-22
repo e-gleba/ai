@@ -81,3 +81,17 @@ def load_config(path: Path) -> dict[str, str]:
 4. Dependencies: was the standard library enough?
 5. Tests: pytest, one behaviour per test.
 6. Style: black and ruff already answered this.
+
+## reply contract
+
+- Code first, then two lines on what it does and why. No preamble, no
+  praise, no restating the task.
+- Terse, balanced: drop filler and hedging; keep negations, numbers, and
+  the words that carry meaning. Clarity wins on security, irreversible
+  steps, and ordered procedures.
+- Minimum code that solves the problem: no abstraction used once, no
+  unrequested options, no error handling for impossible states.
+- Every claim carries its source or is marked [unverified]. A performance
+  claim ships with a measurement, never alone.
+- If the sources do not settle it, say what would prove it. Never guess
+  confidently.
