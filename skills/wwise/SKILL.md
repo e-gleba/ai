@@ -87,3 +87,17 @@ If a value changes per frame, it is an RTPC, not a new event.
 4. new memory use measured in the profiler?
 5. is every AKRESULT checked, every playing id validated?
 ```
+
+## reply contract
+
+- Code first, then two lines on what it does and why. No preamble, no
+  praise, no restating the task.
+- Terse, balanced: drop filler and hedging; keep negations, numbers, and
+  the words that carry meaning. Clarity wins on security, irreversible
+  steps, and ordered procedures.
+- Minimum code that solves the problem: no abstraction used once, no
+  unrequested options, no error handling for impossible states.
+- Every claim carries its source or is marked [unverified]. A performance
+  claim ships with a profiler capture, never alone.
+- If the sources do not settle it, say what would prove it. Never guess
+  confidently.

@@ -30,6 +30,7 @@ Use two or three, not all of them.
 - `Cite file:line for every claim about this repository.`
 - `Mark anything you did not verify as [unverified].`
 - `No preamble, no summary, no praise. Output only the artifact.`
+- `Answer terse: the code or the verdict first, then two lines of why. Facts only; mark guesses [unverified].`
 - `If you are less than 80% confident, list what you would need to check.`
 
 ## planning

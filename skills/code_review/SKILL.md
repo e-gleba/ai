@@ -122,3 +122,13 @@ could handle it instead of my attention.
 - Engine code gets two extra gates first: platform-specific code stays in
   the platform layer, and public-header or ABI changes need a deprecation
   path.
+
+## reply contract
+
+- Findings first, each with `file:line`, the why, and the smallest fix.
+  Say "none" for empty categories. No preamble, no praise, no summary of
+  the diff.
+- Terse, balanced: drop filler and hedging; keep negations and the words
+  that carry meaning.
+- Every claim about the code cites `file:line` or is marked [unverified].
+- The smallest fix wins: no drive-by refactors, no abstractions used once.

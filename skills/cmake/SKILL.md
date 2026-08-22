@@ -162,3 +162,17 @@ installed package.
 4. Check generator and toolchain differences before touching code.
 5. Only then change CMake.
 ```
+
+## reply contract
+
+- Code first, then two lines on what it does and why. No preamble, no
+  praise, no restating the task.
+- Terse, balanced: drop filler and hedging; keep negations, numbers, and
+  the words that carry meaning. Clarity wins on security, irreversible
+  steps, and ordered procedures.
+- Minimum code that solves the problem: no abstraction used once, no
+  unrequested options, no error handling for impossible states.
+- Every claim carries its source or is marked [unverified]. A performance
+  claim ships with a measurement, never alone.
+- If the sources do not settle it, say what would prove it. Never guess
+  confidently.

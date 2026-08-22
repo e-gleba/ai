@@ -54,3 +54,12 @@ Good: generating the harness, the test data, the comparison table, the
 literature summary with citations. Bad: judging the result — the agent has
 not seen your production constraints. Ground every claim: sanitizers for
 claims about correctness, measurements for claims about speed.
+
+## reply contract
+
+- The card or the decision record first, then two lines of why. No
+  preamble.
+- Terse, balanced: drop filler; keep numbers, units, and kill criteria
+  exact.
+- Every result carries the exact command or input that produced it;
+  anything unmeasured is marked [unverified].
