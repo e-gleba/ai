@@ -24,7 +24,7 @@ Global state is the old way and causes the "works on my machine" class of
 bug.
 
 ```cmake
-cmake_minimum_required(VERSION 4.2)   # default floor; lower only on request
+cmake_minimum_required(VERSION 4.4)   # latest stable; lower only on explicit request
 project(tb_core VERSION 1.0 LANGUAGES CXX)
 
 # no modules in use -> do not pay for scanning them
@@ -59,6 +59,12 @@ consumers. Most build breakage is one of these three being wrong.
 6. Generated files stay in the binary directory.
 7. Your variables `snake_case`; CMake's own stay as they are.
 8. One `CMakeLists.txt` per directory that owns a target.
+9. No requested minimum means latest stable (4.4 today): the plain
+   `cmake_minimum_required(VERSION x.y)` form already sets every policy up
+   to `x.y` to NEW, so a current floor opts into current behavior for
+   free. Lower only when the user names a version, and cap the presets
+   schema `version` at what that floor reads: 12 needs 4.4, 10 needs
+   3.31, 8 needs 3.28.
 
 ## presets, the entry point
 
@@ -67,7 +73,9 @@ end up in project instructions.
 
 ```json
 {
-  "version": 6,
+  "$schema": "https://json.schemastore.org/cmake-presets.json",
+  "version": 12,
+  "cmakeMinimumRequired": { "major": 4, "minor": 4, "patch": 0 },
   "configurePresets": [
     {
       "name": "dev",
@@ -90,10 +98,24 @@ end up in project instructions.
   ],
   "buildPresets": [{ "name": "dev", "configurePreset": "dev" }],
   "testPresets": [
-    { "name": "dev", "configurePreset": "dev", "output": { "outputOnFailure": true } }
+    {
+      "name": "dev",
+      "configurePreset": "dev",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    }
   ]
 }
 ```
+
+The first three lines are explicit on purpose. `$schema` is what the
+editor's JSON language server reads to validate and autocomplete the
+file; point it at the SchemaStore mirror, which tracks Kitware's own
+schema. The `cmake.org/_downloads/` schema URLs change with every patch
+release, and Kitware says not to reference them. `version` is the newest
+preset schema the floor CMake reads, and `cmakeMinimumRequired` restates
+the floor where `cmake --preset` enforces it. `noTestsAction: error`
+turns "zero tests ran" into a failure instead of a silent pass.
 
 ```sh
 cmake --preset dev && cmake --build --preset dev -j && ctest --preset dev
@@ -149,6 +171,7 @@ installed package.
 - New sources listed explicitly?
 - Works from a clean build directory, not only incrementally?
 - Presets still produce a compilation database?
+- `$schema` set in the presets file, and `version` within the floor?
 - No host-only assumptions or absolute paths, so cross-compilation works?
 - Module scan disabled if modules are not used?
 
