@@ -62,7 +62,7 @@ function icon(name) {
     menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/>',
     link: '<path d="M10 13a5 5 0 0 0 7.07.07l2-2A5 5 0 0 0 12 4l-1.15 1.15"/><path d="M14 11a5 5 0 0 0-7.07-.07l-2 2A5 5 0 0 0 12 20l1.15-1.15"/>',
-    external: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+    copy: '<rect width="13" height="13" x="9" y="9" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
     github: '<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-7 0C4.8.1 3.7.5 3.7.5A5 5 0 0 0 3.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4M8 19c-3 .9-3-1.5-4-2"/>',
   };
   return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`;
@@ -70,8 +70,8 @@ function icon(name) {
 
 function shell({ title, description, body, active, rawUrl = '' }) {
   const actions = rawUrl ? `<div class="page-actions" aria-label="Page actions">
-    <button class="button" data-copy-link="${rawUrl}">${icon('link')}<span>Copy raw link</span></button>
-    <a class="button" href="${rawUrl}" target="_blank" rel="noopener">${icon('external')}<span>Open raw</span></a>
+    <button class="icon-button" data-copy-link="${rawUrl}" aria-label="Copy raw link" title="Copy raw link">${icon('link')}</button>
+    <button class="icon-button" data-copy-content="${rawUrl}" aria-label="Copy page content" title="Copy page content">${icon('copy')}</button>
   </div>` : '';
   return `<!doctype html>
 <html lang="en">
@@ -81,6 +81,7 @@ function shell({ title, description, body, active, rawUrl = '' }) {
   <meta name="description" content="${escapeHtml(description)}">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#0a0a0f">
+  <link rel="icon" href="${base}/favicon.svg" type="image/svg+xml">
   <title>${escapeHtml(title)} · AI Handbook</title>
   <link rel="canonical" href="${siteUrl}${active ? `/${active}/` : '/'}">
   <link rel="stylesheet" href="${base}/assets/site.css">
@@ -115,9 +116,8 @@ async function output(path, content) {
 
 async function renderPage(source, destination, active, title, options = {}) {
   const markdown = await read(source);
-  const body = options.skill
-    ? `<pre><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
-    : marked.parse(normalizeMarkdown(markdown, source), { gfm: true, breaks: false });
+  const content = options.skill ? markdown.replace(/^---\n[\s\S]*?\n---\n+/, '') : markdown;
+  const body = marked.parse(normalizeMarkdown(content, source), { gfm: true, breaks: false });
   await output(destination, shell({
     title,
     description: options.description || `AI Handbook: ${title}`,
@@ -131,6 +131,7 @@ await rm(out, { recursive: true, force: true });
 await mkdir(`${out}/assets`, { recursive: true });
 await cp(`${root}/site/site.css`, `${out}/assets/site.css`);
 await cp(`${root}/site/site.js`, `${out}/assets/site.js`);
+await cp(`${root}/site/favicon.svg`, `${out}/favicon.svg`);
 await output('.nojekyll', '');
 
 await renderPage('readme.md', 'index.html', '', 'AI Handbook', {

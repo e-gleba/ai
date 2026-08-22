@@ -68,6 +68,11 @@ document.addEventListener('keydown', (event) => event.key === 'Escape' && closeM
 document.querySelectorAll('[data-copy-link]').forEach((button) => button.addEventListener('click', () => {
   copy(new URL(button.dataset.copyLink, location.origin).href, 'Raw link copied');
 }));
+document.querySelectorAll('[data-copy-content]').forEach((button) => button.addEventListener('click', async () => {
+  const response = await fetch(button.dataset.copyContent);
+  if (!response.ok) throw new Error(`Failed to load page: ${response.status}`);
+  copy(await response.text(), 'Page copied');
+}));
 
 document.querySelectorAll('.prose pre').forEach((pre) => {
   const wrapper = document.createElement('div');
