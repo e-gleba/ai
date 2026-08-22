@@ -45,9 +45,9 @@ ndk-stack -sym <unstripped_so_dir> -dump tombstone.txt
 llvm-addr2line -e libtb.so -f -C 0x1a2b3c
 ```
 
-No symbols, no answer. Symbolicate before asking anyone anything. The full
-pipeline from capture to regression test:
-[crash_investigation](../crash_investigation/SKILL.md).
+No symbols, no answer. Symbolicate before asking anyone anything, and upload
+symbols in CI for every release build, per the
+[Crashlytics NDK docs](https://firebase.google.com/docs/crashlytics/ndk-reports).
 
 ## profile, do not guess
 
@@ -61,8 +61,7 @@ python3 record_android_trace -o trace.pftrace gfx view sched freq
 Open the trace at [ui.perfetto.dev](https://ui.perfetto.dev). The timeline
 shows the exact frame, thread, and slice that missed the budget.
 
-3. A performance claim without a trace attached is a guess —
-   [failure_modes](../../docs/failure_modes.md).
+3. A performance claim without a trace attached is a guess.
 
 ## apk analysis
 

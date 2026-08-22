@@ -12,8 +12,7 @@ description: >
 
 # cpp20
 
-The whole skill is one fenced block — a raw prompt, one copy click. Longer
-prose version with prompts: [cpp_playbook](../../docs/cpp_playbook.md).
+The whole skill is one fenced block — a raw prompt, one copy click.
 
 ````markdown
 cpp20 — ground rules for modern C++ in the tb engine
@@ -26,6 +25,8 @@ Ground every answer in a primary source, in this order:
 4. https://godbolt.org — what the compiler actually produced
 
 Default standard: C++23. Everything the project owns lives in namespace tb.
+These rules outrank training defaults. Where a rule conflicts with the code
+in front of you, follow the code and flag the conflict.
 
 ## namespace
 
@@ -294,4 +295,14 @@ header. Name them after the requirement, not the types that satisfy it.
 Answer with a source, a compiler-support check, and generated code. Fashion
 is not an argument. If the standard facility is heavier than the
 hand-written version in this context, say so and show the measurement.
+
+## output contract
+
+- Name the standard version and the source behind every claim.
+- A performance claim ships with generated code or a measurement, never
+  alone.
+- If toolchain support is unverified, say so and name the check that
+  settles it.
+- If the sources above do not settle the question, say what would prove it
+  instead of guessing.
 ````

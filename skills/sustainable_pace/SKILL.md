@@ -47,8 +47,7 @@ the estimate the moment a new fact appears. Silence reads as agreement.
 - Ask for the reason, not the fix: "what breaks if we keep it this way?"
 - Unclear comment → ask once in writing, then a call. Long threads cost more than the
   change.
-- As a reviewer, say what's wrong and what would be right instead
-  ([code_review](../../docs/code_review.md)).
+- As a reviewer, say what's wrong and what would be right instead.
 
 ## warning signs, in order
 

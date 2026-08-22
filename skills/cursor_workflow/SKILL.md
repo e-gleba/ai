@@ -30,15 +30,15 @@ editor-specific, path-scoped conventions. Do not duplicate one in the other.
 6. Commit, or discard and restart. Never keep a diff you do not understand.
 ```
 
-Step 3 is the gate — [best_practice](../../docs/best_practice.md).
+Step 3 is the gate.
 
 ## context selection
 
 - Reference exact files and symbols instead of hoping the search finds them.
 - Attach the failing test output or build log; a real error beats a description.
 - Do not attach a whole directory "for context": it dilutes attention.
-- Keep `compile_commands.json` at the repository root for C++ work —
-  [cmake](../cmake/SKILL.md).
+- Keep `compile_commands.json` at the repository root for C++ work
+  (`CMAKE_EXPORT_COMPILE_COMMANDS=ON`).
 
 ## model per phase
 
@@ -48,8 +48,6 @@ Step 3 is the gate — [best_practice](../../docs/best_practice.md).
 | implementation | frontier coding | file edits and tool calls matter more than deliberation |
 | mechanical spread | fast mid-tier | cheap, and the build verifies it |
 | correctness review | frontier reasoning | it needs to disagree with the implementer |
-
-Choosing between classes: [model_selection](../../docs/model_selection.md).
 
 ## rules that keep diffs reviewable
 
@@ -69,8 +67,7 @@ Put these in `AGENTS.md` once and stop repeating them in chat:
 ## background and parallel agents
 
 Use a second agent only for work that shares no files with what you are doing. One
-checkout per agent, disjoint file lists, one verification command each —
-[parallel_agents](../../docs/parallel_agents.md).
+checkout per agent, disjoint file lists, one verification command each.
 
 Good candidates: mechanical spread across many call sites, an independent second
 attempt at a hard change, a documentation pass. Bad candidates: anything in the
@@ -84,17 +81,16 @@ subsystem you are editing right now.
 - Two attempts at the same error have failed.
 - The plan on screen no longer matches the code on disk.
 
-Restarting with a clean brief is faster than arguing — full list of symptoms in
-[failure_modes](../../docs/failure_modes.md).
+Restarting with a clean brief is faster than arguing.
 
 ## end of session
 
 ```
 1. git diff --stat  — is this the size you intended?
-2. Run the review passes from docs/code_review.md.
+2. Run the review passes: intent, correctness, design, hygiene — one prompt
+   per pass.
 3. Write the commit message from the diff, not from memory.
 4. Note the one thing that wasted time today.
 ```
 
-That last line is what turns a session into a better `AGENTS.md` next week —
-[daily_routine](../../docs/daily_routine.md).
+That last line is what turns a session into a better `AGENTS.md` next week.
