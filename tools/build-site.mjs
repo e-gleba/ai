@@ -68,10 +68,10 @@ function icon(name) {
   return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths[name]}</svg>`;
 }
 
-function shell({ title, description, body, active, rawUrl = '' }) {
+function shell({ title, description, body, active, rawUrl = '', copyContent = true }) {
   const actions = rawUrl ? `<div class="page-actions" aria-label="Page actions">
     <button class="icon-button" data-copy-link="${rawUrl}" aria-label="Copy raw link" title="Copy raw link">${icon('link')}</button>
-    <button class="icon-button" data-copy-content="${rawUrl}" aria-label="Copy page content" title="Copy page content">${icon('copy')}</button>
+    ${copyContent ? `<button class="icon-button" data-copy-content="${rawUrl}" aria-label="Copy page content" title="Copy page content">${icon('copy')}</button>` : ''}
   </div>` : '';
   return `<!doctype html>
 <html lang="en">
@@ -116,14 +116,18 @@ async function output(path, content) {
 
 async function renderPage(source, destination, active, title, options = {}) {
   const markdown = await read(source);
-  const content = options.skill ? markdown.replace(/^---\n[\s\S]*?\n---\n+/, '') : markdown;
-  const body = marked.parse(normalizeMarkdown(content, source), { gfm: true, breaks: false });
+  // a skill is a file to copy, not prose to render: raw source, front matter
+  // included, in one code block — site.js puts the copy button on the block
+  const body = options.skill
+    ? `<h1 class="sr-only">${escapeHtml(title)}</h1><pre><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
+    : marked.parse(normalizeMarkdown(markdown, source), { gfm: true, breaks: false });
   await output(destination, shell({
     title,
     description: options.description || `AI Handbook: ${title}`,
     body,
     active,
     rawUrl: options.rawUrl,
+    copyContent: !options.skill,
   }));
 }
 

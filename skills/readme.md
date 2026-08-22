@@ -43,9 +43,11 @@ to a rule by adding a `globs` line and dropping the steps that do not apply.
 
 ## community collections worth stealing from
 
-Do not write what already exists. These are maintained, starred, and
-installable with `npx skills add <owner>/<repo>` —
-[skills cli](https://skills.sh):
+Do not write what already exists. Search the registries first —
+[skills.sh](https://skills.sh), the public directory behind the
+`npx skills add <owner>/<repo>` installer, and
+[aihero.dev/skills](https://www.aihero.dev/skills), a documented catalog with
+per-skill pages. Then steal from the maintained sets:
 
 | source | take |
 | --- | --- |
