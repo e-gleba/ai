@@ -68,6 +68,10 @@ per-skill pages. Then steal from the maintained sets:
   files in this repository. A copied skill must work on its own — the agent
   that loads it cannot see this repository.
 - Body under about 500 lines; move detail into `references/` beside it.
+- Config-file examples carry their schema, so an editor's language server
+  validates them: a `$schema` field in JSON, a
+  `# yaml-language-server: $schema=<url>` modeline as the first line of
+  YAML.
 - End with the short `reply contract` block the existing skills use: answer
   or code first, terse balanced prose, claims sourced or marked
   `[unverified]`, minimum code, measurements for performance claims. Keep it
