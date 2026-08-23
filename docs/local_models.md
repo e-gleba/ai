@@ -1,6 +1,6 @@
 # local_models
 
-[handbook](../readme.md) · prev: [engine_rnd](engine_rnd.md) · next: [mcp](mcp.md)
+[handbook](../readme.md) · prev: [best_practice](best_practice.md) · next: [mcp](mcp.md)
 
 **In one sentence:** running a model on your own machine is about privacy,
 availability, and unit cost — not about beating the frontier.

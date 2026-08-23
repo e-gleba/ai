@@ -44,5 +44,4 @@ These are also the rules recommended to readers:
 - Require human confirmation before anything irreversible: force push, delete,
   deploy, payment, or a message sent on your behalf.
 
-Details and failure cases: [failure_modes](docs/failure_modes.md) and
-[mcp](docs/mcp.md).
+Details and failure cases: [mcp](docs/mcp.md).

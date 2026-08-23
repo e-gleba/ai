@@ -1,6 +1,6 @@
 # best_practice
 
-[handbook](../readme.md) · prev: [context_engineering](context_engineering.md) · next: [engine_rnd](engine_rnd.md)
+[handbook](../readme.md) · prev: [context_engineering](context_engineering.md) · next: [local_models](local_models.md)
 
 **In one sentence:** **design first, small steps, write it down, cheapest model that
 passes.**

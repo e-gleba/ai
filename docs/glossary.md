@@ -1,6 +1,6 @@
 # glossary
 
-[handbook](../readme.md) · prev: [failure_modes](failure_modes.md)
+[handbook](../readme.md) · prev: [mcp](mcp.md)
 
 **In one sentence:** every term used in this handbook, one line each, plain words.
 
@@ -83,8 +83,7 @@ More: [local_models](local_models.md).
 - **target (CMake)** — the unit a build is described in; its properties propagate to
   consumers [cmake skill](../skills/cmake/SKILL.md).
 
-More: [cpp_playbook](cpp_playbook.md), [engine_rnd](engine_rnd.md),
-[cpp20 skill](../skills/cpp20/SKILL.md).
+More: [cpp20 skill](../skills/cpp20/SKILL.md).
 
 ## research
 

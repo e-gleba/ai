@@ -135,5 +135,4 @@ No hedging. Rank the objections by severity.
 
 - Review prompts: [code_review](code_review.md)
 - Design-first sequence and written procedures: [best_practice](best_practice.md)
-- C++ specifics: [cpp_playbook](cpp_playbook.md) and the
-  [cpp20 skill](../skills/cpp20/SKILL.md)
+- C++ specifics: the [cpp20 skill](../skills/cpp20/SKILL.md)

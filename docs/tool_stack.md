@@ -1,6 +1,6 @@
 # tool_stack
 
-[handbook](../readme.md) · prev: [daily_routine](daily_routine.md) · next: [model_selection](model_selection.md)
+[handbook](../readme.md) · prev: [start_here](start_here.md) · next: [model_selection](model_selection.md)
 
 **In one sentence:** one job per tool, and the honest limitation of each, because
 the limitation decides where a task belongs.
@@ -16,7 +16,7 @@ the limitation decides where a task belongs.
 | cloud agents in a sandbox | many isolated tasks at once | no local toolchain, so native and C++ builds often fail there |
 
 The agent that can run your build is worth more than the agent with the better
-benchmark — see [cpp_playbook](cpp_playbook.md).
+benchmark.
 
 ## search and research
 
