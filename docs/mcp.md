@@ -29,8 +29,7 @@ Build one when all three are true:
 3. Its output is structured enough to be verified.
 
 Otherwise write a script and let the agent run it. A shell command documented in
-`AGENTS.md` beats a server nobody maintains —
-[context_engineering](context_engineering.md).
+`AGENTS.md` beats a server nobody maintains.
 
 ## tool design rules
 
@@ -99,7 +98,7 @@ confirmation.
 ## worth keeping enabled
 
 - GitHub: pull requests, issues, review comments, failing logs. Pairs with
-  [code_review](code_review.md).
+  the [code_review skill](../skills/code_review/SKILL.md).
 - One search server — [tool_stack](tool_stack.md).
 - Compiler Explorer, to compile and inspect machine code from a chat.
 - Documentation questions for unfamiliar dependencies.

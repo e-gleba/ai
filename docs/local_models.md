@@ -1,6 +1,6 @@
 # local_models
 
-[handbook](../readme.md) · prev: [best_practice](best_practice.md) · next: [mcp](mcp.md)
+[handbook](../readme.md) · prev: [model_selection](model_selection.md) · next: [mcp](mcp.md)
 
 **In one sentence:** running a model on your own machine is about privacy,
 availability, and unit cost — not about beating the frontier.
@@ -66,8 +66,7 @@ traffic is a strong signal — then run your own set from
 5. Store inputs, outputs, model name, and prompt hash. Reproducibility is the point.
 ```
 
-This turns an expensive job into a cheap one with a small paid audit — the same
-economics as [best_practice](best_practice.md).
+This turns an expensive job into a cheap one with a small paid audit.
 
 ## prompting a small model
 

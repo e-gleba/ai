@@ -12,6 +12,14 @@ description: >
 One rule: the agent produces findings, the human approves. A finding without
 `file:line` is not a finding.
 
+## inputs
+
+- `{{diff}}` - the pull request diff, from the git commands below
+- `{{goal}}` - the one-sentence goal of the change
+- `{{issue_link}}` - link to the issue the change closes
+- `{{context}}` - surrounding code, for the design pass
+- `{{list}}` - the open review requests, for triage
+
 ## get the diff, any host
 
 ```sh
@@ -35,12 +43,16 @@ descriptions.
 
 ## author, before opening
 
-1. `git diff --stat` — over about 400 changed lines, split it.
+1. `git diff --stat` - over about 400 changed lines, split it.
 2. Read your own diff. Never send an agent diff you have not read.
-3. Run this pass and fix what it finds:
+3. Run the hostile review below and fix what it finds.
+
+## hostile review
 
 ```
-Here is my diff: {{diff}}
+Here is my diff:
+{{diff}}
+
 You are a hostile reviewer on a C++ systems codebase.
 Report only real defects, ranked by severity:
 - undefined behaviour, lifetime and ownership bugs, aliasing, alignment
@@ -55,7 +67,11 @@ Say "none" for empty categories. Do not comment on code outside the diff.
 ## description
 
 ```
-Diff: {{diff}}. Issue: {{issue_link}}.
+Diff:
+{{diff}}
+
+Issue: {{issue_link}}
+
 Write a pull request description:
 ## what
 2 to 4 bullets, at the level of behaviour.
@@ -79,23 +95,32 @@ One prompt per pass. One prompt doing all four does all four badly.
 | 3. design | is this the simplest shape, does it fit the codebase | frontier reasoning |
 | 4. hygiene | naming, dead code, tests, documentation, style | fast mid-tier |
 
-Pass 1:
+Pass 1, intent:
 
 ```
-Stated goal: {{goal}}. Diff: {{diff}}.
+Stated goal: {{goal}}
+
+Diff:
+{{diff}}
+
 Answer three things only:
 1. Does the change accomplish the goal? Where does it fall short?
 2. Does it do anything beyond the goal? List extra scope with file:line.
 3. Is the goal itself the right fix, or is it treating a symptom?
 ```
 
-Pass 2 is the hostile-review prompt above, run on their diff. Pass 4 is a
-linter's job; a cheap model or `clang-tidy` handles it.
+Pass 2, correctness: the hostile review above, run on their diff. Pass 4,
+hygiene: a linter's job; a cheap model or `clang-tidy` handles it.
 
-Pass 3:
+Pass 3, design:
 
 ```
-Diff: {{diff}}. Surrounding code: {{context}}.
+Diff:
+{{diff}}
+
+Surrounding code:
+{{context}}
+
 Judge the design:
 - Could this be materially smaller? Show the smaller shape.
 - Does it add an abstraction used exactly once? Name it.
@@ -108,7 +133,9 @@ important change.
 ## triage the queue
 
 ```
-My open review requests: {{list}}
+My open review requests:
+{{list}}
+
 Rank by: blocking other people > small and mergeable > large and risky.
 For each: estimated review time, the first thing to check, and whether a linter
 could handle it instead of my attention.
