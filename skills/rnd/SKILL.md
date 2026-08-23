@@ -12,14 +12,22 @@ description: >
 Research without a kill criterion becomes a project. A spike is a question
 with a deadline.
 
+## inputs
+
+- {{question}} - what you need to know, one sentence
+- {{hypothesis}} - expected result, with a number if possible
+- {{timebox}} - hard stop: hours or days
+- {{kill_if}} - the result that means stop
+- {{done_when}} - the measurement that answers the question
+
 ## the spike card
 
 ```
-QUESTION: {{what we need to know, one sentence}}
-HYPOTHESIS: {{what we expect, with a number if possible}}
-TIMEBOX: {{hours or days, hard stop}}
-KILL IF: {{the result that means stop}}
-DONE WHEN: {{the measurement that answers the question}}
+QUESTION: {{question}}
+HYPOTHESIS: {{hypothesis}}
+TIMEBOX: {{timebox}}
+KILL IF: {{kill_if}}
+DONE WHEN: {{done_when}}
 ```
 
 No card, no spike. The kill criterion is the part everyone skips and the

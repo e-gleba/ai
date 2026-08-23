@@ -15,8 +15,8 @@ const sections = [
 ];
 
 const skills = [
-  ['cmake', 'Modern CMake'],
-  ['cpp20', 'Modern C++'],
+  ['cmake', 'CMake'],
+  ['cpp20', 'C++'],
   ['python', 'Python'],
   ['code_review', 'Code review'],
   ['tb_engine', 'TB Engine'],
@@ -24,7 +24,7 @@ const skills = [
   ['crash_investigation', 'Crash investigation'],
   ['wwise', 'Wwise'],
   ['rnd', 'R&D spikes'],
-  ['cursor_workflow', 'Cursor workflow'],
+  ['agent_workflow', 'Agent workflow'],
   ['caveman', 'Caveman'],
 ];
 
