@@ -53,6 +53,12 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | [agent_workflow](skills/agent_workflow/SKILL.md) | keeping an editor-agent session reviewable |
 | [caveman](skills/caveman/SKILL.md) | terse reply mode: code first, facts only, no filler |
 
+A larger low-level set — compilers, debuggers, profilers, SIMD, GPU — is
+referenced from
+[mohitmishra786/low-level-dev-skills](https://github.com/mohitmishra786/low-level-dev-skills)
+and synced into the site at build time instead of copied, so it stays
+current: [external skills](skills/readme.md#external).
+
 ## the idea in four lines
 
 ```

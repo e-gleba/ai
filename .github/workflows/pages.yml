@@ -4,6 +4,9 @@ name: pages
 on:
   push:
     branches: [main]
+  schedule:
+    # weekly rebuild: re-fetch external skills so upstream edits reach the site
+    - cron: '17 5 * * 1'
   workflow_dispatch:
 
 permissions:

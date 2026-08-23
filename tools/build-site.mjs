@@ -28,6 +28,15 @@ const skills = [
   ['caveman', 'Caveman'],
 ];
 
+// External skills are referenced, not vendored: every build fetches the
+// current SKILL.md from the upstream default branch, and the weekly pages
+// rebuild carries maintainer edits onto the site. Manifest: skills/external.json.
+const external = JSON.parse(await readFile(`${root}/skills/external.json`, 'utf8'));
+const upstreamUrl = `https://github.com/${external.upstream.repo}`;
+const upstreamRaw = `https://raw.githubusercontent.com/${external.upstream.repo}/${external.upstream.branch}`;
+const externalEntries = external.categories.flatMap(({ name: category, skills: list }) =>
+  list.map(({ name, label }) => ({ category, name, label })));
+
 const escapeHtml = (value) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const titleCase = (name) => name.split('_').map((word) => word === 'cpp20' ? 'C++20' : word === 'mcp' ? 'MCP' : word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
@@ -45,11 +54,13 @@ function normalizeMarkdown(markdown, sourcePath) {
 function nav(active = '') {
   const skillLinks = skills.map(([name, label]) => `<a ${active === `skills/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/${name}/">${label}</a>`).join('');
   const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}</section>`;
+  const externalLinks = externalEntries.map(({ category, name, label }) => `<a ${active === `skills/external/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/external/${name}/" title="${category}">${label}</a>`).join('');
+  const externalGroup = `<section class="nav-group"><h2>External skills</h2>${externalLinks}</section>`;
   const groups = sections.map(([heading, pages], index) => `
     <section class="nav-group">
       <h2>${heading}</h2>
       ${pages.map((name) => `<a ${active === `docs/${name}` ? 'aria-current="page"' : ''} href="${base}/docs/${name}/">${titleCase(name)}</a>`).join('')}
-    </section>${index === 0 ? skillsGroup : ''}`).join('');
+    </section>${index === 0 ? skillsGroup + externalGroup : ''}`).join('');
   return `<nav id="sidebar" class="sidebar" aria-label="Handbook navigation">
     <a class="brand" href="${base}/"><span class="brand-mark">AI</span><span>Handbook</span></a>
     ${groups}
@@ -114,11 +125,11 @@ async function output(path, content) {
 }
 
 async function renderPage(source, destination, active, title, options = {}) {
-  const markdown = await read(source);
+  const markdown = options.content ?? (await read(source));
   // a skill is a file to copy, not prose to render: raw source, front matter
   // included, in one code block — site.js puts the action buttons on the block
   const body = options.skill
-    ? `<h1 class="sr-only">${escapeHtml(title)}</h1><pre data-copy-link="${options.rawUrl}" data-scira><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
+    ? `${options.note ?? ''}<h1 class="sr-only">${escapeHtml(title)}</h1><pre data-copy-link="${options.rawUrl}" data-scira><code class="language-markdown">${escapeHtml(markdown)}</code></pre>`
     : marked.parse(normalizeMarkdown(markdown, source), { gfm: true, breaks: false });
   await output(destination, shell({
     title,
@@ -151,8 +162,25 @@ for (const [, pages] of sections) {
   }
 }
 
-await renderPage('skills/readme.md', 'skills/index.html', 'skills', 'Skills');
-await output('skills/readme.md', await read('skills/readme.md'));
+// the external table exists only in the rendered page; the markdown keeps the
+// placeholder so the manifest stays the single source of truth
+const externalTable = external.categories.map(({ name: category, skills: list }) => [
+  `### ${category}`,
+  '',
+  '| skill | upstream |',
+  '| --- | --- |',
+  ...list.map(({ name, label }) => `| [${label}](external/${name}/SKILL.md) | [${category}/${name}](${upstreamUrl}/tree/${external.upstream.branch}/skills/${category}/${name}) |`),
+  '',
+].join('\n')).join('\n');
+const skillsIndexSource = await read('skills/readme.md');
+if (!skillsIndexSource.includes('<!-- external-skills -->')) {
+  throw new Error('skills/readme.md lost the <!-- external-skills --> placeholder');
+}
+await renderPage('skills/readme.md', 'skills/index.html', 'skills', 'Skills', {
+  content: skillsIndexSource.replace('<!-- external-skills -->', externalTable),
+});
+await output('skills/readme.md', skillsIndexSource);
+
 for (const [name, label] of skills) {
   const source = `skills/${name}/SKILL.md`;
   await renderPage(source, `skills/${name}/index.html`, `skills/${name}`, label, {
@@ -162,12 +190,35 @@ for (const [name, label] of skills) {
   await output(source, await read(source));
 }
 
+// fail fast on a renamed or removed upstream skill: the error names the URL
+// and the fix is a one-line manifest edit, not a silently stale page
+const externalMarkdown = new Map(await Promise.all(externalEntries.map(async ({ category, name }) => {
+  const url = `${upstreamRaw}/skills/${category}/${name}/SKILL.md`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`external skill fetch failed: ${url} -> ${response.status}`);
+  return [`${category}/${name}`, await response.text()];
+})));
+
+for (const { category, name, label } of externalEntries) {
+  const markdown = externalMarkdown.get(`${category}/${name}`);
+  const source = `skills/external/${name}/SKILL.md`;
+  const note = `<p>Synced at build time from <a href="${upstreamUrl}/tree/${external.upstream.branch}/skills/${category}/${name}">${category}/${name}</a> in <a href="${upstreamUrl}">${external.upstream.repo}</a> (<a href="${external.upstream.licenseUrl}">${external.upstream.license}</a>). Reference files, if the skill uses any, live upstream. Install the original with <code>npx skills add ${external.upstream.repo} --skill ${name}</code>.</p>`;
+  await renderPage(source, `skills/external/${name}/index.html`, `skills/external/${name}`, label, {
+    rawUrl: `${base}/${source}`,
+    skill: true,
+    content: markdown,
+    note,
+  });
+  await output(source, markdown);
+}
+
 const rawEntries = [
   ...sections.flatMap(([, pages]) => pages.map((name) => [`${titleCase(name)}`, `${siteUrl}/docs/${name}.md`])),
   ...skills.map(([name, label]) => [`${label} skill`, `${siteUrl}/skills/${name}/SKILL.md`]),
+  ...externalEntries.map(({ name, label }) => [`${label} skill (external)`, `${siteUrl}/skills/external/${name}/SKILL.md`]),
 ];
 await output('llms.txt', `# AI Handbook\n\n> Practical, source-linked guidance for engineers working with AI.\n\n${rawEntries.map(([label, url]) => `- [${label}](${url})`).join('\n')}\n`);
 
 const unexpectedMarkdown = [];
 for (const path of process.argv.slice(2)) if (extname(path) === '.md') unexpectedMarkdown.push(relative(root, path));
-console.log(`Built ${1 + sections.flatMap(([, pages]) => pages).length + skills.length} pages in _site`);
+console.log(`Built ${1 + sections.flatMap(([, pages]) => pages).length + skills.length + externalEntries.length} pages in _site`);
