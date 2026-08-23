@@ -106,6 +106,15 @@ touching a pipeline step:
 Round-trip equality on a real asset is the acceptance criterion for any
 pipeline change.
 
+## inputs for the task card
+
+- {{one_sentence}} - the task, one sentence
+- {{subsystem}} - the `tb::` namespace under work
+- {{explicit_list}} - files the agent may touch
+- {{per_platform_build_cmd}} - build command for the platform in question
+- {{test_cmd}} - test command
+- {{observable_check}} - what must hold for the task to be done
+
 ## task card template
 
 ```

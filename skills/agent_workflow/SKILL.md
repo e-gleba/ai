@@ -1,13 +1,14 @@
 ---
-name: cursor_workflow
+name: agent_workflow
 description: >
-  Running an editor-agent session in Cursor so the result stays small, reviewable,
-  and verifiable: instruction files and rules, the plan gate, context selection,
-  model choice per phase, background agents, and when to restart. Use when starting,
-  configuring, or rescuing an agent session in an editor.
+  Running an editor-agent session (Cursor, Copilot, Claude Code) so the result
+  stays small, reviewable, and verifiable: instruction files and rules, the
+  plan gate, context selection, model choice per phase, background agents,
+  and when to restart. Use when starting, configuring, or rescuing an agent
+  session in an editor.
 ---
 
-# cursor_workflow
+# agent_workflow
 
 Configuration surfaces and where they are documented:
 [cursor docs](https://cursor.com/docs),

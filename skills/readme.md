@@ -25,7 +25,7 @@ the whole point of the format
 | [crash_investigation](crash_investigation/SKILL.md) | reading a native crash: minidump, symbols, the five shapes |
 | [wwise](wwise/SKILL.md) | integrating or debugging Wwise audio in a game engine |
 | [rnd](rnd/SKILL.md) | running a research spike that must end in a decision |
-| [cursor_workflow](cursor_workflow/SKILL.md) | running an editor agent session that stays reviewable |
+| [agent_workflow](agent_workflow/SKILL.md) | running an editor agent session that stays reviewable |
 | [caveman](caveman/SKILL.md) | terse replies: the answer or the code first, facts only, no filler |
 
 ## install

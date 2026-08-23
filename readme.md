@@ -50,7 +50,7 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | [android_studio](skills/android_studio/SKILL.md) | adb, profilers, Perfetto, native crashes, Gradle/NDK |
 | [wwise](skills/wwise/SKILL.md) | events, soundbanks, RTPCs, profiler-driven audio debugging |
 | [rnd](skills/rnd/SKILL.md) | spikes that end in a decision: hypothesis, timebox, kill criteria |
-| [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
+| [agent_workflow](skills/agent_workflow/SKILL.md) | keeping an editor-agent session reviewable |
 | [caveman](skills/caveman/SKILL.md) | terse reply mode: code first, facts only, no filler |
 
 ## the idea in four lines
