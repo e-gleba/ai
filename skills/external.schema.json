@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "External skills manifest",
+  "description": "Skills referenced from an upstream repository and fetched at build time, never vendored. One line per skill; adding or dropping one is a one-line change.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["upstream", "categories"],
+  "properties": {
+    "upstream": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "branch", "license", "licenseUrl"],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
+          "description": "GitHub owner/name of the repository the skills are fetched from."
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Branch to fetch from; the default branch tracks the maintainer."
+        },
+        "license": { "type": "string", "minLength": 1 },
+        "licenseUrl": { "type": "string", "format": "uri" }
+      }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "skills"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Upstream category directory under skills/."
+          },
+          "skills": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "label"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$",
+                  "description": "Upstream skill directory; the build fetches skills/<category>/<name>/SKILL.md."
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Display name in the site navigation and index."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

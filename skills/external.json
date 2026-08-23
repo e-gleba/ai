@@ -1,0 +1,134 @@
+{
+  "$schema": "./external.schema.json",
+  "upstream": {
+    "repo": "mohitmishra786/low-level-dev-skills",
+    "branch": "main",
+    "license": "MIT",
+    "licenseUrl": "https://github.com/mohitmishra786/low-level-dev-skills/blob/main/LICENSE"
+  },
+  "categories": [
+    {
+      "name": "compilers",
+      "skills": [
+        { "name": "gcc", "label": "GCC" },
+        { "name": "clang", "label": "Clang" },
+        { "name": "llvm", "label": "LLVM" },
+        { "name": "msvc-cl", "label": "MSVC cl" },
+        { "name": "cross-gcc", "label": "Cross GCC" },
+        { "name": "pgo", "label": "PGO" },
+        { "name": "cpp-modules", "label": "C++ modules" },
+        { "name": "cpp-templates", "label": "C++ templates" }
+      ]
+    },
+    {
+      "name": "build-systems",
+      "skills": [
+        { "name": "make", "label": "Make" },
+        { "name": "ninja", "label": "Ninja" },
+        { "name": "meson", "label": "Meson" },
+        { "name": "bazel", "label": "Bazel" },
+        { "name": "conan-vcpkg", "label": "Conan and vcpkg" },
+        { "name": "build-acceleration", "label": "Build acceleration" },
+        { "name": "static-analysis", "label": "Static analysis" },
+        { "name": "include-what-you-use", "label": "Include What You Use" }
+      ]
+    },
+    {
+      "name": "debuggers",
+      "skills": [
+        { "name": "gdb", "label": "GDB" },
+        { "name": "lldb", "label": "LLDB" },
+        { "name": "core-dumps", "label": "Core dumps" },
+        { "name": "concurrency-debugging", "label": "Concurrency debugging" },
+        { "name": "debug-optimized-builds", "label": "Debugging optimized builds" },
+        { "name": "dwarf-debug-format", "label": "DWARF format" }
+      ]
+    },
+    {
+      "name": "profilers",
+      "skills": [
+        { "name": "linux-perf", "label": "Linux perf" },
+        { "name": "valgrind", "label": "Valgrind" },
+        { "name": "flamegraphs", "label": "Flamegraphs" },
+        { "name": "strace-ltrace", "label": "strace and ltrace" },
+        { "name": "heaptrack", "label": "heaptrack" },
+        { "name": "intel-vtune-amd-uprof", "label": "VTune and uProf" },
+        { "name": "hardware-counters", "label": "Hardware counters" }
+      ]
+    },
+    {
+      "name": "runtimes",
+      "skills": [
+        { "name": "sanitizers", "label": "Sanitizers" },
+        { "name": "fuzzing", "label": "Fuzzing" }
+      ]
+    },
+    {
+      "name": "binaries",
+      "skills": [
+        { "name": "elf-inspection", "label": "ELF inspection" },
+        { "name": "linkers-lto", "label": "Linkers and LTO" },
+        { "name": "binutils", "label": "binutils" },
+        { "name": "dynamic-linking", "label": "Dynamic linking" }
+      ]
+    },
+    {
+      "name": "low-level-programming",
+      "skills": [
+        { "name": "simd-intrinsics", "label": "SIMD intrinsics" },
+        { "name": "memory-model", "label": "Memory model" },
+        { "name": "cpu-cache-opt", "label": "CPU cache optimization" },
+        { "name": "cpp-coroutines", "label": "C++ coroutines" },
+        { "name": "assembly-x86", "label": "x86 assembly" },
+        { "name": "assembly-arm", "label": "ARM assembly" },
+        { "name": "interpreters", "label": "Interpreters" }
+      ]
+    },
+    {
+      "name": "computer-architecture",
+      "skills": [
+        { "name": "cpu-pipelines-and-hazards", "label": "CPU pipelines" },
+        { "name": "memory-hierarchy-and-caches", "label": "Memory hierarchy" },
+        { "name": "virtual-memory-paging-and-tlb", "label": "Virtual memory and TLB" },
+        { "name": "abi-and-calling-conventions", "label": "ABI and calling conventions" },
+        { "name": "branch-prediction-and-speculation", "label": "Branch prediction" }
+      ]
+    },
+    {
+      "name": "allocators",
+      "skills": [
+        { "name": "custom-allocators", "label": "Custom allocators" },
+        { "name": "numa-programming", "label": "NUMA programming" }
+      ]
+    },
+    {
+      "name": "gpu",
+      "skills": [
+        { "name": "cuda", "label": "CUDA" },
+        { "name": "cuda-profiling", "label": "CUDA profiling" },
+        { "name": "cuda-debugging", "label": "CUDA debugging" },
+        { "name": "gpu-memory-model", "label": "GPU memory model" },
+        { "name": "hip-rocm", "label": "HIP and ROCm" },
+        { "name": "triton-lang", "label": "Triton" }
+      ]
+    },
+    {
+      "name": "hpc",
+      "skills": [
+        { "name": "openmp", "label": "OpenMP" }
+      ]
+    },
+    {
+      "name": "platform",
+      "skills": [
+        { "name": "apple-silicon", "label": "Apple Silicon" }
+      ]
+    },
+    {
+      "name": "async-io",
+      "skills": [
+        { "name": "io-uring", "label": "io_uring" }
+      ]
+    }
+  ]
+}

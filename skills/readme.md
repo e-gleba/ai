@@ -28,6 +28,28 @@ the whole point of the format
 | [agent_workflow](agent_workflow/SKILL.md) | running an editor agent session that stays reviewable |
 | [caveman](caveman/SKILL.md) | terse replies: the answer or the code first, facts only, no filler |
 
+## external
+
+Low-level C/C++ skills referenced from
+[mohitmishra786/low-level-dev-skills](https://github.com/mohitmishra786/low-level-dev-skills)
+([MIT](https://github.com/mohitmishra786/low-level-dev-skills/blob/main/LICENSE)),
+filtered to game-engine work: no Zig, no Rust, nothing a local skill above
+already covers. Nothing is vendored — the site build fetches each `SKILL.md`
+from the upstream default branch and the pages workflow rebuilds weekly, so
+what the site shows tracks the maintainer. The limitation: GitHub pauses
+scheduled workflows after 60 days without repository activity, and any push
+re-arms the schedule.
+
+The manifest is [external.json](external.json): one line per skill, so adding
+or dropping one is a one-line change. To install the originals, with their
+reference files, instead of reading them here:
+
+```sh
+npx skills add mohitmishra786/low-level-dev-skills --skill gcc clang pgo linux-perf
+```
+
+<!-- external-skills -->
+
 ## install
 
 Copy the folders where your tool looks for them:

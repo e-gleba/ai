@@ -30,3 +30,6 @@ from the maintained sets.
   review and audit procedures
 - [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) - the
   original terse-mode skill
+- [mohitmishra786/low-level-dev-skills](https://github.com/mohitmishra786/low-level-dev-skills) -
+  the low-level set: compilers, debuggers, profilers, GPU, kernel; the
+  gamedev subset is synced into [skills](../skills/readme.md#external)
