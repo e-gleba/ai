@@ -23,8 +23,7 @@ git worktree remove ../wt_feature_a
 ```
 
 Reference: [git worktree](https://git-scm.com/docs/git-worktree). Each worktree gets
-its own build directory, so agents never fight over build artifacts —
-[cpp_playbook](cpp_playbook.md).
+its own build directory, so agents never fight over build artifacts.
 
 ## shapes that work
 

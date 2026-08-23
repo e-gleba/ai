@@ -1,6 +1,6 @@
 # mcp
 
-[handbook](../readme.md) · prev: [local_models](local_models.md) · next: [cpp_playbook](cpp_playbook.md)
+[handbook](../readme.md) · prev: [local_models](local_models.md) · next: [glossary](glossary.md)
 
 **In one sentence:** MCP is a common plug shape, so a tool you build once works in
 every AI application that speaks it.
@@ -101,8 +101,7 @@ confirmation.
 - GitHub: pull requests, issues, review comments, failing logs. Pairs with
   [code_review](code_review.md).
 - One search server — [tool_stack](tool_stack.md).
-- Compiler Explorer, to compile and inspect machine code from a chat —
-  [cpp_playbook](cpp_playbook.md).
+- Compiler Explorer, to compile and inspect machine code from a chat.
 - Documentation questions for unfamiliar dependencies.
 - Filesystem, limited to one project directory, read-only unless you need writes.
 

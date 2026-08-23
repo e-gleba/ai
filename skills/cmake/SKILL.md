@@ -57,7 +57,10 @@ consumers. Most build breakage is one of these three being wrong.
 4. Alias every exported library: in-tree and installed use look identical.
 5. Warnings on the target, guarded per compiler, never `PUBLIC`.
 6. Generated files stay in the binary directory.
-7. Your variables `snake_case`; CMake's own stay as they are.
+7. Your variables `snake_case`, never a leading underscore: CMake
+   [reserves](https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variables)
+   `CMAKE_`, `_CMAKE_`, and `_` + command names, and the `_private`
+   convention enforces nothing anyway. CMake's own stay as they are.
 8. One `CMakeLists.txt` per directory that owns a target.
 9. No requested minimum means latest stable (4.4 today): the plain
    `cmake_minimum_required(VERSION x.y)` form already sets every policy up
@@ -65,6 +68,9 @@ consumers. Most build breakage is one of these three being wrong.
    free. Lower only when the user names a version, and cap the presets
    schema `version` at what that floor reads: 12 needs 4.4, 10 needs
    3.31, 8 needs 3.28.
+10. Multiline text goes in a bracket argument `[[...]]`, never `\n` escapes
+    in quoted strings: verbatim content, no escaping, no surprises
+    [docs](https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#bracket-argument).
 
 ## presets, the entry point
 

@@ -1,6 +1,6 @@
 # start_here
 
-[handbook](../readme.md) · next: [daily_routine](daily_routine.md)
+[handbook](../readme.md) · next: [tool_stack](tool_stack.md)
 
 **In one sentence:** this page explains the words used everywhere else, so
 nothing later needs a background in software.
@@ -63,8 +63,7 @@ argued about.
 3. Write the goal down as something checkable: [prompt_library](prompt_library.md)
 4. Put the project's rules in the project, not in your head:
    [context_engineering](context_engineering.md)
-5. Write down what wasted your time today, and change one thing:
-   [daily_routine](daily_routine.md)
+5. Write down what wasted your time today, and change one thing.
 
 ## words you will meet later
 
@@ -79,8 +78,3 @@ Full list in [glossary](glossary.md). The five that confuse people most:
   [mcp](mcp.md)
 - **Local model** — one that runs on your own machine, so nothing leaves it:
   [local_models](local_models.md)
-
-## if you read only one more page
-
-[failure_modes](failure_modes.md) — the ten ways this goes wrong, each with the
-one-line counter. It saves more time than any prompt in this handbook.

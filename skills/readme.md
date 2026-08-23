@@ -42,24 +42,6 @@ Cursor reads project rules from `.cursor/rules/*.mdc` instead
 [cursor rules](https://cursor.com/docs/context/rules); a skill body converts
 to a rule by adding a `globs` line and dropping the steps that do not apply.
 
-## community collections worth stealing from
-
-Do not write what already exists. Search the registries first —
-[skills.sh](https://skills.sh), the public directory behind the
-`npx skills add <owner>/<repo>` installer, and
-[aihero.dev/skills](https://www.aihero.dev/skills), a documented catalog with
-per-skill pages. Then steal from the maintained sets:
-
-| source | take |
-| --- | --- |
-| [mattpocock/skills](https://github.com/mattpocock/skills) | grill-me, handoff, write-a-skill |
-| [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | the original terse-mode skill, honest numbers included |
-| [anthropics/skills](https://github.com/anthropics/skills) | the official reference set and the format itself |
-| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) | react-best-practices, nextjs, ai-sdk, web-design-guidelines |
-| [obra/superpowers](https://github.com/obra/superpowers) | brainstorming, tdd, and debugging workflows |
-| [trailofbits/skills](https://github.com/trailofbits/skills) | security review and audit procedures |
-| [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | the index of official team skills, hand-picked |
-
 ## authoring rules
 
 - `name`: lowercase, underscores, matches the folder.
@@ -67,6 +49,13 @@ per-skill pages. Then steal from the maintained sets:
 - Self-contained: link only to stable external documentation, never to other
   files in this repository. A copied skill must work on its own — the agent
   that loads it cannot see this repository.
+- ASCII only: no smart quotes, em dashes, arrows, or box-drawing characters.
+  Plain punctuation costs fewer tokens and survives every terminal, parser,
+  and diff viewer.
+- No walls of text: short sentences, lists and tables over paragraphs, code
+  in fenced blocks. The reader is a model on a token budget and a human in
+  a hurry.
+- Link every non-obvious claim to a stable source, or mark it `[unverified]`.
 - Body under about 500 lines; move detail into `references/` beside it.
 - Config-file examples carry their schema, so an editor's language server
   validates them: a `$schema` field in JSON, a

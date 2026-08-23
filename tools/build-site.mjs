@@ -9,10 +9,10 @@ const base = '/ai';
 const siteUrl = 'https://e-gleba.github.io/ai';
 
 const sections = [
-  ['Foundations', ['start_here', 'daily_routine', 'tool_stack', 'model_selection']],
+  ['Foundations', ['start_here', 'tool_stack', 'model_selection']],
   ['Doing the work', ['prompt_library', 'code_review', 'parallel_agents', 'context_engineering', 'best_practice']],
-  ['Hard mode', ['engine_rnd', 'cpp_playbook', 'local_models', 'mcp']],
-  ['Reference', ['failure_modes', 'glossary']],
+  ['Hard mode', ['local_models', 'mcp']],
+  ['Reference', ['glossary', 'more_skills']],
 ];
 
 const skills = [

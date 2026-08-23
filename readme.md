@@ -16,8 +16,7 @@ most of it is process, and process transfers.
 ## new here
 
 [start_here](docs/start_here.md) explains every term used later and assumes no
-background. Then [failure_modes](docs/failure_modes.md), which saves more time than any
-prompt.
+background.
 
 ## handbook
 
@@ -26,7 +25,6 @@ prompt.
 | page | what it answers |
 | --- | --- |
 | [start_here](docs/start_here.md) | the five words that matter, and the one rule |
-| [daily_routine](docs/daily_routine.md) | what to do at 09:00, at review time, at the end of the day |
 | [tool_stack](docs/tool_stack.md) | which tool for which job, and the real limitation of each |
 | [model_selection](docs/model_selection.md) | how to pick a model without reading marketing |
 
@@ -44,8 +42,6 @@ prompt.
 
 | page | what it answers |
 | --- | --- |
-| [engine_rnd](docs/engine_rnd.md) | engine core work, and what must never reach a hosted model |
-| [cpp_playbook](docs/cpp_playbook.md) | grounding C++: compile flags, sanitizers, machine code |
 | [local_models](docs/local_models.md) | private, offline, and high-volume cheap work |
 | [mcp](docs/mcp.md) | the common plug shape for tools, and how not to misuse it |
 
@@ -53,8 +49,8 @@ prompt.
 
 | page | what it answers |
 | --- | --- |
-| [failure_modes](docs/failure_modes.md) | how this goes wrong, counter first |
 | [glossary](docs/glossary.md) | every term, one line each |
+| [more_skills](docs/more_skills.md) | where to find an existing skill before writing one |
 
 ## skills
 

@@ -126,9 +126,8 @@ could handle it instead of my attention.
 
 ## rules that keep this honest
 
-- Reject "consider extracting a helper" noise — [failure_modes](failure_modes.md).
+- Reject "consider extracting a helper" noise.
 - If two passes disagree, correctness wins.
-- Batch reviews into two slots a day — [daily_routine](daily_routine.md).
+- Batch reviews into two slots a day.
 - On engine code, two extra gates come first: platform boundary and binary
-  interface — [engine_rnd](engine_rnd.md) and the
-  [tb_engine skill](../skills/tb_engine/SKILL.md).
+  interface — the [tb_engine skill](../skills/tb_engine/SKILL.md).
