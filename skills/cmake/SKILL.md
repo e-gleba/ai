@@ -68,6 +68,9 @@ consumers. Most build breakage is one of these three being wrong.
    free. Lower only when the user names a version, and cap the presets
    schema `version` at what that floor reads: 12 needs 4.4, 10 needs
    3.31, 8 needs 3.28.
+10. Multiline text goes in a bracket argument `[[...]]`, never `\n` escapes
+    in quoted strings: verbatim content, no escaping, no surprises
+    [docs](https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#bracket-argument).
 
 ## presets, the entry point
 
