@@ -1,6 +1,6 @@
 # model_selection
 
-[handbook](../readme.md) · prev: [tool_stack](tool_stack.md) · next: [local_models](local_models.md)
+[handbook](../readme.md) · prev: [tool_stack](tool_stack.md)
 
 **In one sentence:** there is no "best model" — there is the cheapest model that
 passes *your* check, and four public sources tell you which three to try first.
@@ -51,8 +51,6 @@ Leaderboards rank models on *their* tasks. Your task is different. So:
 3. Pick the **cheapest one that passes**.
 
 That set, built from your own failures, beats any public table within a month.
-Method: [best_practice](best_practice.md) §10. Metric: cost per accepted result, in
-[best_practice](best_practice.md) §8.
 
 ## track new releases in 5 minutes a week
 

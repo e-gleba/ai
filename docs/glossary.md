@@ -4,8 +4,6 @@
 
 **In one sentence:** every term used in this handbook, one line each, plain words.
 
-Newcomers should start with [start_here](start_here.md).
-
 ## basics
 
 - **model** — a program that predicts text; you give words, it returns words.
@@ -33,8 +31,6 @@ Newcomers should start with [start_here](start_here.md).
 - **context rot** — quality decay caused by stale or contradictory context.
 - **progressive disclosure** — loading a skill's description first and its body only
   when the task matches, so many skills cost little context.
-
-More: [context_engineering](context_engineering.md).
 
 ## protocol
 
@@ -100,5 +96,3 @@ More: [cpp20 skill](../skills/cpp20/SKILL.md).
 - **acceptance criteria** — what must be true for the work to count as done.
 - **retrospective** — a short review of the process after a task, not of the person.
 - **friction note** — the end-of-day record of what wasted time.
-
-More: [parallel_agents](parallel_agents.md), [best_practice](best_practice.md).

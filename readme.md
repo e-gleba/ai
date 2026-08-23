@@ -4,8 +4,7 @@
 [![external links](https://github.com/e-gleba/ai/actions/workflows/link_check.yml/badge.svg)](https://github.com/e-gleba/ai/actions/workflows/link_check.yml)
 
 A working handbook for using AI as an engineer: which tool for which job, which model
-for which task, the prompts that get used, and the review discipline that keeps the
-output honest.
+for which task, and the review discipline that keeps the output honest.
 
 Plain markdown, no website, no build step. Copy a block, fill the `{{placeholders}}`,
 get on with the day.
@@ -13,30 +12,14 @@ get on with the day.
 Written by a C++ game-engine R&D engineer, so the hard examples are systems code — but
 most of it is process, and process transfers.
 
-## new here
-
-[start_here](docs/start_here.md) explains every term used later and assumes no
-background.
-
 ## handbook
 
 **foundations**
 
 | page | what it answers |
 | --- | --- |
-| [start_here](docs/start_here.md) | the five words that matter, and the one rule |
 | [tool_stack](docs/tool_stack.md) | which tool for which job, and the real limitation of each |
 | [model_selection](docs/model_selection.md) | how to pick a model without reading marketing |
-
-**doing the work**
-
-| page | what it answers |
-| --- | --- |
-| [prompt_library](docs/prompt_library.md) | the blocks: plan, implement, debug, explain, attack |
-| [code_review](docs/code_review.md) | the review pipeline, author side and reviewer side |
-| [parallel_agents](docs/parallel_agents.md) | several agents, one repository, no merge pain |
-| [context_engineering](docs/context_engineering.md) | which config file exists, who reads it, what goes in it |
-| [best_practice](docs/best_practice.md) | design-first process habits, with sources |
 
 **hard mode**
 
@@ -68,7 +51,6 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | [wwise](skills/wwise/SKILL.md) | events, soundbanks, RTPCs, profiler-driven audio debugging |
 | [rnd](skills/rnd/SKILL.md) | spikes that end in a decision: hypothesis, timebox, kill criteria |
 | [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
-| [sustainable_pace](skills/sustainable_pace/SKILL.md) | bounded hours, honest estimates, early warning signs |
 | [caveman](skills/caveman/SKILL.md) | terse reply mode: code first, facts only, no filler |
 
 ## the idea in four lines

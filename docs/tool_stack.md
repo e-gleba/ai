@@ -1,6 +1,6 @@
 # tool_stack
 
-[handbook](../readme.md) · prev: [start_here](start_here.md) · next: [model_selection](model_selection.md)
+[handbook](../readme.md) · next: [model_selection](model_selection.md)
 
 **In one sentence:** one job per tool, and the honest limitation of each, because
 the limitation decides where a task belongs.
@@ -45,7 +45,7 @@ Working rule: two independent tools, then the primary document.
 - [MCP](https://modelcontextprotocol.io) — one plug shape for tools and data:
   [mcp](mcp.md)
 - Plain git — `git diff origin/main...HEAD` gives the model facts instead of
-  guesses: [code_review](code_review.md).
+  guesses: [code_review skill](../skills/code_review/SKILL.md).
 - [pre-commit](https://pre-commit.com) — formatting decided by a hook, so agents
   stop reformatting files.
 - [just](https://github.com/casey/just) or plain `make` — a named verb per task
