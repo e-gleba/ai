@@ -28,6 +28,7 @@ const skills = [
   ['cursor_workflow', 'Cursor workflow'],
   ['sustainable_pace', 'Sustainable pace'],
   ['caveman', 'Caveman'],
+  ['more_skills', 'More skills'],
 ];
 
 const escapeHtml = (value) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -46,8 +47,7 @@ function normalizeMarkdown(markdown, sourcePath) {
 
 function nav(active = '') {
   const skillLinks = skills.map(([name, label]) => `<a ${active === `skills/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/${name}/">${label}</a>`).join('');
-  const moreSkills = `<a ${active === 'skills' ? 'aria-current="page"' : ''} href="${base}/skills/">More skills</a>`;
-  const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}${moreSkills}</section>`;
+  const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}</section>`;
   const groups = sections.map(([heading, pages], index) => `
     <section class="nav-group">
       <h2>${heading}</h2>

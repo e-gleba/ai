@@ -69,6 +69,7 @@ Drop-in procedures an agent loads only when the task matches, in the portable
 | [cursor_workflow](skills/cursor_workflow/SKILL.md) | keeping an editor-agent session reviewable |
 | [sustainable_pace](skills/sustainable_pace/SKILL.md) | bounded hours, honest estimates, early warning signs |
 | [caveman](skills/caveman/SKILL.md) | terse reply mode: code first, facts only, no filler |
+| [more_skills](skills/more_skills/SKILL.md) | finding an existing skill before writing one |
 
 ## the idea in four lines
 

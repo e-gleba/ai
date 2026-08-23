@@ -28,6 +28,7 @@ the whole point of the format
 | [cursor_workflow](cursor_workflow/SKILL.md) | running an editor agent session that stays reviewable |
 | [sustainable_pace](sustainable_pace/SKILL.md) | the work is fine but the days are not |
 | [caveman](caveman/SKILL.md) | terse replies: the answer or the code first, facts only, no filler |
+| [more_skills](more_skills/SKILL.md) | finding an existing skill before writing one: registries, maintained sets |
 
 ## install
 
@@ -67,32 +68,3 @@ to a rule by adding a `globs` line and dropping the steps that do not apply.
   small — a fat style block is an input-token tax on every invocation.
 - Procedures with steps belong here. Constraints that are always true belong
   in `AGENTS.md` — [agents.md](https://agents.md).
-
-## more skills
-
-Do not write what already exists. Search the registries first, then steal
-from the maintained sets.
-
-Registries:
-
-- [skills.sh](https://skills.sh) - public directory behind the
-  `npx skills add <owner>/<repo>` installer
-- [aihero.dev/skills](https://www.aihero.dev/skills) - documented catalog
-  with per-skill pages
-- [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) -
-  hand-picked index of official team skills
-
-Maintained sets:
-
-- [anthropics/skills](https://github.com/anthropics/skills) - the official
-  Claude skills, and the format itself
-- [mattpocock/skills](https://github.com/mattpocock/skills) - grill-me,
-  handoff, write-a-skill
-- [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) -
-  react-best-practices, nextjs, ai-sdk, web-design-guidelines
-- [obra/superpowers](https://github.com/obra/superpowers) - brainstorming,
-  tdd, and debugging workflows
-- [trailofbits/skills](https://github.com/trailofbits/skills) - security
-  review and audit procedures
-- [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) - the
-  original terse-mode skill
