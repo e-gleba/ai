@@ -67,6 +67,13 @@ per-skill pages. Then steal from the maintained sets:
 - Self-contained: link only to stable external documentation, never to other
   files in this repository. A copied skill must work on its own — the agent
   that loads it cannot see this repository.
+- ASCII only: no smart quotes, em dashes, arrows, or box-drawing characters.
+  Plain punctuation costs fewer tokens and survives every terminal, parser,
+  and diff viewer.
+- No walls of text: short sentences, lists and tables over paragraphs, code
+  in fenced blocks. The reader is a model on a token budget and a human in
+  a hurry.
+- Link every non-obvious claim to a stable source, or mark it `[unverified]`.
 - Body under about 500 lines; move detail into `references/` beside it.
 - Config-file examples carry their schema, so an editor's language server
   validates them: a `$schema` field in JSON, a
