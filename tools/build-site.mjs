@@ -46,7 +46,8 @@ function normalizeMarkdown(markdown, sourcePath) {
 
 function nav(active = '') {
   const skillLinks = skills.map(([name, label]) => `<a ${active === `skills/${name}` ? 'aria-current="page"' : ''} href="${base}/skills/${name}/">${label}</a>`).join('');
-  const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}</section>`;
+  const moreSkills = `<a ${active === 'skills' ? 'aria-current="page"' : ''} href="${base}/skills/">More skills</a>`;
+  const skillsGroup = `<section class="nav-group"><h2>Skills</h2>${skillLinks}${moreSkills}</section>`;
   const groups = sections.map(([heading, pages], index) => `
     <section class="nav-group">
       <h2>${heading}</h2>
