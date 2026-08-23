@@ -12,7 +12,7 @@ const sections = [
   ['Foundations', ['start_here', 'tool_stack', 'model_selection']],
   ['Doing the work', ['prompt_library', 'code_review', 'parallel_agents', 'context_engineering', 'best_practice']],
   ['Hard mode', ['local_models', 'mcp']],
-  ['Reference', ['glossary']],
+  ['Reference', ['glossary', 'more_skills']],
 ];
 
 const skills = [
@@ -28,7 +28,6 @@ const skills = [
   ['cursor_workflow', 'Cursor workflow'],
   ['sustainable_pace', 'Sustainable pace'],
   ['caveman', 'Caveman'],
-  ['more_skills', 'More skills'],
 ];
 
 const escapeHtml = (value) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');

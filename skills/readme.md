@@ -28,7 +28,6 @@ the whole point of the format
 | [cursor_workflow](cursor_workflow/SKILL.md) | running an editor agent session that stays reviewable |
 | [sustainable_pace](sustainable_pace/SKILL.md) | the work is fine but the days are not |
 | [caveman](caveman/SKILL.md) | terse replies: the answer or the code first, facts only, no filler |
-| [more_skills](more_skills/SKILL.md) | finding an existing skill before writing one: registries, maintained sets |
 
 ## install
 

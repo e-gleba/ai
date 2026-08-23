@@ -1,6 +1,6 @@
 # glossary
 
-[handbook](../readme.md) · prev: [mcp](mcp.md)
+[handbook](../readme.md) · prev: [mcp](mcp.md) · next: [more_skills](more_skills.md)
 
 **In one sentence:** every term used in this handbook, one line each, plain words.
 
