@@ -60,6 +60,7 @@ and https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines :
 - `UPPER_CASE` for macros only
 - no `m_` prefixes, no Hungarian notation
 - `class` for types with invariants, `struct` for plain data
+- ASCII only: no unicode identifiers or smart quotes, comments included
 
 ## reuse first, in this order
 
